@@ -1,0 +1,74 @@
+﻿<Window x:Class="StudyGotchi.Views.SessionSummaryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Session Complete! 🎉"
+        Height="420" Width="480"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="{StaticResource WarmCreamBrush}"
+        FontFamily="Nunito, Segoe UI"
+        Loaded="Window_Loaded">
+
+    <StackPanel Margin="32" HorizontalAlignment="Center">
+
+        <TextBlock Text="Session Complete! 🎉"
+                   Style="{StaticResource HeadingText}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,8"/>
+
+        <TextBlock Text="Here's how your pet did:"
+                   Style="{StaticResource BodyText}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24"
+                   Foreground="{StaticResource SubtleGrayBrush}"/>
+
+        <Border Width="100" Height="100"
+                CornerRadius="50"
+                Background="White"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,24">
+            <Border.Effect>
+                <DropShadowEffect Color="#DDDDDD" BlurRadius="10" ShadowDepth="2" Opacity="0.4"/>
+            </Border.Effect>
+            <Image x:Name="FinalPetSprite"
+                   Width="80" Height="80"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        </Border>
+
+        <Border Style="{StaticResource CuteCard}" Margin="0,0,0,24">
+            <StackPanel>
+                <Grid Margin="0,0,0,8">
+                    <TextBlock Text="🐾 Pet Name"      Style="{StaticResource SmallText}"/>
+                    <TextBlock x:Name="SummaryPetName" Style="{StaticResource SmallText}"
+                               HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+                <Grid Margin="0,0,0,8">
+                    <TextBlock Text="✨ Evolution"        Style="{StaticResource SmallText}"/>
+                    <TextBlock x:Name="SummaryEvolution" Style="{StaticResource SmallText}"
+                               HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+                <Grid Margin="0,0,0,8">
+                    <TextBlock Text="⭐ Level"        Style="{StaticResource SmallText}"/>
+                    <TextBlock x:Name="SummaryLevel" Style="{StaticResource SmallText}"
+                               HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+                <Grid Margin="0,0,0,8">
+                    <TextBlock Text="✅ Tasks Completed" Style="{StaticResource SmallText}"/>
+                    <TextBlock x:Name="SummaryTasks"    Style="{StaticResource SmallText}"
+                               HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+                <Grid>
+                    <TextBlock Text="🍖 Final Hunger"    Style="{StaticResource SmallText}"/>
+                    <TextBlock x:Name="SummaryHunger"   Style="{StaticResource SmallText}"
+                               HorizontalAlignment="Right" FontWeight="Bold"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <Button Content="Finish 🌸"
+                Style="{StaticResource PrimaryButton}"
+                FontSize="16"
+                HorizontalAlignment="Center"
+                Click="FinishButton_Click"/>
+    </StackPanel>
+</Window>
