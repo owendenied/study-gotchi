@@ -1,187 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Color x:Key="PrimaryPink">#FFB7C5</Color>
-    <Color x:Key="SoftLavender">#D4BBFF</Color>
-    <Color x:Key="MintGreen">#B5EAD7</Color>
-    <Color x:Key="WarmCream">#FFF5E4</Color>
-    <Color x:Key="SoftYellow">#FFEAA7</Color>
-    <Color x:Key="DangerRed">#FF6B6B</Color>
-    <Color x:Key="DarkText">#3D3D3D</Color>
-    <Color x:Key="SubtleGray">#C8C8C8</Color>
+    <SolidColorBrush x:Key="PrimaryPink" Color="#FFB7C5"/>
+    <SolidColorBrush x:Key="SoftLavender" Color="#D4BBFF"/>
+    <SolidColorBrush x:Key="MintGreen" Color="#B5EAD7"/>
+    <SolidColorBrush x:Key="WarmCream" Color="#FFF5E4"/>
+    <SolidColorBrush x:Key="SoftYellow" Color="#FFEAA7"/>
+    <SolidColorBrush x:Key="DangerRed" Color="#FF6B6B"/>
+    <SolidColorBrush x:Key="DarkText" Color="#3D3D3D"/>
 
-    <SolidColorBrush x:Key="PrimaryPinkBrush"   Color="{StaticResource PrimaryPink}"/>
-    <SolidColorBrush x:Key="SoftLavenderBrush"  Color="{StaticResource SoftLavender}"/>
-    <SolidColorBrush x:Key="MintGreenBrush"     Color="{StaticResource MintGreen}"/>
-    <SolidColorBrush x:Key="WarmCreamBrush"     Color="{StaticResource WarmCream}"/>
-    <SolidColorBrush x:Key="SoftYellowBrush"    Color="{StaticResource SoftYellow}"/>
-    <SolidColorBrush x:Key="DangerRedBrush"     Color="{StaticResource DangerRed}"/>
-    <SolidColorBrush x:Key="DarkTextBrush"      Color="{StaticResource DarkText}"/>
-    <SolidColorBrush x:Key="SubtleGrayBrush"    Color="{StaticResource SubtleGray}"/>
-
-    <Style x:Key="HeadingText" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Fredoka One, Segoe UI"/>
-        <Setter Property="FontSize"   Value="28"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkTextBrush}"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
+    <Style TargetType="Window">
+        <Setter Property="Background" Value="{StaticResource WarmCream}"/>
     </Style>
 
-    <Style x:Key="BodyText" TargetType="TextBlock">
-        <Setter Property="FontFamily"   Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"     Value="14"/>
-        <Setter Property="Foreground"   Value="{StaticResource DarkTextBrush}"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-    </Style>
-
-    <Style x:Key="SmallText" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"   Value="12"/>
-        <Setter Property="Foreground" Value="{StaticResource DarkTextBrush}"/>
-    </Style>
-
-    <Style x:Key="PrimaryButton" TargetType="Button">
-        <Setter Property="Background"  Value="{StaticResource PrimaryPinkBrush}"/>
-        <Setter Property="Foreground"  Value="White"/>
-        <Setter Property="FontFamily"  Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"    Value="14"/>
-        <Setter Property="FontWeight"  Value="Bold"/>
-        <Setter Property="Padding"     Value="20,10"/>
-        <Setter Property="Cursor"      Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="20"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#FF99B0"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#E8899A"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="SecondaryButton" TargetType="Button">
-        <Setter Property="Background"  Value="{StaticResource SoftLavenderBrush}"/>
-        <Setter Property="Foreground"  Value="White"/>
-        <Setter Property="FontFamily"  Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"    Value="13"/>
-        <Setter Property="Padding"     Value="16,8"/>
-        <Setter Property="Cursor"      Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="15"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#BFA8E8"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="DangerButton" TargetType="Button">
-        <Setter Property="Background"  Value="{StaticResource DangerRedBrush}"/>
-        <Setter Property="Foreground"  Value="White"/>
-        <Setter Property="FontFamily"  Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"    Value="13"/>
-        <Setter Property="Padding"     Value="16,8"/>
-        <Setter Property="Cursor"      Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border"
-                            Background="{TemplateBinding Background}"
-                            CornerRadius="15"
-                            Padding="{TemplateBinding Padding}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="#E85555"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="CuteTextBox" TargetType="TextBox">
-        <Setter Property="FontFamily"        Value="Nunito, Segoe UI"/>
-        <Setter Property="FontSize"          Value="13"/>
-        <Setter Property="Padding"           Value="10,6"/>
-        <Setter Property="BorderBrush"       Value="{StaticResource PrimaryPinkBrush}"/>
-        <Setter Property="BorderThickness"   Value="2"/>
-        <Setter Property="Background"        Value="White"/>
-        <Setter Property="Foreground"        Value="{StaticResource DarkTextBrush}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="10"
-                            Padding="{TemplateBinding Padding}">
-                        <ScrollViewer x:Name="PART_ContentHost"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="HungerBar" TargetType="ProgressBar">
-        <Setter Property="Height"           Value="18"/>
-        <Setter Property="BorderThickness"  Value="0"/>
-        <Setter Property="Background"       Value="#F0F0F0"/>
-        <Setter Property="Foreground"       Value="{StaticResource MintGreenBrush}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ProgressBar">
-                    <Border CornerRadius="9" Background="{TemplateBinding Background}">
-                        <Border x:Name="PART_Indicator"
-                                CornerRadius="9"
-                                Background="{TemplateBinding Foreground}"
-                                HorizontalAlignment="Left"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="XpBar" TargetType="ProgressBar" BasedOn="{StaticResource HungerBar}">
-        <Setter Property="Foreground" Value="{StaticResource SoftLavenderBrush}"/>
-    </Style>
-
-    <Style x:Key="CuteCard" TargetType="Border">
-        <Setter Property="Background"      Value="White"/>
-        <Setter Property="CornerRadius"    Value="16"/>
-        <Setter Property="Padding"         Value="16"/>
-        <Setter Property="Effect">
-            <Setter.Value>
-                <DropShadowEffect Color="#DDDDDD" BlurRadius="12" ShadowDepth="2" Opacity="0.5"/>
-            </Setter.Value>
-        </Setter>
+    <Style TargetType="UserControl">
+        <Setter Property="Background" Value="{StaticResource WarmCream}"/>
     </Style>
 
 </ResourceDictionary>

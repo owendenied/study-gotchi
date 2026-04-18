@@ -1,10 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading;
 
 namespace StudyGotchi.Controllers
 {
-    class SessionController
+    public class SessionController
     {
+        private PetController _petController;
+        private TaskController _taskController;
+        private bool _sessionActive;
+        private Timer _decayTimer;
+
+        public SessionController(PetController petController, TaskController taskController)
+        {
+            _petController = petController;
+            _taskController = taskController;
+        }
+
+        public void StartSession() { throw new System.NotImplementedException(); }
+        public void EndSession() { throw new System.NotImplementedException(); }
+        public bool IsSessionActive() { return _sessionActive; }
+        public string GetSessionSummary() { throw new System.NotImplementedException(); }
+
+        private void OnDecayTick(object state) { throw new System.NotImplementedException(); }
     }
 }

@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using StudyGotchi.Controllers;
 
 namespace StudyGotchi.Views
 {
-    /// <summary>
-    /// Interaction logic for StudyWidgetWindow.xaml
-    /// </summary>
     public partial class StudyWidgetWindow : Window
     {
+        private SessionController _sessionController;
+
         public StudyWidgetWindow()
         {
             InitializeComponent();
         }
+
+        public void UpdatePetDisplay() { throw new System.NotImplementedException(); }
+        public void ReturnToDashboard() { throw new System.NotImplementedException(); }
     }
 }
