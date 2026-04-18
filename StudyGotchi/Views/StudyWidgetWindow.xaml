@@ -1,12 +1,20 @@
 ﻿<Window x:Class="StudyGotchi.Views.StudyWidgetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:StudyGotchi.Views"
-        mc:Ignorable="d"
-        Title="StudyWidgetWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Widget" Height="450" Width="300"
+        WindowStyle="None" Topmost="True" ResizeMode="NoResize"
+        Background="{StaticResource WarmCream}">
+    <StackPanel Margin="10">
+        <Image x:Name="WidgetPetImage" Height="150" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+
+        <TextBlock Text="Hunger" Foreground="{StaticResource DarkText}" Margin="0,10,0,0"/>
+        <ProgressBar x:Name="WidgetHungerBar" Height="15" Maximum="100" Foreground="{StaticResource MintGreen}"/>
+
+        <TextBlock Text="XP" Foreground="{StaticResource DarkText}" Margin="0,5,0,0"/>
+        <ProgressBar x:Name="WidgetXpBar" Height="15" Maximum="100" Foreground="{StaticResource SoftLavender}"/>
+
+        <ListBox x:Name="WidgetTaskList" Height="120" Margin="0,10,0,10"/>
+
+        <Button Content="Return to Dashboard" Click="ReturnToDashboard_Click" Background="{StaticResource PrimaryPink}" Foreground="{StaticResource DarkText}"/>
+    </StackPanel>
 </Window>
