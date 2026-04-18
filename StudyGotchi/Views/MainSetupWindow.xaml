@@ -82,7 +82,7 @@
 
                     <TextBlock Text="Task Name" Style="{StaticResource SmallText}" Margin="0,0,0,4"/>
                     <TextBox x:Name="TaskNameInput" Style="{StaticResource CuteTextBox}"
-                             PlaceholderText="e.g. Finish Chapter 3 notes" Margin="0,0,0,12"/>
+                              Margin="0,0,0,12"/>
 
                     <TextBlock Text="Deadline" Style="{StaticResource SmallText}" Margin="0,0,0,4"/>
                     <DatePicker x:Name="DeadlinePicker" Margin="0,0,0,12" FontFamily="Nunito, Segoe UI"/>
