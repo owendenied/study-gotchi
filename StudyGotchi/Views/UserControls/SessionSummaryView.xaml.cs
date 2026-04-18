@@ -8,16 +8,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace StudyGotchi.Views
+namespace StudyGotchi.Views.UserControls
 {
     /// <summary>
-    /// Interaction logic for StudyWidgetWindow.xaml
+    /// Interaction logic for SessionSummaryView.xaml
     /// </summary>
-    public partial class StudyWidgetWindow : Window
+    public partial class SessionSummaryView : UserControl
     {
-        public StudyWidgetWindow()
+        public SessionSummaryView()
         {
             InitializeComponent();
         }

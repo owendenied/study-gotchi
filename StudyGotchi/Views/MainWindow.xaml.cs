@@ -13,11 +13,11 @@ using System.Windows.Shapes;
 namespace StudyGotchi.Views
 {
     /// <summary>
-    /// Interaction logic for StudyWidgetWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class StudyWidgetWindow : Window
+    public partial class MainWindow : Window
     {
-        public StudyWidgetWindow()
+        public MainWindow()
         {
             InitializeComponent();
         }
