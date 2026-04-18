@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="StudyGotchi.Views.UserControls.SessionSummaryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="Session Complete!" FontSize="36" Foreground="{StaticResource DarkText}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <Image x:Name="ImgFinalPet" Width="150" Height="150" RenderOptions.BitmapScalingMode="NearestNeighbor" Margin="0,0,0,20"/>
+
+        <TextBlock x:Name="TxtSummaryStats" FontSize="18" Foreground="{StaticResource DarkText}" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,30"/>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Exit App" Margin="0,0,10,0" Padding="20,10" Background="{StaticResource DangerRed}" Foreground="White" Click="BtnExit_Click"/>
+            <Button Content="Start New Session" Padding="20,10" Background="{StaticResource PrimaryPink}" Click="BtnNewSession_Click"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
