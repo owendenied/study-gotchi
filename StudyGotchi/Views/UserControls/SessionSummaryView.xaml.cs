@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -7,12 +7,19 @@ namespace StudyGotchi.Views.UserControls
         public SessionSummaryView()
         {
             InitializeComponent();
+            this.DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
         }
 
-        private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void BtnStartAnother_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            StudyGotchi.Services.ServiceRegistry.ResetApp();
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToDashboard();
+            wnd?.NavigateToPetSelection();
+        }
+
+        private void BtnClose_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
         }
 
         public void DisplaySummary()

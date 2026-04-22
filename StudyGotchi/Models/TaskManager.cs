@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using StudyGotchi.Interfaces;
 
@@ -30,7 +30,7 @@ namespace StudyGotchi.Models
         public void CompleteTask(int id)
         {
             var t = _tasks.Find(x => x.Id == id);
-            if (t != null)
+            if (t != null && !t.IsCompleted)
             {
                 t.Complete();
                 foreach (var o in _observers)
@@ -38,10 +38,26 @@ namespace StudyGotchi.Models
             }
         }
 
+        public void ClearTasks()
+        {
+            _tasks.Clear();
+            _nextId = 1;
+        }
+
         public List<StudyTask> GetOverdueTasks()
         {
             var now = DateTime.Now;
             return _tasks.FindAll(t => !t.IsCompleted && t.Deadline < now);
+        }
+
+        public List<StudyTask> GetAllTasks()
+        {
+            return new List<StudyTask>(_tasks);
+        }
+
+        public StudyTask? GetTaskById(int id)
+        {
+            return _tasks.Find(t => t.Id == id);
         }
 
         public void CheckForOverdueTasks()

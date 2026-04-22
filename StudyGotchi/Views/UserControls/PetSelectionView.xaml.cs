@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -7,13 +7,6 @@ namespace StudyGotchi.Views.UserControls
         public PetSelectionView()
         {
             InitializeComponent();
-        }
-
-        private void BtnChoose_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // after selecting a pet, go to task setup
-            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToTaskSetup();
         }
     }
 }
