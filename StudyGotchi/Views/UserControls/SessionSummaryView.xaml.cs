@@ -9,9 +9,15 @@ namespace StudyGotchi.Views.UserControls
             InitializeComponent();
         }
 
+        private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+            wnd?.NavigateToDashboard();
+        }
+
         public void DisplaySummary()
         {
-            throw new System.NotImplementedException();
+            // placeholder
         }
     }
 }

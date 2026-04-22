@@ -8,18 +8,56 @@ namespace StudyGotchi.Controllers
     {
         private TaskManager _taskManager;
 
+        public event Action<StudyTask>? TaskAdded;
+        public event Action<StudyTask>? TaskCompleted;
+
         public TaskController()
         {
             _taskManager = new TaskManager();
         }
 
-        public void AddTask(string name) { throw new NotImplementedException(); }
-        public void AddTask(string name, DateTime deadline) { throw new NotImplementedException(); }
-        public void CompleteTask(int id) { throw new NotImplementedException(); }
-        public IReadOnlyList<StudyTask> GetAllTasks() { throw new NotImplementedException(); }
-        public List<StudyTask> GetOverdueTasks() { throw new NotImplementedException(); }
-        public void CheckAndNotifyOverdue() { throw new NotImplementedException(); }
-        public bool HasTasks() { throw new NotImplementedException(); }
+        public StudyTask AddTask(string name)
+        {
+            var t = _taskManager.AddTask(name);
+            TaskAdded?.Invoke(t);
+            return t;
+        }
+
+        public StudyTask AddTask(string name, DateTime deadline)
+        {
+            var t = _taskManager.AddTask(name, deadline);
+            TaskAdded?.Invoke(t);
+            return t;
+        }
+
+        public void CompleteTask(int id)
+        {
+            _taskManager.CompleteTask(id);
+            var t = _taskManager.GetOverdueTasks().Find(x => x.Id == id);
+            // best effort: raise completed event with task if found in collection
+            TaskCompleted?.Invoke(t);
+        }
+
+        public IReadOnlyList<StudyTask> GetAllTasks()
+        {
+            return _taskManager.GetOverdueTasks().AsReadOnly();
+        }
+
+        public List<StudyTask> GetOverdueTasks()
+        {
+            return _taskManager.GetOverdueTasks();
+        }
+
+        public void CheckAndNotifyOverdue()
+        {
+            _taskManager.CheckForOverdueTasks();
+        }
+
+        public bool HasTasks()
+        {
+            // naive implementation
+            return _taskManager.GetOverdueTasks().Count > 0;
+        }
         public TaskManager GetTaskManager() { return _taskManager; }
     }
 }

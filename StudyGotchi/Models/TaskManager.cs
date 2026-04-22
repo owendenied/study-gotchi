@@ -7,18 +7,61 @@ namespace StudyGotchi.Models
     public class TaskManager
     {
         private List<StudyTask> _tasks;
+        private List<ITaskObserver> _observers = new List<ITaskObserver>();
+        private int _nextId = 1;
 
         public TaskManager()
         {
             _tasks = new List<StudyTask>();
         }
 
-        public void AddTask(string name) { throw new NotImplementedException(); }
-        public void AddTask(string name, DateTime deadline) { throw new NotImplementedException(); }
-        public void CompleteTask(int id) { throw new NotImplementedException(); }
-        public List<StudyTask> GetOverdueTasks() { throw new NotImplementedException(); }
-        public void CheckForOverdueTasks() { throw new NotImplementedException(); }
-        public void RegisterObserver(ITaskObserver observer) { throw new NotImplementedException(); }
-        public void RemoveObserver(ITaskObserver observer) { throw new NotImplementedException(); }
+        public StudyTask AddTask(string name)
+        {
+            return AddTask(name, DateTime.Now.AddDays(1));
+        }
+
+        public StudyTask AddTask(string name, DateTime deadline)
+        {
+            var task = new StudyTask(_nextId++, name, deadline);
+            _tasks.Add(task);
+            return task;
+        }
+
+        public void CompleteTask(int id)
+        {
+            var t = _tasks.Find(x => x.Id == id);
+            if (t != null)
+            {
+                t.Complete();
+                foreach (var o in _observers)
+                    o.OnTaskCompleted(t);
+            }
+        }
+
+        public List<StudyTask> GetOverdueTasks()
+        {
+            var now = DateTime.Now;
+            return _tasks.FindAll(t => !t.IsCompleted && t.Deadline < now);
+        }
+
+        public void CheckForOverdueTasks()
+        {
+            var overdue = GetOverdueTasks();
+            foreach (var t in overdue)
+            {
+                foreach (var o in _observers)
+                    o.OnTaskOverdue(t);
+            }
+        }
+
+        public void RegisterObserver(ITaskObserver observer)
+        {
+            if (!_observers.Contains(observer)) _observers.Add(observer);
+        }
+
+        public void RemoveObserver(ITaskObserver observer)
+        {
+            if (_observers.Contains(observer)) _observers.Remove(observer);
+        }
     }
 }

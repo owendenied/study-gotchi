@@ -1,35 +1,141 @@
 ﻿<UserControl x:Class="StudyGotchi.Views.UserControls.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Grid Margin="20">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:StudyGotchi.ViewModels"
+             xmlns:conv="clr-namespace:StudyGotchi.Converters"
+             Background="{StaticResource MainGradientBrush}"
+             FontFamily="Segoe UI">
+
+    <UserControl.Resources>
+        <vm:SessionViewModel x:Key="SessionVm" />
+        <conv:InverseBooleanToVisibilityConverter x:Key="InvBoolToVis" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+    <Grid Margin="20" DataContext="{StaticResource SessionVm}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="6*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="Auto" MinWidth="240"/>
+            <ColumnDefinition Width="1*" MinWidth="300"/>
+            <ColumnDefinition Width="Auto" MinWidth="280"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image x:Name="ImgActivePet" Width="250" Height="250" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        <!-- Left side panel -->
+        <Border Grid.Column="0" Style="{StaticResource SidePanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-            <TextBlock Text="Hunger" Foreground="{StaticResource DarkText}" Margin="0,20,0,0"/>
-            <ProgressBar x:Name="BarHunger" Height="20" Width="300" Maximum="100" Foreground="{StaticResource MintGreen}"/>
+                <StackPanel Grid.Row="0" Margin="0,0,0,8">
+                    <TextBlock Text="Study-Gotchi" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" Margin="0,0,0,8"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="BtnNavSelectPet" Content="Select Pet" Background="Transparent" BorderThickness="0" Foreground="#6E4E4A" FontWeight="SemiBold" Padding="0" Margin="0,0,12,0" Click="BtnNavSelectPet_Click"/>
+                        <Button x:Name="BtnNavSettings" Content="Settings" Background="Transparent" BorderThickness="0" Foreground="#6E4E4A" FontWeight="SemiBold" Padding="0" Click="BtnNavSettings_Click"/>
+                    </StackPanel>
+                </StackPanel>
 
-            <TextBlock x:Name="TxtLevel" Text="Level 1 - Baby" Foreground="{StaticResource DarkText}" Margin="0,10,0,0"/>
-            <ProgressBar x:Name="BarXp" Height="10" Width="300" Maximum="100" Foreground="{StaticResource SoftLavender}"/>
-        </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,12,0,0">
+                    <Separator Margin="0,6"/>
+                    <TextBlock Text="Hunger" FontWeight="SemiBold" Margin="0,8,0,6"/>
+                    <ProgressBar Value="65" Maximum="100" Height="12" Foreground="#6EE2B8" Background="#F2EFEF"/>
+                    <TextBlock Text="Feeling great!" FontSize="12" Foreground="#9A8A86" Margin="0,8,0,12"/>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+                    <TextBlock Text="Experience" FontWeight="SemiBold" Margin="0,8,0,6"/>
+                    <ProgressBar Value="20" Maximum="100" Height="12" Foreground="#FF7F66" Background="#F2EFEF"/>
+                    <TextBlock Text="Level 2 · 20 / 100 XP" FontSize="12" Foreground="#9A8A86" Margin="0,8,0,0"/>
+                </StackPanel>
 
-            <ListBox x:Name="LstActiveTasks" Grid.Row="0" Margin="0,0,0,20"/>
+                <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">
+                    <!-- optional footer -->
+                </StackPanel>
+            </Grid>
+        </Border>
 
-            <StackPanel Grid.Row="1">
-                <Button Content="Widget Mode" Margin="0,5" Background="{StaticResource SoftLavender}" Click="BtnWidgetMode_Click"/>
-                <Button Content="Settings" Margin="0,5" Click="BtnSettings_Click"/>
-                <Button Content="End Session" Margin="0,5" Background="{StaticResource DangerRed}" Foreground="White" Click="BtnEndSession_Click"/>
-            </StackPanel>
-        </Grid>
+        <!-- Center pet area -->
+        <Border Grid.Column="1" Style="{StaticResource CenterCardStyle}" Margin="0,0,12,0">
+            <Grid>
+                <Border Background="#EBD9CF" CornerRadius="12" Padding="8,6" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0">
+                    <TextBlock Text="No session active" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B3F39"/>
+                </Border>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,40">
+                    <Image Source="/Assets/Sprites/bulbasaur.png" Width="200" Height="200" Stretch="Uniform"/>
+
+                    <TextBlock Text="Buddy" FontSize="26" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,8,0,4"/>
+                    <Border Background="#CFF6E0" CornerRadius="12" Padding="6,4" HorizontalAlignment="Center" Margin="0,0,0,16">
+                        <TextBlock Text="Baby Stage" FontSize="12" Foreground="#15593F"/>
+                    </Border>
+
+                    <StackPanel x:Name="StartSessionPlaceholder" Visibility="{Binding IsSessionActive, Converter={StaticResource InvBoolToVis}}">
+                        <Button Content="Start Session" Style="{StaticResource StartSessionButtonStyle}" Margin="0,0,0,12" Padding="40,10" Click="BtnStartSession_Click" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="SessionControlsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
+                        <Button Content="Pause Session" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,12,0"/>
+                        <Button Content="End Session" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Right tasks panel -->
+        <Border Grid.Column="2" Style="{StaticResource TaskPanelStyle}" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                    <TextBlock Text="Today's Tasks" FontWeight="Bold" FontSize="16" Foreground="{StaticResource HeaderTextColor}"/>
+                    <Button x:Name="BtnAddTaskTop" Content="+" HorizontalAlignment="Right" Width="28" Height="28" Margin="8,0,0,0" Click="BtnAddTaskTop_Click"/>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,12,0,0">
+                        <!-- placeholder task items -->
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <CheckBox IsChecked="True" Margin="0,0,8,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Math homework" FontWeight="SemiBold"/>
+                                <TextBlock Text="Due Apr 22" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Read Chapter 4" FontWeight="SemiBold"/>
+                                <TextBlock Text="Due Apr 23" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Review lecture notes" FontWeight="SemiBold"/>
+                                <TextBlock Text="Due Apr 24" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,6">
+                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
+                            <StackPanel>
+                                <TextBlock Text="Lab report draft" FontWeight="SemiBold"/>
+                                <TextBlock Text="Due Apr 25" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">
+                    <Button Content="Open Widget →" Style="{StaticResource WidgetOpenButtonStyle}" HorizontalAlignment="Left" Click="BtnWidgetMode_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
     </Grid>
 </UserControl>
