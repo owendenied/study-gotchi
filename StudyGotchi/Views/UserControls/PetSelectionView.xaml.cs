@@ -9,9 +9,11 @@ namespace StudyGotchi.Views.UserControls
             InitializeComponent();
         }
 
-        public void OnPetSelected()
+        private void BtnChoose_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            // after selecting a pet, go to task setup
+            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+            wnd?.NavigateToTaskSetup();
         }
     }
 }

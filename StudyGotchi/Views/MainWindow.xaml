@@ -4,6 +4,6 @@
         Title="Study-Gotchi" Height="600" Width="900"
         WindowStartupLocation="CenterScreen">
     <Grid>
-        <ContentControl x:Name="MainContentFrame" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <ContentControl Content="{Binding CurrentViewModel}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </Window>
