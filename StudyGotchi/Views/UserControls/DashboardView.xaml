@@ -1,18 +1,19 @@
-﻿<UserControl x:Class="StudyGotchi.Views.UserControls.DashboardView"
+<UserControl x:Class="StudyGotchi.Views.UserControls.DashboardView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:StudyGotchi.ViewModels"
+             xmlns:local="clr-namespace:StudyGotchi"
+             xmlns:services="clr-namespace:StudyGotchi.Services"
              xmlns:conv="clr-namespace:StudyGotchi.Converters"
              Background="{StaticResource MainGradientBrush}"
              FontFamily="Segoe UI">
 
     <UserControl.Resources>
-        <vm:SessionViewModel x:Key="SessionVm" />
         <conv:InverseBooleanToVisibilityConverter x:Key="InvBoolToVis" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </UserControl.Resources>
 
-    <Grid Margin="20" DataContext="{StaticResource SessionVm}">
+    <Grid Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="240"/>
             <ColumnDefinition Width="1*" MinWidth="300"/>
@@ -39,12 +40,12 @@
                 <StackPanel Grid.Row="1" Margin="0,12,0,0">
                     <Separator Margin="0,6"/>
                     <TextBlock Text="Hunger" FontWeight="SemiBold" Margin="0,8,0,6"/>
-                    <ProgressBar Value="65" Maximum="100" Height="12" Foreground="#6EE2B8" Background="#F2EFEF"/>
+                    <ProgressBar Value="{Binding HungerLevel, Mode=OneWay}" Maximum="100" Height="12" Foreground="#6EE2B8" Background="#F2EFEF"/>
                     <TextBlock Text="Feeling great!" FontSize="12" Foreground="#9A8A86" Margin="0,8,0,12"/>
 
                     <TextBlock Text="Experience" FontWeight="SemiBold" Margin="0,8,0,6"/>
-                    <ProgressBar Value="20" Maximum="100" Height="12" Foreground="#FF7F66" Background="#F2EFEF"/>
-                    <TextBlock Text="Level 2 · 20 / 100 XP" FontSize="12" Foreground="#9A8A86" Margin="0,8,0,0"/>
+                    <ProgressBar Value="{Binding XpLevel, Mode=OneWay}" Maximum="100" Height="12" Foreground="#FF7F66" Background="#F2EFEF"/>
+                    <TextBlock Text="{Binding LevelText, Mode=OneWay}" FontSize="12" Foreground="#9A8A86" Margin="0,8,0,0"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">
@@ -57,22 +58,22 @@
         <Border Grid.Column="1" Style="{StaticResource CenterCardStyle}" Margin="0,0,12,0">
             <Grid>
                 <Border Background="#EBD9CF" CornerRadius="12" Padding="8,6" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0">
-                    <TextBlock Text="No session active" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B3F39"/>
+                    <TextBlock Text="{Binding Session.ClockText}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B3F39"/>
                 </Border>
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,40">
-                    <Image Source="/Assets/Sprites/bulbasaur.png" Width="200" Height="200" Stretch="Uniform"/>
+                    <Image Source="{Binding PetSpritePath, Mode=OneWay}" Width="200" Height="200" Stretch="Uniform"/>
 
-                    <TextBlock Text="Buddy" FontSize="26" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,8,0,4"/>
+                    <TextBlock Text="{Binding PetName, Mode=OneWay}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,8,0,4"/>
                     <Border Background="#CFF6E0" CornerRadius="12" Padding="6,4" HorizontalAlignment="Center" Margin="0,0,0,16">
-                        <TextBlock Text="Baby Stage" FontSize="12" Foreground="#15593F"/>
+                        <TextBlock Text="{Binding PetStage, Mode=OneWay}" FontSize="12" Foreground="#15593F"/>
                     </Border>
 
-                    <StackPanel x:Name="StartSessionPlaceholder" Visibility="{Binding IsSessionActive, Converter={StaticResource InvBoolToVis}}">
+                    <StackPanel x:Name="StartSessionPlaceholder" DataContext="{Binding Session}" Visibility="{Binding IsSessionActive, Converter={StaticResource InvBoolToVis}}">
                         <Button Content="Start Session" Style="{StaticResource StartSessionButtonStyle}" Margin="0,0,0,12" Padding="40,10" Click="BtnStartSession_Click" HorizontalAlignment="Center"/>
                     </StackPanel>
 
-                    <StackPanel x:Name="SessionControlsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
+                    <StackPanel x:Name="SessionControlsPanel" DataContext="{Binding Session}" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
                         <Button Content="Pause Session" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,12,0"/>
                         <Button Content="End Session" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click"/>
                     </StackPanel>
@@ -95,40 +96,19 @@
                 </StackPanel>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="0,12,0,0">
-                        <!-- placeholder task items -->
-                        <StackPanel Orientation="Horizontal" Margin="0,6">
-                            <CheckBox IsChecked="True" Margin="0,0,8,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Math homework" FontWeight="SemiBold"/>
-                                <TextBlock Text="Due Apr 22" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,6">
-                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Read Chapter 4" FontWeight="SemiBold"/>
-                                <TextBlock Text="Due Apr 23" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,6">
-                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Review lecture notes" FontWeight="SemiBold"/>
-                                <TextBlock Text="Due Apr 24" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
-                            </StackPanel>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Margin="0,6">
-                            <CheckBox IsChecked="False" Margin="0,0,8,0"/>
-                            <StackPanel>
-                                <TextBlock Text="Lab report draft" FontWeight="SemiBold"/>
-                                <TextBlock Text="Due Apr 25" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
+                    <ItemsControl ItemsSource="{Binding Tasks.Tasks}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,6">
+                                    <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,0,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Deadline, StringFormat='Due {0:MMM dd}'}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
 
                 <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">

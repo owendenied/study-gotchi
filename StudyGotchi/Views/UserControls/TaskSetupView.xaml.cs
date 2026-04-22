@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+using System;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -22,9 +24,15 @@ namespace StudyGotchi.Views.UserControls
 
         private void BtnAddTask_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // For now, after adding a task navigate to dashboard
+            var name = TxtTaskName.Text?.Trim();
+            if (!string.IsNullOrEmpty(name))
+            {
+                var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
+                tc.AddTask(name, DpDeadline.SelectedDate ?? DateTime.Now.AddDays(1));
+            }
+
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToDashboard();
+            wnd?.NavigateToSettings();
         }
     }
 }

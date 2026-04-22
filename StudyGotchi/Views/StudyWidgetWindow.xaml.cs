@@ -1,15 +1,15 @@
-﻿using System.Windows;
+using System.Windows;
 using StudyGotchi.Controllers;
 
 namespace StudyGotchi.Views
 {
     public partial class StudyWidgetWindow : Window
     {
-        private SessionController _sessionController;
 
         public StudyWidgetWindow()
         {
             InitializeComponent();
+            this.DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
         }
 
         public void UpdatePetDisplay()
