@@ -21,14 +21,18 @@ namespace StudyGotchi.ViewModels
 
         public MainWindowViewModel()
         {
-            ShowPetSelectionCommand = new RelayCommand(_ => CurrentViewModel = new Views.UserControls.PetSelectionView());
+            // use shared services
+            var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
+            var tasksVm = StudyGotchi.Services.ServiceRegistry.TasksViewModel;
+
+            ShowPetSelectionCommand = new RelayCommand(_ => CurrentViewModel = StudyGotchi.Services.ServiceRegistry.PetSelectionViewModel);
             ShowTaskSetupCommand = new RelayCommand(_ => CurrentViewModel = new Views.UserControls.TaskSetupView());
             ShowSettingsCommand = new RelayCommand(_ => CurrentViewModel = new Views.UserControls.SettingsView());
-            ShowDashboardCommand = new RelayCommand(_ => CurrentViewModel = new Views.UserControls.DashboardView());
+            ShowDashboardCommand = new RelayCommand(_ => CurrentViewModel = StudyGotchi.Services.ServiceRegistry.DashboardViewModel);
             ShowSummaryCommand = new RelayCommand(_ => CurrentViewModel = new Views.UserControls.SessionSummaryView());
 
             // default
-            CurrentViewModel = new Views.UserControls.PetSelectionView();
+            CurrentViewModel = StudyGotchi.Services.ServiceRegistry.PetSelectionViewModel;
         }
     }
 }

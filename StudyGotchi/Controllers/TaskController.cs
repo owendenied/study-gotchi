@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using StudyGotchi.Models;
 
@@ -32,15 +32,19 @@ namespace StudyGotchi.Controllers
 
         public void CompleteTask(int id)
         {
+            var task = _taskManager.GetTaskById(id);
             _taskManager.CompleteTask(id);
-            var t = _taskManager.GetOverdueTasks().Find(x => x.Id == id);
-            // best effort: raise completed event with task if found in collection
-            TaskCompleted?.Invoke(t);
+            if (task != null) TaskCompleted?.Invoke(task);
+        }
+
+        public void ClearTasks()
+        {
+            _taskManager.ClearTasks();
         }
 
         public IReadOnlyList<StudyTask> GetAllTasks()
         {
-            return _taskManager.GetOverdueTasks().AsReadOnly();
+            return _taskManager.GetAllTasks().AsReadOnly();
         }
 
         public List<StudyTask> GetOverdueTasks()
@@ -55,9 +59,9 @@ namespace StudyGotchi.Controllers
 
         public bool HasTasks()
         {
-            // naive implementation
-            return _taskManager.GetOverdueTasks().Count > 0;
+            return _taskManager.GetAllTasks().Count > 0;
         }
+
         public TaskManager GetTaskManager() { return _taskManager; }
     }
 }

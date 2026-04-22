@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -7,43 +7,31 @@ namespace StudyGotchi.Views.UserControls
         public DashboardView()
         {
             InitializeComponent();
+            this.DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
         }
-
-        private readonly StudyGotchi.ViewModels.SessionViewModel _sessionVm = new StudyGotchi.ViewModels.SessionViewModel();
 
         private void BtnStartSession_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            // start session and update UI: replace button with pause/end
-            _sessionVm.StartCommand.Execute(null);
+            StudyGotchi.Services.ServiceRegistry.SessionViewModel.StartCommand.Execute(null);
             UpdateSessionButtons();
         }
 
         private void BtnPause_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _sessionVm.PauseCommand.Execute(null);
+            StudyGotchi.Services.ServiceRegistry.SessionViewModel.PauseCommand.Execute(null);
             UpdateSessionButtons();
         }
 
         private void UpdateSessionButtons()
         {
-            if (_sessionVm.IsSessionActive)
-            {
-                // remove Start button and show Pause/End
-                StartSessionPlaceholder.Visibility = System.Windows.Visibility.Collapsed;
-                SessionControlsPanel.Visibility = System.Windows.Visibility.Visible;
-            }
-            else
-            {
-                StartSessionPlaceholder.Visibility = System.Windows.Visibility.Visible;
-                SessionControlsPanel.Visibility = System.Windows.Visibility.Collapsed;
-            }
+            // The bindings in XAML should handle visibility automatically now
         }
 
         private void BtnEndSession_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToSummary();
+            StudyGotchi.Services.ServiceRegistry.SessionViewModel.EndCommand.Execute(null);
         }
+
         private void BtnAddTaskTop_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
@@ -66,6 +54,22 @@ namespace StudyGotchi.Views.UserControls
         {
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
             wnd?.LaunchWidgetMode();
+        }
+
+        private void TaskCheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (!StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsSessionActive)
+            {
+                if (sender is CheckBox cb) cb.IsChecked = false;
+                System.Windows.MessageBox.Show("Please start a session before completing tasks!", "Session Not Active", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                return;
+            }
+
+            if (sender is CheckBox cb2 && cb2.Tag is int taskId)
+            {
+                var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
+                tc.CompleteTask(taskId);
+            }
         }
 
         public void OnTaskChecked()
