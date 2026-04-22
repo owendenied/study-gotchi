@@ -1,14 +1,17 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Models
 {
-    public class PetB : TamagotchiPet // Rename to PetB and PetC for the other files
+    public class PetB : TamagotchiPet
     {
-        private object[] _sprites; // Placeholder for SpriteSet[]
-        private int[] _evolutionThresholds;
+        public PetB()
+        {
+            HungerLevel = 100;
+            Level = 1;
+            Experience = 0;
+        }
 
-        public override Image GetCurrentSprite() { throw new System.NotImplementedException(); }
-        public override void OnLevelUp() { throw new System.NotImplementedException(); }
-        public override string GetEvolutionStageName() { throw new System.NotImplementedException(); }
+        public override Image GetCurrentSprite() { return new Image(); }
+        public override void OnLevelUp() { }
     }
 }

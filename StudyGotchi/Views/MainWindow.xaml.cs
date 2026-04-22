@@ -1,22 +1,20 @@
-﻿using System.Windows;
+using System.Windows;
 using StudyGotchi.Controllers;
 
 namespace StudyGotchi.Views
 {
     public partial class MainWindow : Window
     {
-        private SessionController _sessionController;
-        private Views.UserControls.PetSelectionView _petSelectionView;
-        private Views.UserControls.TaskSetupView _taskSetupView;
-        private Views.UserControls.SettingsView _settingsView;
-        private Views.UserControls.DashboardView _dashboardView;
-        private Views.UserControls.SessionSummaryView _summaryView;
+        private Views.UserControls.TaskSetupView? _taskSetupView;
+        private Views.UserControls.SettingsView? _settingsView;
+        private Views.UserControls.SessionSummaryView? _summaryView;
         private Views.StudyWidgetWindow? _widgetWindow;
 
         public MainWindow()
         {
             InitializeComponent();
-            // switch to ViewModel-driven navigation
+            // Initialize app services and switch to ViewModel-driven navigation
+            StudyGotchi.Services.ServiceRegistry.Initialize();
             DataContext = new StudyGotchi.ViewModels.MainWindowViewModel();
         }
 
@@ -25,7 +23,7 @@ namespace StudyGotchi.Views
             var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
             if (vm != null)
             {
-                vm.CurrentViewModel = _petSelectionView ??= new Views.UserControls.PetSelectionView();
+                vm.CurrentViewModel = StudyGotchi.Services.ServiceRegistry.PetSelectionViewModel;
             }
         }
 
@@ -52,7 +50,8 @@ namespace StudyGotchi.Views
             var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
             if (vm != null)
             {
-                vm.CurrentViewModel = _dashboardView ??= new Views.UserControls.DashboardView();
+                StudyGotchi.Services.ServiceRegistry.DashboardViewModel.Refresh();
+                vm.CurrentViewModel = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
             }
         }
 
