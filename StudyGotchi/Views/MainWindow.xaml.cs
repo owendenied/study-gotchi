@@ -12,11 +12,27 @@ namespace StudyGotchi.Views
             InitializeComponent();
         }
 
-        public void NavigateToPetSelection() { throw new System.NotImplementedException(); }
-        public void NavigateToTaskSetup() { throw new System.NotImplementedException(); }
-        public void NavigateToSettings() { throw new System.NotImplementedException(); }
-        public void NavigateToDashboard() { throw new System.NotImplementedException(); }
-        public void NavigateToSummary() { throw new System.NotImplementedException(); }
-        public void LaunchWidgetMode() { throw new System.NotImplementedException(); }
+        public void SetFocusMode(bool isEnabled)
+        {
+            this.Topmost = isEnabled;
+        }
+
+        public void NavigateToPetSelection()
+        {
+            // Logic: Hide the current view and show the Pet Selection screen
+        }
+
+        public void LaunchWidgetMode()
+        {
+            // Logic: Shrink the window to a small "Gotchi" size
+            this.WindowState = WindowState.Normal;
+            this.Width = 300;
+            this.Height = 400;
+        }
+
+        public void ShowStarvationAlert()
+        {
+            MessageBox.Show("Pet is starving! XP gain reduced.", "Warning");
+        }
     }
 }
