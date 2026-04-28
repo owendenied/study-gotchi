@@ -1,16 +1,38 @@
-﻿<UserControl x:Class="StudyGotchi.Views.UserControls.SettingsView"
+<UserControl x:Class="StudyGotchi.Views.UserControls.SettingsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
-        <TextBlock Text="Name your Pet:" Foreground="{StaticResource DarkText}" Margin="0,0,0,5"/>
-        <TextBox x:Name="TxtPetName" Margin="0,0,0,20"/>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{StaticResource MainGradientBrush}">
 
-        <TextBlock Text="Hunger Decay Speed:" Foreground="{StaticResource DarkText}" Margin="0,0,0,5"/>
-        <Slider x:Name="SldDecaySpeed" Minimum="1" Maximum="10" Value="5" Margin="0,0,0,30"/>
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Border Width="520" Padding="32" Background="#FFFDFB" CornerRadius="18" Effect="{StaticResource DropShadowEffect}">
+            <StackPanel>
+                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,18">
+                    <TextBlock Text="⚙️  Settings" FontSize="26" FontWeight="Bold" Foreground="#3A1F1A" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Make it yours before we begin" FontSize="12" Foreground="#8A6F6B" HorizontalAlignment="Center"/>
+                </StackPanel>
 
-        <Grid>
-            <Button Content="Back" HorizontalAlignment="Left" Padding="20,10" Click="BtnBack_Click"/>
-            <Button Content="Save &amp; Start" HorizontalAlignment="Right" Padding="20,10" Background="{StaticResource PrimaryPink}" Click="BtnSave_Click"/>
-        </Grid>
-    </StackPanel>
+                <TextBlock Text="Pet Name" FontWeight="SemiBold" Margin="4,8"/>
+                <Border Background="#FFF6F4" CornerRadius="10" Padding="8" Margin="0,4,0,12">
+                    <TextBox x:Name="TxtPetName" Text="Buddy" Background="Transparent" BorderThickness="0" FontSize="14"/>
+                </Border>
+
+                <TextBlock Text="Hunger Decay Rate" FontWeight="SemiBold" Margin="4,8"/>
+                <Slider Minimum="1" Maximum="3" Value="2" TickPlacement="BottomRight" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,8,0,6"/>
+                <TextBlock Text="Currently: Medium" FontSize="12" Foreground="#9A8A86" Margin="0,0,0,12" HorizontalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8">
+                    <TextBlock Text="Enable Reminders" VerticalAlignment="Center" Width="300"/>
+                    <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="True"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8,0,18">
+                    <TextBlock Text="Focus Mode" VerticalAlignment="Center" Width="300"/>
+                    <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="False"/>
+                </StackPanel>
+
+                <Button x:Name="BtnLetsGo" Content="Let's Go! →" Click="BtnLetsGo_Click" Style="{StaticResource AccentPillButtonStyle}" HorizontalAlignment="Center" Padding="40,12"/>
+                <Button x:Name="BtnBack" Content="← Back" Click="BtnBack_Click" HorizontalAlignment="Left" Margin="0,12,0,0" Background="Transparent" Foreground="#FF7F66"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>
