@@ -1,4 +1,4 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -7,11 +7,6 @@ namespace StudyGotchi.Views.UserControls
         public PetSelectionView()
         {
             InitializeComponent();
-        }
-
-        public void OnPetSelected()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
