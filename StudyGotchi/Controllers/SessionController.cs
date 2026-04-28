@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using StudyGotchi.Models;
 
 namespace StudyGotchi.Controllers
 {
@@ -8,6 +10,7 @@ namespace StudyGotchi.Controllers
         private TaskController _taskController;
         private bool _sessionActive;
         private Timer _decayTimer;
+        private bool _isFocusMode;
 
         public SessionController(PetController petController, TaskController taskController)
         {
@@ -15,11 +18,35 @@ namespace StudyGotchi.Controllers
             _taskController = taskController;
         }
 
-        public void StartSession() { throw new System.NotImplementedException(); }
-        public void EndSession() { throw new System.NotImplementedException(); }
-        public bool IsSessionActive() { return _sessionActive; }
-        public string GetSessionSummary() { throw new System.NotImplementedException(); }
+        public void StartSession(bool focusMode)
+        {
+            _sessionActive = true;
+            _isFocusMode = focusMode;
+            _decayTimer = new Timer(OnDecayTick, null, 0, 600000);
+        }
 
-        private void OnDecayTick(object state) { throw new System.NotImplementedException(); }
+        public void EndSession()
+        {
+            _sessionActive = false;
+            _decayTimer?.Dispose();
+        }
+
+        public bool IsSessionActive()
+        {
+            return _sessionActive;
+        }
+
+        private void OnDecayTick(object state)
+        {
+            if (_sessionActive)
+            {
+                _petController.GetCurrentPet().ApplyHungerDecay(_isFocusMode);
+            }
+        }
+
+        public string GetSessionSummary()
+        {
+            return _sessionActive ? "Session is currently running..." : "No active session.";
+        }
     }
 }
