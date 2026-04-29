@@ -1,7 +1,10 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <DropShadowEffect x:Key="DropShadowEffect" Color="#000000" BlurRadius="15" Direction="315" ShadowDepth="3" Opacity="0.15"/>
+
     <SolidColorBrush x:Key="RetroWindowGrey" Color="#BDBDBD"/>
+
     <SolidColorBrush x:Key="RetroBorderDark" Color="#2A2A35"/>
     <SolidColorBrush x:Key="RetroHighlight" Color="#FFFFFF"/>
     <SolidColorBrush x:Key="RetroShadow" Color="#808080"/>
@@ -86,7 +89,118 @@
         </Setter>
     </Style>
 
+    <Style x:Key="ToggleSwitchStyle" TargetType="ToggleButton">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="border" Width="44" Height="24" CornerRadius="12" Background="#BDBDBD" BorderThickness="2" BorderBrush="#2A2A35">
+                        <Ellipse x:Name="thumb" Width="16" Height="16" Fill="#FFFFFF" HorizontalAlignment="Left" Margin="2,2,0,0"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#4A708B"/>
+                            <Setter TargetName="thumb" Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="thumb" Property="Margin" Value="0,2,2,0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="RetroProgressBarStyle" TargetType="ProgressBar">
     </Style>
 
-</ResourceDictionary>
+    <!-- Color resources used in Dashboard -->
+    <SolidColorBrush x:Key="HeaderTextColor" Color="#3A1F1A"/>
+
+    <!-- Pill button used in Dashboard session controls, Summary -->
+    <Style x:Key="PillButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#4A708B"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="20,8"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}"
+                            BorderBrush="#FFD700" BorderThickness="2"
+                            CornerRadius="20" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#5D8AA8"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Accent pill button (primary action — coral/pink) -->
+    <Style x:Key="AccentPillButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="#FF7F66"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" Background="{TemplateBinding Background}"
+                            BorderBrush="#E06050" BorderThickness="2"
+                            CornerRadius="20" Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="#E56E56"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Start Session big button -->
+    <Style x:Key="StartSessionButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentPillButtonStyle}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+    </Style>
+
+    <!-- Widget open button (subtle) -->
+    <Style x:Key="WidgetOpenButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="#FF7F66"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <!-- Dashboard panel styles -->
+    <Style x:Key="SidePanelStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFDFB"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
+    </Style>
+
+    <Style x:Key="CenterCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFDFB"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
+    </Style>
+
+    <Style x:Key="TaskPanelStyle" TargetType="Border">
+        <Setter Property="Background" Value="#FFFDFB"/>
+        <Setter Property="CornerRadius" Value="16"/>
+        <Setter Property="Padding" Value="18"/>
+        <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
+    </Style>
+
+</ResourceDictionary>
