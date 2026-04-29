@@ -71,5 +71,3 @@ To maintain a clean repository, we follow these golden rules:
 4. **Pull Requests**: Open a PR to `dev` once your feature is complete. Review and merge are handled by the Lead Dev.
 
 ---
-
-*For more detailed technical specifications, check the `Documents/` folder.*

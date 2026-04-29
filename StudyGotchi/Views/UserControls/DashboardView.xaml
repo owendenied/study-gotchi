@@ -5,12 +5,14 @@
              xmlns:local="clr-namespace:StudyGotchi"
              xmlns:services="clr-namespace:StudyGotchi.Services"
              xmlns:conv="clr-namespace:StudyGotchi.Converters"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
              Background="{StaticResource MainGradientBrush}"
              FontFamily="Segoe UI">
 
     <UserControl.Resources>
         <conv:InverseBooleanToVisibilityConverter x:Key="InvBoolToVis" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <conv:StringToImageSourceConverter x:Key="StringToImage" />
     </UserControl.Resources>
 
     <Grid Margin="20">
@@ -62,7 +64,9 @@
                 </Border>
 
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,40">
-                    <Image Source="{Binding PetSpritePath, Mode=OneWay}" Width="200" Height="200" Stretch="Uniform"/>
+                    <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
+                           gif:ImageBehavior.RepeatBehavior="Forever"
+                           Width="200" Height="200" Stretch="Uniform"/>
 
                     <TextBlock Text="{Binding PetName, Mode=OneWay}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,8,0,4"/>
                     <Border Background="#CFF6E0" CornerRadius="12" Padding="6,4" HorizontalAlignment="Center" Margin="0,0,0,16">
@@ -74,7 +78,7 @@
                     </StackPanel>
 
                     <StackPanel x:Name="SessionControlsPanel" DataContext="{Binding Session}" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
-                        <Button Content="Pause Session" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,12,0"/>
+                        <Button Content="{Binding PauseButtonText}" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,12,0"/>
                         <Button Content="End Session" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click"/>
                     </StackPanel>
                 </StackPanel>
@@ -99,10 +103,39 @@
                     <ItemsControl ItemsSource="{Binding Tasks.Tasks}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,6">
+                                <StackPanel Orientation="Horizontal" Margin="0,6" x:Name="TaskRow">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                    <DataTrigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <!-- Immediately fade out over 0.4s -->
+                                                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                                                 From="1.0" To="0.0"
+                                                                                 Duration="0:0:0.4"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </DataTrigger.EnterActions>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+
                                     <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,0,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click"/>
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                         <TextBlock Text="{Binding Deadline, StringFormat='Due {0:MMM dd}'}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
                                     </StackPanel>
                                 </StackPanel>

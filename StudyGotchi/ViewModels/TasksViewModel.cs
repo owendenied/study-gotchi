@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Windows.Threading;
 using StudyGotchi.Controllers;
 using StudyGotchi.Models;
 
@@ -24,8 +25,19 @@ namespace StudyGotchi.ViewModels
             // subscribe to additions
             _taskController.TaskAdded += t =>
             {
-                // ensure UI thread
                 System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Add(t));
+            };
+
+            // When a task is completed: wait for the fade animation (0.6s) then remove it
+            _taskController.TaskCompleted += t =>
+            {
+                var timer = new DispatcherTimer { Interval = System.TimeSpan.FromSeconds(0.6) };
+                timer.Tick += (s, e) =>
+                {
+                    timer.Stop();
+                    System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Remove(t));
+                };
+                timer.Start();
             };
         }
 
