@@ -1,5 +1,11 @@
+<<<<<<< HEAD
+﻿using System;
+using System.Threading;
+using StudyGotchi.Models;
+=======
 using System;
 using System.Windows.Threading;
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
 
 namespace StudyGotchi.Controllers
 {
@@ -8,6 +14,10 @@ namespace StudyGotchi.Controllers
         private PetController _petController;
         private TaskController _taskController;
         private bool _sessionActive;
+<<<<<<< HEAD
+        private Timer _decayTimer;
+        private bool _isFocusMode;
+=======
         private DispatcherTimer _sessionTimer;
         private DateTime _startTime;
         private TimeSpan _elapsedTime;
@@ -19,6 +29,7 @@ namespace StudyGotchi.Controllers
 
         public int TasksCompletedThisSession => _tasksCompletedThisSession;
         public int XpEarnedThisSession => _xpEarnedThisSession;
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
 
         public SessionController(PetController petController, TaskController taskController)
         {
@@ -38,6 +49,38 @@ namespace StudyGotchi.Controllers
             };
         }
 
+<<<<<<< HEAD
+        public void StartSession(bool focusMode)
+        {
+            _sessionActive = true;
+            _isFocusMode = focusMode;
+            _decayTimer = new Timer(OnDecayTick, null, 0, 600000);
+        }
+
+        public void EndSession()
+        {
+            _sessionActive = false;
+            _decayTimer?.Dispose();
+        }
+
+        public bool IsSessionActive()
+        {
+            return _sessionActive;
+        }
+
+        private void OnDecayTick(object state)
+        {
+            if (_sessionActive)
+            {
+                _petController.GetCurrentPet().ApplyHungerDecay(_isFocusMode);
+            }
+        }
+
+        public string GetSessionSummary()
+        {
+            return _sessionActive ? "Session is currently running..." : "No active session.";
+        }
+=======
         public void StartSession() 
         { 
             _sessionActive = true;
@@ -69,5 +112,6 @@ namespace StudyGotchi.Controllers
                 StatsUpdated?.Invoke();
             }
         }
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
     }
 }
