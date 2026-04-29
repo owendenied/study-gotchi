@@ -11,7 +11,7 @@ namespace StudyGotchi.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public string SpritePath { get; set; }
-        public string BackgroundColor { get; set; }
+        public string TintColor { get; set; } // New property for the egg's glow/tint
 
         private bool _isSelected;
         public bool IsSelected
@@ -34,12 +34,12 @@ namespace StudyGotchi.ViewModels
         public PetOption SelectedPet
         {
             get => _selectedPet;
-            set 
-            { 
+            set
+            {
                 if (_selectedPet != null) _selectedPet.IsSelected = false;
-                _selectedPet = value; 
+                _selectedPet = value;
                 if (_selectedPet != null) _selectedPet.IsSelected = true;
-                RaisePropertyChanged(); 
+                RaisePropertyChanged();
                 ((RelayCommand)ChoosePetCommand).RaiseCanExecuteChanged();
             }
         }
@@ -49,21 +49,31 @@ namespace StudyGotchi.ViewModels
 
         public PetSelectionViewModel()
         {
-            var baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             AvailablePets = new ObservableCollection<PetOption>
             {
-                new PetOption { Name = "Glow", Description = "A bright and playful spirit", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/yellow_baby.gif"), BackgroundColor = "#FFFDF0" },
-                new PetOption { Name = "Sunny", Description = "Warm and full of cheer", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/charmander.png"), BackgroundColor = "#FFF8F8" },
-                new PetOption { Name = "Starry", Description = "Dreamy and curious", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/squirtle.png"), BackgroundColor = "#FBFBFF" }
+                new PetOption {
+                    Name = "Glow",
+                    SpritePath = "pack://application:,,,/Assets/Background/egg.png",
+                    TintColor = "#A0FFB0" // Soft Green
+                },
+                new PetOption {
+                    Name = "Sunny",
+                    SpritePath = "pack://application:,,,/Assets/Background/egg.png",
+                    TintColor = "#FFE0A0" // Soft Orange/Yellow
+                },
+                new PetOption {
+                    Name = "Starry",
+                    SpritePath = "pack://application:,,,/Assets/Background/egg.png",
+                    TintColor = "#A0B0FF" // Soft Blue/Purple
+                }
             };
 
             SelectPetCommand = new RelayCommand(p => SelectedPet = p as PetOption);
-            
-            ChoosePetCommand = new RelayCommand(_ => 
+
+            ChoosePetCommand = new RelayCommand(_ =>
             {
                 if (SelectedPet != null)
                 {
-                    // Set active pet in controller
                     int index = AvailablePets.IndexOf(SelectedPet);
                     ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
 
@@ -73,7 +83,7 @@ namespace StudyGotchi.ViewModels
                 }
             }, _ => SelectedPet != null);
 
-            // Default selection
+
             SelectedPet = AvailablePets[0];
         }
     }
