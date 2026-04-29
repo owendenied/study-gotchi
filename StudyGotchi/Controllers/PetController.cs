@@ -30,7 +30,7 @@ namespace StudyGotchi.Controllers
         
         public string GetSpritePath() 
         {
-            if (_activePet is PetA) return "/Assets/Sprites/bulbasaur.png";
+            if (_activePet is PetA) return "/Assets/Sprites/petA_happy.gif";
             if (_activePet is PetB) return "/Assets/Sprites/charmander.png";
             if (_activePet is PetC) return "/Assets/Sprites/squirtle.png";
             return "/Assets/Sprites/bulbasaur.png";
