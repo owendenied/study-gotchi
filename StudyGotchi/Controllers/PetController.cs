@@ -48,6 +48,7 @@ namespace StudyGotchi.Controllers
             if (_activePet is PetB) return SpriteAbsPath("Assets/Sprites/charmander.png");
             if (_activePet is PetC) return SpriteAbsPath("Assets/Sprites/squirtle.png");
             return SpriteAbsPath("Assets/Sprites/yellow_baby.gif");
+
         }
 
         public Image GetCurrentSprite() { throw new System.NotImplementedException(); }
