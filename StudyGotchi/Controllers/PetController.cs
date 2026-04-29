@@ -28,12 +28,27 @@ namespace StudyGotchi.Controllers
         public int GetLevel() { return _activePet?.Level ?? 1; }
         public string GetEvolutionStageName() { return _activePet?.GetEvolutionStageName() ?? "Baby Stage"; }
         
+        private string SpriteAbsPath(string relative)
+        {
+            return System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, relative);
+        }
+
         public string GetSpritePath() 
         {
-            if (_activePet is PetA) return "/Assets/Sprites/bulbasaur.png";
-            if (_activePet is PetB) return "/Assets/Sprites/charmander.png";
-            if (_activePet is PetC) return "/Assets/Sprites/squirtle.png";
-            return "/Assets/Sprites/bulbasaur.png";
+            if (_activePet is PetA)
+            {
+                string stage = _activePet.GetEvolutionStageName();
+                return stage switch
+                {
+                    "Teen"  => SpriteAbsPath("Assets/Sprites/yellow_teen.gif"),
+                    "Adult" => SpriteAbsPath("Assets/Sprites/yellow_adult.gif"),
+                    _       => SpriteAbsPath("Assets/Sprites/yellow_baby.gif"),
+                };
+            }
+            if (_activePet is PetB) return SpriteAbsPath("Assets/Sprites/charmander.png");
+            if (_activePet is PetC) return SpriteAbsPath("Assets/Sprites/squirtle.png");
+            return SpriteAbsPath("Assets/Sprites/yellow_baby.gif");
+
         }
 
         public Image GetCurrentSprite() { throw new System.NotImplementedException(); }
