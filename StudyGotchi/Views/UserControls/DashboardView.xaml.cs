@@ -58,14 +58,22 @@ namespace StudyGotchi.Views.UserControls
 
         private void TaskCheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            var cb = sender as System.Windows.Controls.CheckBox;
+            if (cb == null) return;
+
+            // Immediately lock the whole row so the user can't click again while it fades
+            var row = cb.Parent as System.Windows.Controls.StackPanel;
+            if (row != null) row.IsHitTestVisible = false;
+
             if (!StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsSessionActive)
             {
-                if (sender is CheckBox cb) cb.IsChecked = false;
+                cb.IsChecked = false;
+                if (row != null) row.IsHitTestVisible = true; // re-enable, session not active
                 System.Windows.MessageBox.Show("Please start a session before completing tasks!", "Session Not Active", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
                 return;
             }
 
-            if (sender is CheckBox cb2 && cb2.Tag is int taskId)
+            if (cb.Tag is int taskId)
             {
                 var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
                 tc.CompleteTask(taskId);

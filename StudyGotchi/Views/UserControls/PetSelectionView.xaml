@@ -1,98 +1,94 @@
 <UserControl x:Class="StudyGotchi.Views.UserControls.PetSelectionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="{StaticResource MainGradientBrush}"
-             FontFamily="Segoe UI">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:gif="http://wpfanimatedgif.codeplex.com"
+             xmlns:conv="clr-namespace:StudyGotchi.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="900"
+             RenderOptions.BitmapScalingMode="NearestNeighbor"
+             UseLayoutRounding="True">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <conv:StringToImageSourceConverter x:Key="StringToImage"/>
     </UserControl.Resources>
 
-    <Grid Margin="48">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Image Source="/Assets/Background/bg.png" 
+               Stretch="UniformToFill" />
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,8,0,28">
-            <TextBlock FontSize="42" FontWeight="Bold" Foreground="#3A1F1A" HorizontalAlignment="Center">
-                <Run Text="📚  "/>
-                <Run Text="Study-Gotchi"/>
-                <Run Text="  📚"/>
-            </TextBlock>
-            <TextBlock Text="Choose your partner!" FontSize="18" Foreground="#6E4E4A" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-        </StackPanel>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
 
-        <!-- Cards -->
-        <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding AvailablePets}" 
-                 SelectedItem="{Binding SelectedPet}"
-                 Background="Transparent" 
-                 BorderThickness="0"
-                 ItemContainerStyle="{StaticResource PetListBoxItemStyle}"
-                 HorizontalAlignment="Center" 
-                 VerticalAlignment="Center"
-                 ClipToBounds="False"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 Padding="0,50">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid x:Name="CardGrid" RenderTransformOrigin="0.5,0.5">
-                        <Grid.RenderTransform>
-                            <TranslateTransform Y="0"/>
-                        </Grid.RenderTransform>
-                        <Border>
-                            <Border.Style>
-                                <Style TargetType="Border" BasedOn="{StaticResource PetCardStyle}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                                            <Setter Property="BorderBrush" Value="{StaticResource AccentCoral}"/>
-                                            <Setter Property="BorderThickness" Value="4"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Border Width="160" Height="160" CornerRadius="80" Background="{Binding BackgroundColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,6,0,12">
-                                    <Image Source="{Binding SpritePath}" Width="120" Height="120" Stretch="Uniform"/>
-                                </Border>
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="18" Foreground="#3A1F1A" HorizontalAlignment="Center" Margin="0,8,0,0"/>
-                                <TextBlock Text="{Binding Description}" FontSize="13" Foreground="#8A6F6B" HorizontalAlignment="Center" Margin="0,6,0,0"/>
-                            </StackPanel>
-                        </Border>
+            <StackPanel Grid.Row="0" VerticalAlignment="Top">
+                <Image Source="/Assets/Background/logo.png" 
+                       Height="120" 
+                       HorizontalAlignment="Center"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 
-                        <!-- Check mark -->
-                        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="-12,-12,0,0" Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}">
-                            <Ellipse Width="34" Height="34" Fill="White" Stroke="{StaticResource AccentCoral}" StrokeThickness="3"/>
-                            <TextBlock Text="✔" FontSize="16" FontWeight="Bold" Foreground="{StaticResource AccentCoral}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                <TextBlock Text="choose your partner!"
+                           FontFamily="{StaticResource PixelifyFont}"
+                           FontSize="24"
+                           Foreground="#2E4A7B"
+                           HorizontalAlignment="Center"
+                           Margin="0,5,0,0"/>
+            </StackPanel>
+
+
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding AvailablePets}"
+                     SelectedItem="{Binding SelectedPet}"
+                     ItemContainerStyle="{StaticResource EggItemStyle}"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3" IsItemsHost="True" Width="650"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="180" Width="150">
+                            <Ellipse Width="80" Height="40" 
+                                     Fill="{Binding TintColor}" 
+                                     Opacity="0.5" 
+                                     VerticalAlignment="Bottom" 
+                                     Margin="0,0,0,10">
+                                <Ellipse.Effect>
+                                    <BlurEffect Radius="20"/>
+                                </Ellipse.Effect>
+                            </Ellipse>
+
+                            <Image Source="{Binding SpritePath}" 
+                                   Width="120" Height="120"
+                                   VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Center"
+                                   Stretch="Uniform"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                         </Grid>
-                        
-                        <Grid.Triggers>
-                            <EventTrigger RoutedEvent="Loaded">
-                                <BeginStoryboard Storyboard="{StaticResource EntranceAnimation}"/>
-                            </EventTrigger>
-                        </Grid.Triggers>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-        <!-- Action button -->
-        <Button Grid.Row="2" 
-                Content="I Choose You!" 
-                Style="{StaticResource AccentPillButtonStyle}" 
-                HorizontalAlignment="Center" 
-                Margin="0,30,0,10" 
-                Padding="40,12" 
-                Command="{Binding ChoosePetCommand}"/>
-
+            <Button Grid.Row="2"
+                    Content="start"
+                    Style="{StaticResource StudyGotchiButtonStyle}"
+                    Command="{Binding ChoosePetCommand}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="200"
+                    Height="60"/>
+        </Grid>
     </Grid>
 </UserControl>

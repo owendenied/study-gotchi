@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using StudyGotchi.Interfaces;
 
 namespace StudyGotchi.Models
@@ -9,6 +10,8 @@ namespace StudyGotchi.Models
         private List<StudyTask> _tasks;
         private List<ITaskObserver> _observers = new List<ITaskObserver>();
         private int _nextId = 1;
+
+        public List<StudyTask> Tasks => _tasks;
 
         public TaskManager()
         {

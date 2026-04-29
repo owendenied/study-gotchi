@@ -73,3 +73,4 @@ To maintain a clean repository, we follow these golden rules:
 ---
 
 *For more detailed technical specifications, check the `Documents/` folder.*
+

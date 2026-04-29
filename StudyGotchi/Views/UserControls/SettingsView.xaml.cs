@@ -12,7 +12,7 @@ namespace StudyGotchi.Views.UserControls
         private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToTaskSetup();
+            wnd?.NavigateToPetSelection();
         }
 
         private void BtnLetsGo_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -26,10 +26,9 @@ namespace StudyGotchi.Views.UserControls
                 activePet?.SetName(name);
             }
 
-            // Navigate to dashboard
-            StudyGotchi.Services.ServiceRegistry.DashboardViewModel.Refresh();
+            // Navigate to Task Setup
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToDashboard();
+            wnd?.NavigateToTaskSetup();
         }
 
         public void OnSaveSettings()

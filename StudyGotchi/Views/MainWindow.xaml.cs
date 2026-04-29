@@ -18,6 +18,11 @@ namespace StudyGotchi.Views
             DataContext = new StudyGotchi.ViewModels.MainWindowViewModel();
         }
 
+        public void SetFocusMode(bool isEnabled)
+        {
+            this.Topmost = isEnabled;
+        }
+
         public void NavigateToPetSelection()
         {
             var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
@@ -62,6 +67,11 @@ namespace StudyGotchi.Views
             {
                 vm.CurrentViewModel = _summaryView ??= new Views.UserControls.SessionSummaryView();
             }
+        }
+
+        public void ShowStarvationAlert()
+        {
+            MessageBox.Show("Pet is starving! XP gain reduced.", "Warning");
         }
 
         public void LaunchWidgetMode()

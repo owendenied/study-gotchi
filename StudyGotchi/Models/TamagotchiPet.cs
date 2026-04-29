@@ -7,9 +7,9 @@ namespace StudyGotchi.Models
     public abstract class TamagotchiPet : IPet, ITaskObserver
     {
         protected string _name = "Buddy";
-        protected int _hungerLevel;
-        protected int _xp;
-        protected int _currentLevel;
+        protected int _hungerLevel = 100;
+        protected int _xp = 0;
+        protected int _currentLevel = 1;
         protected string _evolutionStage = "Baby";
 
         public string Name 
@@ -40,15 +40,32 @@ namespace StudyGotchi.Models
 
         public virtual void CompleteTask() 
         { 
-            HungerLevel += 20;
-            Experience += 25;
+            CompleteTask(false);
+        }
+
+        public virtual void CompleteTask(bool finishedEarly)
+        {
+            double xpMultiplier = (_hungerLevel <= 20) ? 0.5 : 1.0;
+
+            if (finishedEarly)
+            {
+                xpMultiplier *= 2.0;
+                HungerLevel += 20;
+            }
+            else
+            {
+                HungerLevel += 10;
+            }
+
+            Experience += (int)(50 * xpMultiplier);
+
             if (Experience >= 100)
             {
                 Experience -= 100;
                 LevelUp();
             }
         }
-        
+
         public virtual void DecayHunger(int amount) 
         { 
             if (HungerLevel > 0)
@@ -64,11 +81,12 @@ namespace StudyGotchi.Models
         public virtual void LevelUp() 
         { 
             Level++;
+            OnLevelUp();
         }
 
-        // Abstract methods from IPet
         public abstract Image GetCurrentSprite();
         public abstract void OnLevelUp();
+
         public virtual string GetEvolutionStageName()
         {
             if (Level <= 10) return "Baby";
@@ -76,8 +94,14 @@ namespace StudyGotchi.Models
             return "Adult";
         }
 
-        // Interface methods from ITaskObserver
-        public void OnTaskCompleted(StudyTask task) { throw new System.NotImplementedException(); }
-        public void OnTaskOverdue(StudyTask task) { throw new System.NotImplementedException(); }
+        public void OnTaskCompleted(StudyTask task) 
+        { 
+            CompleteTask(task.IsCompletedEarly);
+        }
+
+        public void OnTaskOverdue(StudyTask task) 
+        { 
+            HungerLevel -= 15;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace StudyGotchi.Models
 {
@@ -8,6 +8,8 @@ namespace StudyGotchi.Models
         private DateTime _deadline;
         private bool _isCompleted;
         private int _id;
+
+        public bool IsCompletedEarly { get; private set; }
 
         public StudyTask(int id, string name, DateTime deadline)
         {
@@ -19,12 +21,22 @@ namespace StudyGotchi.Models
 
         public int Id => _id;
         public string Name => _taskName;
+        public string TaskName => _taskName; // Kept for compatibility with HEAD usages
         public DateTime Deadline => _deadline;
         public bool IsCompleted => _isCompleted;
 
         public void Complete()
         {
             _isCompleted = true;
+
+            if (DateTime.Now < _deadline)
+            {
+                IsCompletedEarly = true;
+            }
+            else
+            {
+                IsCompletedEarly = false;
+            }
         }
 
         public TimeSpan GetTimeRemaining()
