@@ -11,6 +11,7 @@ namespace StudyGotchi.ViewModels
     {
         private SessionController _sessionController;
         private bool _isSessionActive;
+        private bool _isPaused;
         private string _clockText = "No session active";
 
         public bool IsSessionActive
@@ -18,6 +19,14 @@ namespace StudyGotchi.ViewModels
             get => _isSessionActive;
             set { _isSessionActive = value; RaisePropertyChanged(); }
         }
+
+        public bool IsPaused
+        {
+            get => _isPaused;
+            set { _isPaused = value; RaisePropertyChanged(); RaisePropertyChanged(nameof(PauseButtonText)); }
+        }
+
+        public string PauseButtonText => _isPaused ? "Resume ▶" : "Pause ⏸";
 
         public string ClockText
         {
@@ -39,19 +48,25 @@ namespace StudyGotchi.ViewModels
             _sessionController.TimeUpdated += (t) => ClockText = t;
 
             StartCommand = new RelayCommand(_ => StartSession());
-            PauseCommand = new RelayCommand(_ => PauseSession());
+            PauseCommand = new RelayCommand(_ => TogglePause());
             EndCommand = new RelayCommand(_ => EndSession());
+
+            _sessionController.PauseStateChanged += paused => IsPaused = paused;
         }
 
         private void StartSession()
         {
             IsSessionActive = true;
+            IsPaused = false;
             _sessionController.StartSession();
         }
 
-        private void PauseSession()
+        private void TogglePause()
         {
-            // Placeholder for pause logic if needed
+            if (!_sessionController.IsPaused)
+                _sessionController.PauseSession();
+            else
+                _sessionController.ResumeSession();
         }
 
         private void EndSession()

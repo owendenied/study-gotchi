@@ -49,11 +49,12 @@ namespace StudyGotchi.ViewModels
 
         public PetSelectionViewModel()
         {
+            var baseDir = System.AppDomain.CurrentDomain.BaseDirectory;
             AvailablePets = new ObservableCollection<PetOption>
             {
-                new PetOption { Name = "Leafy", Description = "A gentle nature spirit", SpritePath = "/Assets/Sprites/bulbasaur.png", BackgroundColor = "#FFF6F3" },
-                new PetOption { Name = "Sunny", Description = "Warm and full of cheer", SpritePath = "/Assets/Sprites/charmander.png", BackgroundColor = "#FFF8F8" },
-                new PetOption { Name = "Starry", Description = "Dreamy and curious", SpritePath = "/Assets/Sprites/squirtle.png", BackgroundColor = "#FBFBFF" }
+                new PetOption { Name = "Glow", Description = "A bright and playful spirit", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/yellow_baby.gif"), BackgroundColor = "#FFFDF0" },
+                new PetOption { Name = "Sunny", Description = "Warm and full of cheer", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/charmander.png"), BackgroundColor = "#FFF8F8" },
+                new PetOption { Name = "Starry", Description = "Dreamy and curious", SpritePath = System.IO.Path.Combine(baseDir, "Assets/Sprites/squirtle.png"), BackgroundColor = "#FBFBFF" }
             };
 
             SelectPetCommand = new RelayCommand(p => SelectedPet = p as PetOption);
@@ -66,9 +67,9 @@ namespace StudyGotchi.ViewModels
                     int index = AvailablePets.IndexOf(SelectedPet);
                     ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
 
-                    // Navigate to Task Setup via the MainWindow
+                    // Navigate to Settings via the MainWindow
                     var mainWindow = System.Windows.Application.Current.MainWindow as Views.MainWindow;
-                    mainWindow?.NavigateToTaskSetup();
+                    mainWindow?.NavigateToSettings();
                 }
             }, _ => SelectedPet != null);
 
