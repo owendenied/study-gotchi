@@ -18,6 +18,16 @@ namespace StudyGotchi.Views
             DataContext = new StudyGotchi.ViewModels.MainWindowViewModel();
         }
 
+<<<<<<< HEAD
+        public void SetFocusMode(bool isEnabled)
+        {
+            this.Topmost = isEnabled;
+        }
+
+        public void NavigateToPetSelection()
+        {
+            // Logic: Hide the current view and show the Pet Selection screen
+=======
         public void NavigateToPetSelection()
         {
             var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
@@ -62,10 +72,22 @@ namespace StudyGotchi.Views
             {
                 vm.CurrentViewModel = _summaryView ??= new Views.UserControls.SessionSummaryView();
             }
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
         }
 
         public void LaunchWidgetMode()
         {
+<<<<<<< HEAD
+            // Logic: Shrink the window to a small "Gotchi" size
+            this.WindowState = WindowState.Normal;
+            this.Width = 300;
+            this.Height = 400;
+        }
+
+        public void ShowStarvationAlert()
+        {
+            MessageBox.Show("Pet is starving! XP gain reduced.", "Warning");
+=======
             // if a widget is already open, bring it to front
             if (_widgetWindow != null && _widgetWindow.IsVisible)
             {
@@ -86,6 +108,7 @@ namespace StudyGotchi.Views
 
             this.Hide();
             _widgetWindow.Show();
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
         }
     }
 }

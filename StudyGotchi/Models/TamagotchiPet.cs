@@ -6,6 +6,61 @@ namespace StudyGotchi.Models
 {
     public abstract class TamagotchiPet : IPet, ITaskObserver
     {
+<<<<<<< HEAD
+        protected string _name;
+        protected int _hungerLevel = 100;
+        protected int _xp = 0;
+        protected int _currentLevel = 1;
+        protected string _evolutionStage = "Baby";
+
+        public void CompleteTask(bool finishedEarly)
+        {
+            double xpMultiplier = (_hungerLevel <= 20) ? 0.5 : 1.0;
+
+            if (finishedEarly)
+            {
+                xpMultiplier *= 2.0;
+                _hungerLevel += 20;
+            }
+            else
+            {
+                _hungerLevel += 10;
+            }
+
+            _xp += (int)(50 * xpMultiplier);
+            if (_hungerLevel > 100) _hungerLevel = 100;
+
+            if (_xp >= 100)
+            {
+                LevelUp();
+            }
+        }
+
+        public void DecayHunger(bool isFocusMode)
+        {
+            int drainAmount = isFocusMode ? 10 : 5;
+            _hungerLevel -= drainAmount;
+
+            if (_hungerLevel < 0) _hungerLevel = 0;
+        }
+
+        public void LevelUp()
+        {
+            _currentLevel++;
+            _xp = 0;
+            OnLevelUp();
+        }
+
+        public void OnTaskCompleted(StudyTask task)
+        {
+            CompleteTask(task.IsCompletedEarly);
+        }
+
+        public void OnTaskOverdue(StudyTask task)
+        {
+            _hungerLevel -= 15;
+            if (_hungerLevel < 0) _hungerLevel = 0;
+=======
         protected string _name = "Buddy";
         protected int _hungerLevel;
         protected int _xp;
@@ -64,11 +119,14 @@ namespace StudyGotchi.Models
         public virtual void LevelUp() 
         { 
             Level++;
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
         }
 
-        // Abstract methods from IPet
         public abstract Image GetCurrentSprite();
         public abstract void OnLevelUp();
+<<<<<<< HEAD
+        public abstract string GetEvolutionStageName();
+=======
         public virtual string GetEvolutionStageName()
         {
             if (Level <= 10) return "Baby";
@@ -79,5 +137,6 @@ namespace StudyGotchi.Models
         // Interface methods from ITaskObserver
         public void OnTaskCompleted(StudyTask task) { throw new System.NotImplementedException(); }
         public void OnTaskOverdue(StudyTask task) { throw new System.NotImplementedException(); }
+>>>>>>> 005cd88206b7db80b57d63b8208cce7c2b3ad977
     }
 }
