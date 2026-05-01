@@ -11,6 +11,7 @@ namespace StudyGotchi.Controllers
 
         public event Action<StudyTask>? TaskAdded;
         public event Action<StudyTask>? TaskCompleted;
+        public event Action? TasksCleared;
 
         public TaskController()
         {
@@ -41,6 +42,7 @@ namespace StudyGotchi.Controllers
         public void ClearTasks()
         {
             _taskManager.ClearTasks();
+            TasksCleared?.Invoke();
         }
 
         public IReadOnlyList<StudyTask> GetAllTasks()

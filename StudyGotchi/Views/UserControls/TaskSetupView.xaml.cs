@@ -9,6 +9,13 @@ namespace StudyGotchi.Views.UserControls
         public TaskSetupView()
         {
             InitializeComponent();
+            
+            CmbMinute.Items.Clear();
+            for (int i = 0; i < 60; i++)
+            {
+                CmbMinute.Items.Add(new ComboBoxItem { Content = i.ToString("D2") });
+            }
+
             SetDefaultTime();
             UpdatePreview();
 
@@ -52,8 +59,8 @@ namespace StudyGotchi.Views.UserControls
                 hour24 = hour12 == 12 ? 0 : hour12;
             }
 
-            // Minutes are in 5-min steps: index 0 = 00, index 1 = 05, ...
-            int minute = CmbMinute.SelectedIndex >= 0 ? CmbMinute.SelectedIndex * 5 : 0;
+            // Minutes are in 1-min steps: index 0 = 00, index 1 = 01, ...
+            int minute = CmbMinute.SelectedIndex >= 0 ? CmbMinute.SelectedIndex : 0;
             bool tomorrow = ChkTomorrow.IsChecked == true;
 
             DateTime baseDate = tomorrow ? DateTime.Today.AddDays(1) : DateTime.Today;

@@ -1,4 +1,3 @@
-<!-- legacy widget removed; keep only the transparent image window below -->
 <Window x:Class="StudyGotchi.Views.StudyWidgetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

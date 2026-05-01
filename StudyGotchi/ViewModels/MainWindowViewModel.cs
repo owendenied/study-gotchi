@@ -1,4 +1,3 @@
-using StudyGotchi.ViewModels;
 using System.Windows.Input;
 
 namespace StudyGotchi.ViewModels

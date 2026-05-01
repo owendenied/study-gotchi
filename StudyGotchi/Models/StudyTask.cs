@@ -21,22 +21,26 @@ namespace StudyGotchi.Models
 
         public int Id => _id;
         public string Name => _taskName;
-        public string TaskName => _taskName; // Kept for compatibility with HEAD usages
         public DateTime Deadline => _deadline;
         public bool IsCompleted => _isCompleted;
+
+        public string DisplayDeadline 
+        {
+            get 
+            {
+                if (_deadline.Date == DateTime.Today)
+                    return $"Due Today at {_deadline:h:mm tt}";
+                else if (_deadline.Date == DateTime.Today.AddDays(1))
+                    return $"Due Tomorrow at {_deadline:h:mm tt}";
+                else
+                    return $"Due {_deadline:MMM d} at {_deadline:h:mm tt}";
+            }
+        }
 
         public void Complete()
         {
             _isCompleted = true;
-
-            if (DateTime.Now < _deadline)
-            {
-                IsCompletedEarly = true;
-            }
-            else
-            {
-                IsCompletedEarly = false;
-            }
+            IsCompletedEarly = DateTime.Now < _deadline;
         }
 
         public TimeSpan GetTimeRemaining()

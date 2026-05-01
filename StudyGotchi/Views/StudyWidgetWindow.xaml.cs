@@ -17,8 +17,6 @@ namespace StudyGotchi.Views
             var reminderService = StudyGotchi.Services.ServiceRegistry.ReminderService;
             if (reminderService != null)
                 reminderService.ReminderTriggered += OnReminderTriggered;
-
-            // Subscribe to audio service events (if any future direct hooks needed)
         }
 
         private void OnReminderTriggered(string taskName, int minutesLeft)

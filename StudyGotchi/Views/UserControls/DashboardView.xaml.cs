@@ -13,18 +13,11 @@ namespace StudyGotchi.Views.UserControls
         private void BtnStartSession_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             StudyGotchi.Services.ServiceRegistry.SessionViewModel.StartCommand.Execute(null);
-            UpdateSessionButtons();
         }
 
         private void BtnPause_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             StudyGotchi.Services.ServiceRegistry.SessionViewModel.PauseCommand.Execute(null);
-            UpdateSessionButtons();
-        }
-
-        private void UpdateSessionButtons()
-        {
-            // The bindings in XAML should handle visibility automatically now
         }
 
         private void BtnEndSession_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -95,17 +88,12 @@ namespace StudyGotchi.Views.UserControls
 
         public void OnTaskChecked()
         {
-            // placeholder for later
+            // UML contract — reserved for future implementation
         }
 
         public void UpdateDisplay()
         {
-            // placeholder for later
-        }
-
-        private void ListBoxItem_Selected(object sender, System.Windows.RoutedEventArgs e)
-        {
-
+            // UML contract — reserved for future implementation
         }
     }
 }

@@ -85,6 +85,15 @@ namespace StudyGotchi.Controllers
             SessionEnded?.Invoke();
         }
 
+        public void ResetSession()
+        {
+            EndSession();
+            _elapsedTime = TimeSpan.Zero;
+            _pausedOffset = TimeSpan.Zero;
+            _tasksCompletedThisSession = 0;
+            _xpEarnedThisSession = 0;
+        }
+
         public bool IsSessionActive() { return _sessionActive; }
 
         private void OnTimerTick(object? sender, EventArgs e)

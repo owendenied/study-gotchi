@@ -3,20 +3,6 @@
 
     <DropShadowEffect x:Key="DropShadowEffect" Color="#000000" BlurRadius="15" Direction="315" ShadowDepth="3" Opacity="0.15"/>
 
-    <SolidColorBrush x:Key="RetroWindowGrey" Color="#BDBDBD"/>
-
-    <SolidColorBrush x:Key="RetroBorderDark" Color="#2A2A35"/>
-    <SolidColorBrush x:Key="RetroHighlight" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="RetroShadow" Color="#808080"/>
-    <SolidColorBrush x:Key="RetroBackground" Color="#F4F0E6"/>
-    <SolidColorBrush x:Key="TitleBarBlue" Color="#6B88B2"/>
-    <SolidColorBrush x:Key="BarPink" Color="#E598B8"/>
-    <SolidColorBrush x:Key="BarBlue" Color="#84B8D9"/>
-    <SolidColorBrush x:Key="TitleBarPurple" Color="#A594C5"/>
-    <SolidColorBrush x:Key="TitleBarPink" Color="#E598B8"/>
-    <SolidColorBrush x:Key="SelectionTeal" Color="#4EE2EC"/>
-    <SolidColorBrush x:Key="AccentCoral" Color="#FF7661"/>
-
     <LinearGradientBrush x:Key="MainGradientBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#F0DFF6" Offset="0"/>
         <GradientStop Color="#FDE6D0" Offset="1"/>
@@ -108,8 +94,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="RetroProgressBarStyle" TargetType="ProgressBar">
-    </Style>
+
 
     <!-- Color resources used in Dashboard -->
     <SolidColorBrush x:Key="HeaderTextColor" Color="#3A1F1A"/>
@@ -181,22 +166,8 @@
         <Setter Property="BorderThickness" Value="0"/>
     </Style>
 
-    <!-- Dashboard panel styles -->
-    <Style x:Key="SidePanelStyle" TargetType="Border">
-        <Setter Property="Background" Value="#FFFDFB"/>
-        <Setter Property="CornerRadius" Value="16"/>
-        <Setter Property="Padding" Value="18"/>
-        <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
-    </Style>
-
-    <Style x:Key="CenterCardStyle" TargetType="Border">
-        <Setter Property="Background" Value="#FFFDFB"/>
-        <Setter Property="CornerRadius" Value="16"/>
-        <Setter Property="Padding" Value="18"/>
-        <Setter Property="Effect" Value="{StaticResource DropShadowEffect}"/>
-    </Style>
-
-    <Style x:Key="TaskPanelStyle" TargetType="Border">
+    <!-- Shared card/panel style for Dashboard layout -->
+    <Style x:Key="CardPanelStyle" TargetType="Border">
         <Setter Property="Background" Value="#FFFDFB"/>
         <Setter Property="CornerRadius" Value="16"/>
         <Setter Property="Padding" Value="18"/>

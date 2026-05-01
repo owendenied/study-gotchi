@@ -1,5 +1,4 @@
 using System.Windows;
-using StudyGotchi.Controllers;
 
 namespace StudyGotchi.Views
 {
@@ -10,58 +9,46 @@ namespace StudyGotchi.Views
         private Views.UserControls.SessionSummaryView? _summaryView;
         private Views.StudyWidgetWindow? _widgetWindow;
 
+        private ViewModels.MainWindowViewModel? ViewModel => DataContext as ViewModels.MainWindowViewModel;
+
         public MainWindow()
         {
             InitializeComponent();
-            // Initialize app services and switch to ViewModel-driven navigation
-            StudyGotchi.Services.ServiceRegistry.Initialize();
-            DataContext = new StudyGotchi.ViewModels.MainWindowViewModel();
+            Services.ServiceRegistry.Initialize();
+            DataContext = new ViewModels.MainWindowViewModel();
         }
 
         public void NavigateToPetSelection()
         {
-            var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
-            if (vm != null)
-            {
-                vm.CurrentViewModel = StudyGotchi.Services.ServiceRegistry.PetSelectionViewModel;
-            }
+            if (ViewModel != null)
+                ViewModel.CurrentViewModel = Services.ServiceRegistry.PetSelectionViewModel;
         }
 
         public void NavigateToTaskSetup()
         {
-            var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
-            if (vm != null)
-            {
-                vm.CurrentViewModel = _taskSetupView ??= new Views.UserControls.TaskSetupView();
-            }
+            if (ViewModel != null)
+                ViewModel.CurrentViewModel = _taskSetupView ??= new Views.UserControls.TaskSetupView();
         }
 
         public void NavigateToSettings()
         {
-            var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
-            if (vm != null)
-            {
-                vm.CurrentViewModel = _settingsView ??= new Views.UserControls.SettingsView();
-            }
+            if (ViewModel != null)
+                ViewModel.CurrentViewModel = _settingsView ??= new Views.UserControls.SettingsView();
         }
 
         public void NavigateToDashboard()
         {
-            var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
-            if (vm != null)
+            if (ViewModel != null)
             {
-                StudyGotchi.Services.ServiceRegistry.DashboardViewModel.Refresh();
-                vm.CurrentViewModel = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
+                Services.ServiceRegistry.DashboardViewModel.Refresh();
+                ViewModel.CurrentViewModel = Services.ServiceRegistry.DashboardViewModel;
             }
         }
 
         public void NavigateToSummary()
         {
-            var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;
-            if (vm != null)
-            {
-                vm.CurrentViewModel = _summaryView ??= new Views.UserControls.SessionSummaryView();
-            }
+            if (ViewModel != null)
+                ViewModel.CurrentViewModel = _summaryView ??= new Views.UserControls.SessionSummaryView();
         }
 
         public void ShowStarvationAlert()
@@ -71,17 +58,14 @@ namespace StudyGotchi.Views
 
         public void LaunchWidgetMode()
         {
-            // if a widget is already open, bring it to front
             if (_widgetWindow != null && _widgetWindow.IsVisible)
             {
                 _widgetWindow.Activate();
                 return;
             }
 
-            // create and show widget; hide main window
             _widgetWindow = new StudyWidgetWindow();
             _widgetWindow.Owner = this;
-            // when widget closes, show main window and navigate to dashboard
             _widgetWindow.Closed += (s, e) =>
             {
                 this.Show();

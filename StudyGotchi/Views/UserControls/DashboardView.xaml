@@ -2,8 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="clr-namespace:StudyGotchi.ViewModels"
-             xmlns:local="clr-namespace:StudyGotchi"
-             xmlns:services="clr-namespace:StudyGotchi.Services"
              xmlns:conv="clr-namespace:StudyGotchi.Converters"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              Background="{StaticResource MainGradientBrush}"
@@ -23,7 +21,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left side panel -->
-        <Border x:Name="LeftPanel" Grid.Column="0" Style="{StaticResource SidePanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
+        <Border x:Name="LeftPanel" Grid.Column="0" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -64,7 +62,7 @@
         </Border>
 
         <!-- Center pet area -->
-        <Border Grid.Column="1" Style="{StaticResource CenterCardStyle}" Margin="0,0,12,0">
+        <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}" Margin="0,0,12,0">
             <Grid>
                 <Border Background="#EBD9CF" CornerRadius="12" Padding="8,6" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,6,0,0">
                     <TextBlock Text="{Binding Session.ClockText}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B3F39"/>
@@ -94,7 +92,7 @@
         </Border>
 
         <!-- Right tasks panel -->
-        <Border x:Name="RightPanel" Grid.Column="2" Style="{StaticResource TaskPanelStyle}" Margin="0,0,0,0" VerticalAlignment="Stretch">
+        <Border x:Name="RightPanel" Grid.Column="2" Style="{StaticResource CardPanelStyle}" Margin="0,0,0,0" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -144,7 +142,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Deadline, StringFormat='Due {0:HH:mm}'}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                                        <TextBlock Text="{Binding DisplayDeadline}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>

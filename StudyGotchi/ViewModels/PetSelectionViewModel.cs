@@ -87,7 +87,7 @@ namespace StudyGotchi.ViewModels
 
                     if (isNewPet)
                     {
-                        ServiceRegistry.SessionController.EndSession();
+                        ServiceRegistry.SessionController.ResetSession();
                         ServiceRegistry.TaskController.ClearTasks();
                     }
 

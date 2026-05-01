@@ -46,10 +46,7 @@
     <Resource Include="Assets\Fonts\PixelifySans-SemiBold.ttf" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Assets\Sprites\PetC\" />
-    <Folder Include="Assets\Sprites\PetB\" />
 
-  </ItemGroup>
+
 
 </Project>

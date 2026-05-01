@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using StudyGotchi.ViewModels;
 using StudyGotchi.Controllers;
 
 namespace StudyGotchi.ViewModels
@@ -46,6 +45,16 @@ namespace StudyGotchi.ViewModels
         {
             _sessionController = sessionController;
             _sessionController.TimeUpdated += (t) => ClockText = t;
+            _sessionController.SessionStarted += () => 
+            {
+                IsSessionActive = true;
+                IsPaused = false;
+            };
+            _sessionController.SessionEnded += () => 
+            {
+                IsSessionActive = false;
+                ClockText = "No session active";
+            };
 
             StartCommand = new RelayCommand(_ => StartSession());
             PauseCommand = new RelayCommand(_ => TogglePause());

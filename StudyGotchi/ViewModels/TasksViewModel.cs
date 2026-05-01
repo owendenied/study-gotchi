@@ -39,6 +39,12 @@ namespace StudyGotchi.ViewModels
                 };
                 timer.Start();
             };
+
+            // When tasks are cleared, clear the UI collection
+            _taskController.TasksCleared += () =>
+            {
+                System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Clear());
+            };
         }
 
         public void AddTask(string name)
