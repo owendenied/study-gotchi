@@ -100,6 +100,13 @@ namespace StudyGotchi.Models
             return "Adult";
         }
 
+        public virtual string GetMoodName()
+        {
+            if (HungerLevel >= 80) return "Happy";
+            if (HungerLevel >= 40) return "Idle";
+            return "Sad";
+        }
+
         public void OnTaskCompleted(StudyTask task) 
         { 
             CompleteTask(task.IsCompletedEarly);

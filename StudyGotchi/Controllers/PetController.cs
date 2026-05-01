@@ -37,20 +37,17 @@ namespace StudyGotchi.Controllers
 
         public string GetSpritePath() 
         {
+            string stage = _activePet?.GetEvolutionStageName() ?? "Baby";
+            string mood = _activePet?.GetMoodName() ?? "Idle";
+
             if (_activePet is PetA)
             {
-                string stage = _activePet.GetEvolutionStageName();
-                return stage switch
-                {
-                    "Teen"  => SpriteAbsPath("Assets/Sprites/yellow_teen.gif"),
-                    "Adult" => SpriteAbsPath("Assets/Sprites/yellow_adult.gif"),
-                    _       => SpriteAbsPath("Assets/Sprites/yellow_baby.gif"),
-                };
+                return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
             }
-            if (_activePet is PetB) return SpriteAbsPath("Assets/Sprites/charmander.png");
-            if (_activePet is PetC) return SpriteAbsPath("Assets/Sprites/squirtle.png");
-            return SpriteAbsPath("Assets/Sprites/yellow_baby.gif");
-
+            if (_activePet is PetB) return SpriteAbsPath("Assets/Background/egg.png");
+            if (_activePet is PetC) return SpriteAbsPath("Assets/Background/egg.png");
+            
+            return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
         }
 
         public Image GetCurrentSprite() { throw new System.NotImplementedException(); }

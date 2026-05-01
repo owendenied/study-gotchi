@@ -75,6 +75,22 @@ namespace StudyGotchi.ViewModels
                 if (SelectedPet != null)
                 {
                     int index = AvailablePets.IndexOf(SelectedPet);
+                    var activePet = ServiceRegistry.PetController.GetActivePet();
+                    
+                    bool isNewPet = activePet == null;
+                    if (!isNewPet)
+                    {
+                        if (index == 0 && !(activePet is PetA)) isNewPet = true;
+                        if (index == 1 && !(activePet is PetB)) isNewPet = true;
+                        if (index == 2 && !(activePet is PetC)) isNewPet = true;
+                    }
+
+                    if (isNewPet)
+                    {
+                        ServiceRegistry.SessionController.EndSession();
+                        ServiceRegistry.TaskController.ClearTasks();
+                    }
+
                     ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
 
                     // Navigate to Settings via the MainWindow

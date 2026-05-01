@@ -20,23 +20,23 @@
                 <Border Background="#FFF6F4" CornerRadius="10" Padding="10,8" Margin="0,6,0,6">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Hour picker -->
-                        <ComboBox x:Name="CmbHour" Width="64" Margin="0,0,4,0" SelectedIndex="23">
-                            <ComboBoxItem Content="00"/><ComboBoxItem Content="01"/><ComboBoxItem Content="02"/>
-                            <ComboBoxItem Content="03"/><ComboBoxItem Content="04"/><ComboBoxItem Content="05"/>
-                            <ComboBoxItem Content="06"/><ComboBoxItem Content="07"/><ComboBoxItem Content="08"/>
-                            <ComboBoxItem Content="09"/><ComboBoxItem Content="10"/><ComboBoxItem Content="11"/>
-                            <ComboBoxItem Content="12"/><ComboBoxItem Content="13"/><ComboBoxItem Content="14"/>
-                            <ComboBoxItem Content="15"/><ComboBoxItem Content="16"/><ComboBoxItem Content="17"/>
-                            <ComboBoxItem Content="18"/><ComboBoxItem Content="19"/><ComboBoxItem Content="20"/>
-                            <ComboBoxItem Content="21"/><ComboBoxItem Content="22"/><ComboBoxItem Content="23"/>
+                        <ComboBox x:Name="CmbHour" Width="64" Margin="0,0,4,0" SelectedIndex="0">
+                            <ComboBoxItem Content="01"/><ComboBoxItem Content="02"/><ComboBoxItem Content="03"/>
+                            <ComboBoxItem Content="04"/><ComboBoxItem Content="05"/><ComboBoxItem Content="06"/>
+                            <ComboBoxItem Content="07"/><ComboBoxItem Content="08"/><ComboBoxItem Content="09"/>
+                            <ComboBoxItem Content="10"/><ComboBoxItem Content="11"/><ComboBoxItem Content="12"/>
                         </ComboBox>
                         <TextBlock Text=":" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,4,0"/>
                         <!-- Minute picker -->
-                        <ComboBox x:Name="CmbMinute" Width="64" Margin="0,0,16,0" SelectedIndex="0">
+                        <ComboBox x:Name="CmbMinute" Width="64" Margin="0,0,8,0" SelectedIndex="0">
                             <ComboBoxItem Content="00"/><ComboBoxItem Content="05"/><ComboBoxItem Content="10"/>
                             <ComboBoxItem Content="15"/><ComboBoxItem Content="20"/><ComboBoxItem Content="25"/>
                             <ComboBoxItem Content="30"/><ComboBoxItem Content="35"/><ComboBoxItem Content="40"/>
                             <ComboBoxItem Content="45"/><ComboBoxItem Content="50"/><ComboBoxItem Content="55"/>
+                        </ComboBox>
+                        <!-- AM/PM picker -->
+                        <ComboBox x:Name="CmbAmPm" Width="64" Margin="0,0,16,0" SelectedIndex="0">
+                            <ComboBoxItem Content="AM"/><ComboBoxItem Content="PM"/>
                         </ComboBox>
                         <!-- Tomorrow toggle -->
                         <CheckBox x:Name="ChkTomorrow" VerticalAlignment="Center" Margin="0,0,8,0"/>
