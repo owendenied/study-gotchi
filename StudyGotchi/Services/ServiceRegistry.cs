@@ -58,6 +58,12 @@ namespace StudyGotchi.Services
                 AudioService.PlaySfx("sfx_end");
             };
 
+            // ── Reminders ───────────────────────────────────────────────────
+            ReminderService.ReminderTriggered += (taskName, mins) =>
+            {
+                AudioService.PlaySfx("sfx_reminder");
+            };
+
             // ── Pet levelled up ─────────────────────────────────────────────
             PetController.PetLeveledUp += () =>
             {

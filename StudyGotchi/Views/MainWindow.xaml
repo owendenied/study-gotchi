@@ -26,5 +26,34 @@
 
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}" />
+
+        <!-- Toast Notification Overlay -->
+        <Border x:Name="ToastBorder"
+                Background="#EEFFFFFF"
+                BorderBrush="#FF7F66"
+                BorderThickness="2"
+                CornerRadius="12"
+                Padding="20,12"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0,40,0,0"
+                Visibility="Collapsed"
+                IsHitTestVisible="False"
+                MaxWidth="400">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Opacity="0.2" ShadowDepth="3"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⏰" FontSize="20" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="REMINDER" FontSize="10" FontWeight="Bold" Foreground="#FF7F66"/>
+                    <TextBlock x:Name="TxtToastMessage"
+                               FontSize="14"
+                               FontWeight="SemiBold"
+                               Foreground="#3A1F1A"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

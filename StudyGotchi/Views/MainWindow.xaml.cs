@@ -9,6 +9,7 @@ namespace StudyGotchi.Views
         private Views.UserControls.SessionSummaryView? _summaryView;
         private Views.StudyWidgetWindow? _widgetWindow;
         private bool _isFullScreen = false;
+        private System.Windows.Threading.DispatcherTimer? _toastTimer;
 
         private ViewModels.MainWindowViewModel? ViewModel => DataContext as ViewModels.MainWindowViewModel;
 
@@ -17,6 +18,32 @@ namespace StudyGotchi.Views
             InitializeComponent();
             Services.ServiceRegistry.Initialize();
             DataContext = new ViewModels.MainWindowViewModel();
+
+            // Subscribe to reminders for the main window toast
+            Services.ServiceRegistry.ReminderService.ReminderTriggered += OnReminderTriggered;
+        }
+
+        private void OnReminderTriggered(string taskName, int minutesLeft)
+        {
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                ShowToast($"{taskName} ({minutesLeft} min left!)");
+            });
+        }
+
+        public void ShowToast(string message)
+        {
+            TxtToastMessage.Text = message;
+            ToastBorder.Visibility = Visibility.Visible;
+
+            _toastTimer?.Stop();
+            _toastTimer = new System.Windows.Threading.DispatcherTimer { Interval = System.TimeSpan.FromSeconds(5) };
+            _toastTimer.Tick += (s, e) =>
+            {
+                _toastTimer?.Stop();
+                ToastBorder.Visibility = Visibility.Collapsed;
+            };
+            _toastTimer.Start();
         }
 
         public void NavigateToPetSelection()
