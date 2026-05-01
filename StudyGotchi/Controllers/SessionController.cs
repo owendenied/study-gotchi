@@ -96,6 +96,8 @@ namespace StudyGotchi.Controllers
 
         public bool IsSessionActive() { return _sessionActive; }
 
+        public int HungerDecayRate { get; set; } = 2;
+
         private void OnTimerTick(object? sender, EventArgs e)
         {
             _elapsedTime = _pausedOffset + (DateTime.Now - _startTime);
@@ -103,7 +105,12 @@ namespace StudyGotchi.Controllers
             
             if ((int)_elapsedTime.TotalSeconds % 15 == 0 && (int)_elapsedTime.TotalSeconds > 0)
             {
-                int decayAmount = 2;
+                int decayAmount = HungerDecayRate switch {
+                    1 => 1,  // Low
+                    2 => 2,  // Medium
+                    3 => 4,  // High
+                    _ => 2
+                };
                 _petController.GetActivePet()?.DecayHunger(decayAmount);
                 StatsUpdated?.Invoke();
             }

@@ -62,6 +62,12 @@ namespace StudyGotchi.Views.UserControls
             }
         }
 
+        private void BtnFullScreen_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+            wnd?.ToggleFullScreen();
+        }
+
         private void TaskCheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var cb = sender as System.Windows.Controls.CheckBox;

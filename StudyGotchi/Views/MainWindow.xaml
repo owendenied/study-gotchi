@@ -9,9 +9,9 @@
         Title="Study-Gotchi"
         Height="600" Width="900"
         MinWidth="900" MinHeight="600"
-        MaxWidth="900" MaxHeight="600"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:PetSelectionViewModel}">

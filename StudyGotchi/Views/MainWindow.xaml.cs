@@ -8,6 +8,7 @@ namespace StudyGotchi.Views
         private Views.UserControls.SettingsView? _settingsView;
         private Views.UserControls.SessionSummaryView? _summaryView;
         private Views.StudyWidgetWindow? _widgetWindow;
+        private bool _isFullScreen = false;
 
         private ViewModels.MainWindowViewModel? ViewModel => DataContext as ViewModels.MainWindowViewModel;
 
@@ -75,6 +76,34 @@ namespace StudyGotchi.Views
 
             this.Hide();
             _widgetWindow.Show();
+        }
+
+        public void ToggleFullScreen()
+        {
+            if (_isFullScreen)
+            {
+                WindowStyle = WindowStyle.SingleBorderWindow;
+                WindowState = WindowState.Normal;
+                _isFullScreen = false;
+            }
+            else
+            {
+                WindowStyle = WindowStyle.None;
+                WindowState = WindowState.Maximized;
+                _isFullScreen = true;
+            }
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F11)
+            {
+                ToggleFullScreen();
+            }
+            else if (e.Key == System.Windows.Input.Key.Escape && _isFullScreen)
+            {
+                ToggleFullScreen();
+            }
         }
     }
 }

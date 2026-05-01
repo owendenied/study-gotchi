@@ -34,9 +34,11 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Text="Study-Gotchi" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}"/>
-                        <ToggleButton x:Name="BtnMuteToggle" Grid.Column="1" Content="🔊" Width="28" Height="28" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnMuteToggle_Click"/>
+                        <Button x:Name="BtnFullScreen" Grid.Column="1" Content="⛶" Width="28" Height="28" Margin="0,0,4,0" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnFullScreen_Click" ToolTip="Toggle Full Screen (F11)"/>
+                        <ToggleButton x:Name="BtnMuteToggle" Grid.Column="2" Content="🔊" Width="28" Height="28" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnMuteToggle_Click" ToolTip="Toggle Sound"/>
                     </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="BtnNavSelectPet" Content="Select Pet" Background="Transparent" BorderThickness="0" Foreground="#6E4E4A" FontWeight="SemiBold" Padding="0" Margin="0,0,12,0" Click="BtnNavSelectPet_Click"/>
