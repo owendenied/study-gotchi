@@ -94,5 +94,10 @@ namespace StudyGotchi.Views.UserControls
         {
 
         }
+
+        private void ProgressBar_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -21,9 +21,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Background\add_button.png" />
     <None Remove="Assets\Background\bg.png" />
     <None Remove="Assets\Background\egg.png" />
-    <None Remove="Assets\Background\logo.png" />
+    <None Remove="Assets\Background\pet_bg.png" />
+    <None Remove="Assets\Background\pixel_bg.png" />
+    <None Remove="Assets\Background\pixel_bg_gray.png" />
+    <None Remove="Assets\Background\tamagotchi.png" />
     <None Remove="Assets\Fonts\PixelifySans-Bold.ttf" />
     <None Remove="Assets\Fonts\PixelifySans-Medium.ttf" />
     <None Remove="Assets\Fonts\PixelifySans-Regular.ttf" />
@@ -31,15 +35,38 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Background\add_button.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Background\logo.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Background\bg.png" />
     <Resource Include="Assets\Background\egg.png" />
-    <Resource Include="Assets\Background\logo.png" />
-    <Resource Include="Assets\Fonts\PixelifySans-Bold.ttf" />
+    <Resource Include="Assets\Background\pet_bg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Background\pixel_bg.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Background\pixel_bg_gray.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Background\tamagotchi.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Fonts\PixelifySans-Bold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\Fonts\PixelifySans-Medium.ttf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\Fonts\PixelifySans-Regular.ttf" />
-    <Resource Include="Assets\Fonts\PixelifySans-SemiBold.ttf" />
+    <Resource Include="Assets\Fonts\PixelifySans-Regular.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Fonts\PixelifySans-SemiBold.ttf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
