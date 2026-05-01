@@ -8,5 +8,14 @@ namespace StudyGotchi.Views.UserControls
         {
             InitializeComponent();
         }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                StudyGotchi.Services.ServiceRegistry.AudioService?.PlaySfx("sfx_hover");
+            }
+        }
+
     }
 }

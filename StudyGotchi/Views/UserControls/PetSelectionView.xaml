@@ -44,6 +44,7 @@
             <ListBox Grid.Row="1"
                      ItemsSource="{Binding AvailablePets}"
                      SelectedItem="{Binding SelectedPet}"
+                     SelectionChanged="ListBox_SelectionChanged"
                      ItemContainerStyle="{StaticResource EggItemStyle}"
                      Background="Transparent"
                      BorderThickness="0"

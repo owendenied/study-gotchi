@@ -12,6 +12,8 @@ namespace StudyGotchi.Services
         public static SessionViewModel SessionViewModel { get; private set; } = null!;
         public static PetSelectionViewModel PetSelectionViewModel { get; private set; } = null!;
         public static SessionController SessionController { get; private set; } = null!;
+        public static ReminderService ReminderService { get; private set; } = null!;
+        public static AudioService AudioService { get; private set; } = null!;
 
         public static void Initialize()
         {
@@ -22,14 +24,48 @@ namespace StudyGotchi.Services
             SessionViewModel = new SessionViewModel(SessionController);
             PetSelectionViewModel = new PetSelectionViewModel();
             DashboardViewModel = new DashboardViewModel(PetController, TasksViewModel, SessionViewModel);
+            ReminderService = new ReminderService(TaskController);
+            AudioService = new AudioService();
 
-            // Link events
-            TaskController.TaskCompleted += _ => 
+            // ── Task completed ──────────────────────────────────────────────
+            TaskController.TaskCompleted += _ =>
             {
                 PetController.CompleteTask(0);
                 DashboardViewModel.Refresh();
+                AudioService.PlaySfx("sfx_complete");
             };
-            
+
+            // ── Session started ─────────────────────────────────────────────
+            SessionController.SessionStarted += () =>
+            {
+                ReminderService.Start();
+                AudioService.PlayBgm();
+                AudioService.PlaySfx("sfx_start");
+            };
+
+            // ── Session paused / resumed ────────────────────────────────────
+            SessionController.PauseStateChanged += paused =>
+            {
+                if (paused) AudioService.PauseBgm();
+                else AudioService.ResumeBgm();
+            };
+
+            // ── Session ended ───────────────────────────────────────────────
+            SessionController.SessionEnded += () =>
+            {
+                ReminderService.Stop();
+                AudioService.StopBgm();
+                AudioService.PlaySfx("sfx_end");
+            };
+
+            // ── Pet levelled up ─────────────────────────────────────────────
+            PetController.PetLeveledUp += () =>
+            {
+                DashboardViewModel.Refresh();
+                AudioService.PlaySfx("sfx_levelup");
+            };
+
+            // ── Periodic stats refresh (hunger decay etc.) ──────────────────
             SessionController.StatsUpdated += () => DashboardViewModel.Refresh();
         }
 

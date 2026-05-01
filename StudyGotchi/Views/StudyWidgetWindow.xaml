@@ -11,9 +11,33 @@
         <conv:StringToImageSourceConverter x:Key="StringToImage"/>
     </Window.Resources>
 
-    <!-- Transparent window showing only the animated sprite -->
-    <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
-           gif:ImageBehavior.RepeatBehavior="Forever"
-           Stretch="Uniform" Width="100" Height="100" Margin="0" MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
+    <!-- Root grid: pet sprite + toast overlay stacked -->
+    <Grid>
+        <!-- Animated pet sprite -->
+        <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
+               gif:ImageBehavior.RepeatBehavior="Forever"
+               Stretch="Uniform" Width="100" Height="100" Margin="0" MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
 
+        <!-- Reminder toast overlay — shown briefly when a deadline approaches -->
+        <Border x:Name="ToastBorder"
+                Background="#CC2D2D2D"
+                CornerRadius="8"
+                Padding="8,6"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0,4,0,0"
+                Visibility="Collapsed"
+                IsHitTestVisible="False">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="⏰ " FontSize="12" VerticalAlignment="Center"/>
+                <TextBlock x:Name="TxtToastMessage"
+                           FontSize="11"
+                           FontWeight="SemiBold"
+                           Foreground="White"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           MaxWidth="90"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Window>

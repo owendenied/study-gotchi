@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Left side panel -->
-        <Border Grid.Column="0" Style="{StaticResource SidePanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
+        <Border x:Name="LeftPanel" Grid.Column="0" Style="{StaticResource SidePanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -32,7 +32,14 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,8">
-                    <TextBlock Text="Study-Gotchi" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" Margin="0,0,0,8"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Study-Gotchi" FontSize="20" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}"/>
+                        <ToggleButton x:Name="BtnMuteToggle" Grid.Column="1" Content="🔊" Width="28" Height="28" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnMuteToggle_Click"/>
+                    </Grid>
                     <StackPanel Orientation="Horizontal">
                         <Button x:Name="BtnNavSelectPet" Content="Select Pet" Background="Transparent" BorderThickness="0" Foreground="#6E4E4A" FontWeight="SemiBold" Padding="0" Margin="0,0,12,0" Click="BtnNavSelectPet_Click"/>
                         <Button x:Name="BtnNavSettings" Content="Settings" Background="Transparent" BorderThickness="0" Foreground="#6E4E4A" FontWeight="SemiBold" Padding="0" Click="BtnNavSettings_Click"/>
@@ -77,6 +84,7 @@
                         <Button Content="Start Session" Style="{StaticResource StartSessionButtonStyle}" Margin="0,0,0,12" Padding="40,10" Click="BtnStartSession_Click" HorizontalAlignment="Center"/>
                     </StackPanel>
 
+                    <!-- Active Session Controls -->
                     <StackPanel x:Name="SessionControlsPanel" DataContext="{Binding Session}" Orientation="Horizontal" HorizontalAlignment="Center" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,8,0,0">
                         <Button Content="{Binding PauseButtonText}" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,12,0"/>
                         <Button Content="End Session" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click"/>
@@ -86,7 +94,7 @@
         </Border>
 
         <!-- Right tasks panel -->
-        <Border Grid.Column="2" Style="{StaticResource TaskPanelStyle}" Margin="0,0,0,0" VerticalAlignment="Stretch">
+        <Border x:Name="RightPanel" Grid.Column="2" Style="{StaticResource TaskPanelStyle}" Margin="0,0,0,0" VerticalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -136,7 +144,7 @@
                                                 </Style>
                                             </TextBlock.Style>
                                         </TextBlock>
-                                        <TextBlock Text="{Binding Deadline, StringFormat='Due {0:MMM dd}'}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
+                                        <TextBlock Text="{Binding Deadline, StringFormat='Due {0:HH:mm}'}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
                                     </StackPanel>
                                 </StackPanel>
                             </DataTemplate>

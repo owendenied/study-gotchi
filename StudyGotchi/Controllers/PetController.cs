@@ -26,6 +26,8 @@ namespace StudyGotchi.Controllers
         public int GetHungerLevel() { return _activePet?.HungerLevel ?? 100; }
         public int GetXp() { return _activePet?.Experience ?? 0; }
         public int GetLevel() { return _activePet?.Level ?? 1; }
+        public event Action? PetLeveledUp;
+
         public string GetEvolutionStageName() { return _activePet?.GetEvolutionStageName() ?? "Baby Stage"; }
         
         private string SpriteAbsPath(string relative)
@@ -63,7 +65,12 @@ namespace StudyGotchi.Controllers
         
         public void CompleteTask(int taskId)
         {
+            int oldLevel = _activePet?.Level ?? 1;
             _activePet?.CompleteTask();
+            if (_activePet?.Level > oldLevel)
+            {
+                PetLeveledUp?.Invoke();
+            }
         }
         public void RegisterAsObserver(TaskController taskController) { }
     }

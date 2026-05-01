@@ -18,11 +18,6 @@ namespace StudyGotchi.Views
             DataContext = new StudyGotchi.ViewModels.MainWindowViewModel();
         }
 
-        public void SetFocusMode(bool isEnabled)
-        {
-            this.Topmost = isEnabled;
-        }
-
         public void NavigateToPetSelection()
         {
             var vm = DataContext as StudyGotchi.ViewModels.MainWindowViewModel;

@@ -14,6 +14,10 @@
     <Content Include="Assets\Sprites\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <!-- Include Audio files and copy to output so AudioService can find them -->
+    <Content Include="Assets\Audio\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

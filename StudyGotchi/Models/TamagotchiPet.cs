@@ -45,21 +45,25 @@ namespace StudyGotchi.Models
 
         public virtual void CompleteTask(bool finishedEarly)
         {
+            // Starving penalty: halve XP gain if hunger is critically low
             double xpMultiplier = (_hungerLevel <= 20) ? 0.5 : 1.0;
 
             if (finishedEarly)
             {
+                // Bonus for finishing before deadline
                 xpMultiplier *= 2.0;
-                HungerLevel += 20;
+                HungerLevel += 25;
             }
             else
             {
-                HungerLevel += 10;
+                HungerLevel += 15;
             }
 
-            Experience += (int)(50 * xpMultiplier);
+            // Base XP: 150 on-time, 300 early (before starvation multiplier)
+            Experience += (int)(150 * xpMultiplier);
 
-            if (Experience >= 100)
+            // Level up for every 100 XP accumulated
+            while (Experience >= 100)
             {
                 Experience -= 100;
                 LevelUp();
@@ -89,8 +93,10 @@ namespace StudyGotchi.Models
 
         public virtual string GetEvolutionStageName()
         {
-            if (Level <= 10) return "Baby";
-            if (Level <= 20) return "Teen";
+            // Thresholds tuned for a realistic 1-2 hour study session (~5-10 tasks)
+            // Baby: level 1-3, Teen: level 4-6, Adult: level 7+
+            if (Level <= 3) return "Baby";
+            if (Level <= 6) return "Teen";
             return "Adult";
         }
 

@@ -16,11 +16,12 @@ namespace StudyGotchi.Controllers
         private TimeSpan _pausedOffset;   // accumulates time already elapsed before a pause
         private int _tasksCompletedThisSession;
         private int _xpEarnedThisSession;
-        private bool _isFocusMode;
 
         public event Action<string>? TimeUpdated;
         public event Action? StatsUpdated;
         public event Action<bool>? PauseStateChanged;  // true = paused
+        public event Action? SessionStarted;
+        public event Action? SessionEnded;
 
         public int TasksCompletedThisSession => _tasksCompletedThisSession;
         public int XpEarnedThisSession => _xpEarnedThisSession;
@@ -39,21 +40,16 @@ namespace StudyGotchi.Controllers
                 if (_sessionActive)
                 {
                     _tasksCompletedThisSession++;
-                    _xpEarnedThisSession += 25; // Matching the reward in TamagotchiPet
+                    // Match TamagotchiPet.CompleteTask rewards: 150 on-time, 300 early
+                    _xpEarnedThisSession += t.IsCompletedEarly ? 300 : 150;
                 }
             };
         }
 
-        public void StartSession()
-        {
-            StartSession(false);
-        }
-
-        public void StartSession(bool focusMode) 
+        public void StartSession() 
         { 
             _sessionActive = true;
             _isPaused = false;
-            _isFocusMode = focusMode;
             _startTime = DateTime.Now;
             _elapsedTime = TimeSpan.Zero;
             _pausedOffset = TimeSpan.Zero;
@@ -61,6 +57,7 @@ namespace StudyGotchi.Controllers
             _xpEarnedThisSession = 0;
             _sessionTimer.Start();
             TimeUpdated?.Invoke("00:00:00");
+            SessionStarted?.Invoke();
         }
 
         public void PauseSession()
@@ -85,6 +82,7 @@ namespace StudyGotchi.Controllers
         { 
             _sessionActive = false;
             _sessionTimer.Stop();
+            SessionEnded?.Invoke();
         }
 
         public bool IsSessionActive() { return _sessionActive; }
@@ -94,10 +92,9 @@ namespace StudyGotchi.Controllers
             _elapsedTime = _pausedOffset + (DateTime.Now - _startTime);
             TimeUpdated?.Invoke(_elapsedTime.ToString(@"hh\:mm\:ss"));
             
-            // Moderate hunger decay: decay every 15 seconds
             if ((int)_elapsedTime.TotalSeconds % 15 == 0 && (int)_elapsedTime.TotalSeconds > 0)
             {
-                int decayAmount = _isFocusMode ? 4 : 2;
+                int decayAmount = 2;
                 _petController.GetActivePet()?.DecayHunger(decayAmount);
                 StatsUpdated?.Invoke();
             }

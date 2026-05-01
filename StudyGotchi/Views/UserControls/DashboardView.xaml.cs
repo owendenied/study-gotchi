@@ -56,6 +56,19 @@ namespace StudyGotchi.Views.UserControls
             wnd?.LaunchWidgetMode();
         }
 
+        private void BtnMuteToggle_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Primitives.ToggleButton;
+            if (btn == null) return;
+
+            var audioSvc = StudyGotchi.Services.ServiceRegistry.AudioService;
+            if (audioSvc != null)
+            {
+                audioSvc.IsMuted = btn.IsChecked == true;
+                btn.Content = audioSvc.IsMuted ? "🔇" : "🔊";
+            }
+        }
+
         private void TaskCheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             var cb = sender as System.Windows.Controls.CheckBox;

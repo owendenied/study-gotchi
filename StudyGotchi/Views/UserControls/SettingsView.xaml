@@ -20,14 +20,9 @@
                 <Slider Minimum="1" Maximum="3" Value="2" TickPlacement="BottomRight" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,8,0,6"/>
                 <TextBlock Text="Currently: Medium" FontSize="12" Foreground="#9A8A86" Margin="0,0,0,12" HorizontalAlignment="Center"/>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8,0,18">
                     <TextBlock Text="Enable Reminders" VerticalAlignment="Center" Width="300"/>
                     <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="True"/>
-                </StackPanel>
-
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,8,0,18">
-                    <TextBlock Text="Focus Mode" VerticalAlignment="Center" Width="300"/>
-                    <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="False"/>
                 </StackPanel>
 
                 <Button x:Name="BtnLetsGo" Content="Let's Go! →" Click="BtnLetsGo_Click" Style="{StaticResource AccentPillButtonStyle}" HorizontalAlignment="Center" Padding="40,12"/>
