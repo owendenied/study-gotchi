@@ -1,19 +1,25 @@
-<!-- legacy widget removed; keep only the transparent image window below -->
 <Window x:Class="StudyGotchi.Views.StudyWidgetWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:gif="http://wpfanimatedgif.codeplex.com"
-        xmlns:conv="clr-namespace:StudyGotchi.Converters"
-        Title="Widget" SizeToContent="WidthAndHeight" Width="Auto" Height="Auto"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent" Topmost="True" ResizeMode="NoResize">
+        Title="Widget" 
+        Height="200" Width="200"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        Topmost="True" 
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual">
 
-    <Window.Resources>
-        <conv:StringToImageSourceConverter x:Key="StringToImage"/>
-    </Window.Resources>
+    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="#01000000">
+        <Image Source="/Assets/Background/tamagotchi.png" 
+               Stretch="Uniform"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
 
-    <!-- Transparent window showing only the animated sprite -->
-    <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
-           gif:ImageBehavior.RepeatBehavior="Forever"
-           Stretch="Uniform" Width="100" Height="100" Margin="0" MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
-
+        <Viewbox Margin="56,68,59,49">
+            <Image Source="{Binding PetSpritePath, Mode=OneWay}" 
+                   Stretch="Uniform"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        </Viewbox>
+    </Grid>
 </Window>
