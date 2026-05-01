@@ -10,7 +10,8 @@
         Background="Transparent" 
         Topmost="True" 
         ResizeMode="NoResize"
-        WindowStartupLocation="Manual">
+        WindowStartupLocation="Manual"
+        Icon="/Assets/Background/logo.png">
 
     <Window.Resources>
         <conv:StringToImageSourceConverter x:Key="StringToImage" />

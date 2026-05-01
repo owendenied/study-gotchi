@@ -7,7 +7,7 @@
              xmlns:conv="clr-namespace:StudyGotchi.Converters"
              xmlns:gif="http://wpfanimatedgif.codeplex.com"
              Background="{StaticResource MainGradientBrush}"
-             FontFamily="Segoe UI" Height="521">
+             FontFamily="Segoe UI">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -21,12 +21,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="240"/>
-            <ColumnDefinition Width="1*" MinWidth="300"/>
-            <ColumnDefinition Width="Auto" MinWidth="280"/>
-        </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid Margin="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="240"/>
+                <ColumnDefinition Width="1*" MinWidth="300"/>
+                <ColumnDefinition Width="Auto" MinWidth="280"/>
+            </Grid.ColumnDefinitions>
 
         <!-- Left side panel -->
         <Border Grid.Column="0" Style="{StaticResource SidePanelStyle}" Margin="0,0,12,0" VerticalAlignment="Stretch">
@@ -43,20 +44,9 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,8">
-                    <Grid Margin="0,0,0,8">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <!-- Added full screen and mute toggles from dev -->
-                        <Button x:Name="BtnFullScreen" Grid.Column="1" Content="⛶" Width="28" Height="28" Margin="0,0,4,0" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnFullScreen_Click" ToolTip="Toggle Full Screen (F11)"/>
-                        <ToggleButton x:Name="BtnMuteToggle" Grid.Column="2" Content="🔊" Width="28" Height="28" Background="Transparent" BorderThickness="0" FontSize="16" Click="BtnMuteToggle_Click" ToolTip="Toggle Sound"/>
-                    </Grid>
-
                     <StackPanel HorizontalAlignment="Center">
                         <!-- Floating Logo -->
-                        <Image Source="/Assets/Background/logo.png" Width="234" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-40,0,10" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image Source="/Assets/Background/logo.png" Width="234" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-10,0,10" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality">
                             <Image.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
                             </Image.Effect>
@@ -231,5 +221,6 @@
                 </StackPanel>
             </Grid>
         </Border>
+        </Grid>
     </Grid>
 </UserControl>

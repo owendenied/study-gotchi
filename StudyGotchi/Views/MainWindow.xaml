@@ -11,7 +11,8 @@
         MinWidth="900" MinHeight="600"
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        Icon="/Assets/Background/logo.png">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:PetSelectionViewModel}">

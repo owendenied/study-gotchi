@@ -31,6 +31,16 @@
                     <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="True"/>
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,18">
+                    <TextBlock Text="Mute Audio" VerticalAlignment="Center" Width="300"/>
+                    <ToggleButton x:Name="BtnMuteToggle" Style="{StaticResource ToggleSwitchStyle}" Click="BtnMuteToggle_Click"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,18">
+                    <TextBlock Text="Full Screen" VerticalAlignment="Center" Width="300"/>
+                    <ToggleButton x:Name="BtnFullScreen" Style="{StaticResource ToggleSwitchStyle}" Click="BtnFullScreen_Click"/>
+                </StackPanel>
+
                 <Button x:Name="BtnLetsGo" Content="Let&apos;s Go!" Click="BtnLetsGo_Click" Style="{StaticResource AccentPillButtonStyle}" HorizontalAlignment="Center" Padding="40,12"/>
 
                 <Button x:Name="BtnBack" Content="Back" Click="BtnBack_Click" HorizontalAlignment="Left" Margin="0,12,0,0" Background="Transparent" BorderThickness="0" Foreground="{StaticResource GotchiBorderYellow}"/>

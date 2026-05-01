@@ -13,6 +13,21 @@ namespace StudyGotchi.Views.UserControls
             {
                 SldDecayRate.Value = StudyGotchi.Services.ServiceRegistry.SessionController.HungerDecayRate;
             }
+
+            var audioSvc = StudyGotchi.Services.ServiceRegistry.AudioService;
+            if (audioSvc != null)
+            {
+                BtnMuteToggle.IsChecked = audioSvc.IsMuted;
+            }
+
+            this.Loaded += (s, e) =>
+            {
+                var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+                if (wnd != null)
+                {
+                    BtnFullScreen.IsChecked = wnd.WindowStyle == System.Windows.WindowStyle.None;
+                }
+            };
         }
 
         private void BtnBack_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -42,6 +57,24 @@ namespace StudyGotchi.Views.UserControls
         public void OnSaveSettings()
         {
             // placeholder for saving settings
+        }
+
+        private void BtnMuteToggle_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var btn = sender as System.Windows.Controls.Primitives.ToggleButton;
+            if (btn == null) return;
+
+            var audioSvc = StudyGotchi.Services.ServiceRegistry.AudioService;
+            if (audioSvc != null)
+            {
+                audioSvc.IsMuted = btn.IsChecked == true;
+            }
+        }
+
+        private void BtnFullScreen_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+            wnd?.ToggleFullScreen();
         }
 
         private void SldDecayRate_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
