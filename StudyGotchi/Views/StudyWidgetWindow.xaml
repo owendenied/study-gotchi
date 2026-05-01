@@ -3,40 +3,57 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:conv="clr-namespace:StudyGotchi.Converters"
-        Title="Widget" SizeToContent="WidthAndHeight" Width="Auto" Height="Auto"
-        WindowStyle="None" AllowsTransparency="True" Background="Transparent" Topmost="True" ResizeMode="NoResize">
+        Title="Widget" 
+        Height="200" Width="200"
+        WindowStyle="None" 
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        Topmost="True" 
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual">
 
     <Window.Resources>
-        <conv:StringToImageSourceConverter x:Key="StringToImage"/>
+        <conv:StringToImageSourceConverter x:Key="StringToImage" />
     </Window.Resources>
 
-    <!-- Root grid: pet sprite + toast overlay stacked -->
-    <Grid>
-        <!-- Animated pet sprite -->
-        <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
-               gif:ImageBehavior.RepeatBehavior="Forever"
-               Stretch="Uniform" Width="100" Height="100" Margin="0" MouseLeftButtonDown="Window_MouseLeftButtonDown"/>
+    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="#01000000">
+        <!-- Tamagotchi Device Background -->
+        <Image Source="/Assets/Background/tamagotchi.png" 
+               Stretch="Uniform"
+               VerticalAlignment="Center"
+               HorizontalAlignment="Center"/>
 
-        <!-- Reminder toast overlay — shown briefly when a deadline approaches -->
-        <Border x:Name="ToastBorder"
-                Background="#CC2D2D2D"
-                CornerRadius="8"
-                Padding="8,6"
-                VerticalAlignment="Top"
-                HorizontalAlignment="Center"
-                Margin="0,4,0,0"
-                Visibility="Collapsed"
-                IsHitTestVisible="False">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="⏰ " FontSize="12" VerticalAlignment="Center"/>
-                <TextBlock x:Name="TxtToastMessage"
-                           FontSize="11"
-                           FontWeight="SemiBold"
-                           Foreground="White"
-                           VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           MaxWidth="90"/>
-            </StackPanel>
-        </Border>
+        <!-- Screen Area -->
+        <Viewbox Margin="56,68,59,49">
+            <Grid>
+                <!-- Animated pet sprite -->
+                <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
+                       gif:ImageBehavior.RepeatBehavior="Forever"
+                       Stretch="Uniform" Width="100" Height="100" 
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+
+                <!-- Reminder toast overlay -->
+                <Border x:Name="ToastBorder"
+                        Background="#CC2D2D2D"
+                        CornerRadius="8"
+                        Padding="8,6"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center"
+                        Margin="0,4,0,0"
+                        Visibility="Collapsed"
+                        IsHitTestVisible="False">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⏰ " FontSize="12" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="TxtToastMessage"
+                                   FontSize="11"
+                                   FontWeight="SemiBold"
+                                   Foreground="White"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   MaxWidth="90"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Window>

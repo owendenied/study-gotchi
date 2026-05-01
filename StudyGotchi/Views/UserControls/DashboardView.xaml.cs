@@ -101,5 +101,10 @@ namespace StudyGotchi.Views.UserControls
         {
             // UML contract — reserved for future implementation
         }
+
+        private void ProgressBar_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+
+        }
     }
 }

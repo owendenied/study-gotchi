@@ -17,5 +17,9 @@ namespace StudyGotchi.Views.UserControls
             }
         }
 
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            // Optional: button click handler from eume's branch if there is a specific button
+        }
     }
 }

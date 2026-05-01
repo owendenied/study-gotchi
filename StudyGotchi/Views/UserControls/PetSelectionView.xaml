@@ -21,25 +21,27 @@
 
         <Grid Margin="20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="180"/>
+                <!-- Changed from 180 to Auto so it doesn't clip the text -->
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="100"/>
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" VerticalAlignment="Top">
-                <Image Source="/Assets/Background/logo.png" 
-                       Height="120" 
-                       HorizontalAlignment="Center"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 
+                <!-- GotchiTextDark keeps the text on-theme -->
+                <Image Source="/Assets/Background/logo.png" 
+                       Height="144"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor" Width="416"/>
+
+                <!-- GotchiTextDark keeps the text on-theme -->
                 <TextBlock Text="choose your partner!"
                            FontFamily="{StaticResource PixelifyFont}"
                            FontSize="24"
-                           Foreground="#2E4A7B"
+                           Foreground="{StaticResource GotchiTextDark}"
                            HorizontalAlignment="Center"
                            Margin="0,5,0,0"/>
             </StackPanel>
-
 
             <ListBox Grid.Row="1"
                      ItemsSource="{Binding AvailablePets}"
@@ -89,7 +91,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Width="200"
-                    Height="60"/>
+                    Height="60" Click="Button_Click"/>
         </Grid>
     </Grid>
 </UserControl>
