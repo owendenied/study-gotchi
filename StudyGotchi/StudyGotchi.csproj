@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -27,7 +27,9 @@
   <ItemGroup>
     <None Remove="Assets\Background\add_button.png" />
     <None Remove="Assets\Background\bg.png" />
+    <None Remove="Assets\Background\cracked_egg.png" />
     <None Remove="Assets\Background\egg.png" />
+    <None Remove="Assets\Background\golden_egg.png" />
     <None Remove="Assets\Background\pet_bg.png" />
     <None Remove="Assets\Background\pixel_bg.png" />
     <None Remove="Assets\Background\pixel_bg_gray.png" />
@@ -46,7 +48,9 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\Background\bg.png" />
+    <Resource Include="Assets\Background\cracked_egg.png" />
     <Resource Include="Assets\Background\egg.png" />
+    <Resource Include="Assets\Background\golden_egg.png" />
     <Resource Include="Assets\Background\pet_bg.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>

@@ -44,8 +44,14 @@ namespace StudyGotchi.Controllers
             {
                 return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
             }
-            if (_activePet is PetB) return SpriteAbsPath("Assets/Background/egg.png");
-            if (_activePet is PetC) return SpriteAbsPath("Assets/Background/egg.png");
+            if (_activePet is PetB)
+            {
+                return SpriteAbsPath($"Assets/Sprites/PetB/PetB_{stage}_{mood}.gif");
+            }
+            if (_activePet is PetC)
+            {
+                return SpriteAbsPath($"Assets/Sprites/PetC/PetC_{stage}_{mood}.gif");
+            }
             
             return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
         }
