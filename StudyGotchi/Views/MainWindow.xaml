@@ -41,6 +41,9 @@
                 IsHitTestVisible="False"
                 MinWidth="280"
                 MaxWidth="420">
+            <Border.RenderTransform>
+                <TranslateTransform X="-18"/>
+            </Border.RenderTransform>
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" Opacity="0.2" ShadowDepth="3"/>
             </Border.Effect>

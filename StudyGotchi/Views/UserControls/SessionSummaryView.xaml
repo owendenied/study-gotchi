@@ -14,67 +14,67 @@
         <conv:StringToImageSourceConverter x:Key="StringToImage"/>
     </UserControl.Resources>
 
-    <Grid>
-        <Border Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28" Background="#FFFDFB" CornerRadius="18" Effect="{StaticResource DropShadowEffect}">
+    <Grid Margin="24">
+        <Border Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="20" Background="#FFFDFB" CornerRadius="18" Effect="{StaticResource DropShadowEffect}">
             <StackPanel>
-                <TextBlock Text="Session Summary" FontSize="28" FontWeight="Bold" Foreground="#3A1F1A" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding Session.FeedbackText}" HorizontalAlignment="Center" TextAlignment="Center" Foreground="#8A6F6B" Margin="0,8,0,16" TextWrapping="Wrap"/>
+                <TextBlock Text="Session Summary" FontSize="25" FontWeight="Bold" Foreground="#3A1F1A" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Session.FeedbackText}" FontSize="13" HorizontalAlignment="Center" TextAlignment="Center" Foreground="#8A6F6B" Margin="0,5,0,10" TextWrapping="Wrap"/>
 
-                <UniformGrid Columns="3" Margin="0,0,0,14">
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                <UniformGrid Columns="3" Margin="0,0,0,8">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.TasksDone}" FontSize="21" FontWeight="Bold" Foreground="#FF7F66" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.TasksDone}" FontSize="20" FontWeight="Bold" Foreground="#FF7F66" HorizontalAlignment="Center"/>
                             <TextBlock Text="Tasks" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.XpEarned}" FontSize="21" FontWeight="Bold" Foreground="#15593F" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.XpEarned}" FontSize="20" FontWeight="Bold" Foreground="#15593F" HorizontalAlignment="Center"/>
                             <TextBlock Text="XP Earned" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.Duration}" FontSize="18" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.Duration}" FontSize="17" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
                             <TextBlock Text="Duration" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.HungerChange}" FontSize="21" FontWeight="Bold" Foreground="#B47B2B" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.HungerChange}" FontSize="20" FontWeight="Bold" Foreground="#B47B2B" HorizontalAlignment="Center"/>
                             <TextBlock Text="Hunger" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.LevelChange}" FontSize="21" FontWeight="Bold" Foreground="#1C4E96" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.LevelChange}" FontSize="20" FontWeight="Bold" Foreground="#1C4E96" HorizontalAlignment="Center"/>
                             <TextBlock Text="Levels" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                    <Border Height="72" CornerRadius="12" Background="#FFF8F6" Padding="8" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.CurrentStage}" FontSize="18" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.CurrentStage}" FontSize="17" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
                             <TextBlock Text="Stage" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                 </UniformGrid>
 
-                <TextBlock Text="{Binding Session.TotalSessions, StringFormat=Total sessions: {0}}" HorizontalAlignment="Center" Foreground="#8A6F6B" Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding Session.TotalSessions, StringFormat=Total sessions: {0}}" FontSize="12" HorizontalAlignment="Center" Foreground="#8A6F6B" Margin="0,0,0,6"/>
 
                 <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Converter={StaticResource StringToImage}, Mode=OneWay}"
                        gif:ImageBehavior.RepeatBehavior="Forever"
-                       Width="140" Height="140"
+                       Width="104" Height="104"
                        RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 
-                <TextBlock HorizontalAlignment="Center" Margin="0,8,0,18">
+                <TextBlock FontSize="13" HorizontalAlignment="Center" Margin="0,5,0,10">
                     <TextBlock.Text>
                         <Binding Path="PetName" StringFormat="Rest up with {0}."/>
                     </TextBlock.Text>
                 </TextBlock>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button x:Name="BtnStartAnother" Content="Start another?" Style="{StaticResource AccentPillButtonStyle}" Padding="30,12" Margin="0,0,12,0" Click="BtnStartAnother_Click"/>
-                    <Button x:Name="BtnClose" Content="Close" Style="{StaticResource PillButtonStyle}" Padding="30,12" Click="BtnClose_Click"/>
+                    <Button x:Name="BtnStartAnother" Content="Start another?" Style="{StaticResource AccentPillButtonStyle}" Padding="26,9" Margin="0,0,12,0" Click="BtnStartAnother_Click"/>
+                    <Button x:Name="BtnClose" Content="Close" Style="{StaticResource PillButtonStyle}" Padding="26,9" Click="BtnClose_Click"/>
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -82,7 +82,7 @@
                     <Rectangle Height="2" Fill="#B0C4DE" Margin="0,10,0,20"/>
 
                     <!-- Hunger Stats -->
-                    <TextBlock Text="Hunger" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,6"/>
+                    <TextBlock Text="Hunger" FontSize="14" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,6"/>
                     <ProgressBar Value="{Binding HungerLevel, Mode=OneWay}" Maximum="100" Height="14" Foreground="#F7C844" Background="#EAEAEA" BorderThickness="0">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
@@ -95,10 +95,10 @@
                             </ControlTemplate>
                         </ProgressBar.Template>
                     </ProgressBar>
-                    <TextBlock Text="{Binding PetMoodText, Mode=OneWay}" FontSize="12" Foreground="#666666" Margin="0,6,0,18"/>
+                    <TextBlock Text="{Binding PetMoodText, Mode=OneWay}" FontSize="13" Foreground="#5B514F" Margin="0,6,0,18" TextWrapping="Wrap"/>
 
                     <!-- Experience Stats -->
-                    <TextBlock Text="Experience" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,6"/>
+                    <TextBlock Text="Experience" FontSize="14" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,6"/>
                     <ProgressBar Value="{Binding XpLevel, Mode=OneWay}" Maximum="100" Height="14" Foreground="#F97B9C" Background="#EAEAEA" BorderThickness="0">
                         <ProgressBar.Template>
                             <ControlTemplate TargetType="ProgressBar">
@@ -111,7 +111,7 @@
                             </ControlTemplate>
                         </ProgressBar.Template>
                     </ProgressBar>
-                    <TextBlock Text="{Binding LevelText, Mode=OneWay}" FontSize="12" Foreground="#666666" Margin="0,6,0,0"/>
+                    <TextBlock Text="{Binding LevelText, Mode=OneWay}" FontSize="13" Foreground="#5B514F" Margin="0,6,0,0"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">
@@ -192,7 +192,7 @@
 
                 <!-- Header with title and add button -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,6">
-                    <TextBlock Text="Today's Tasks" FontWeight="Bold" FontSize="16" Foreground="{StaticResource HeaderTextColor}" VerticalAlignment="Center" />
+                    <TextBlock Text="Today's Tasks" FontWeight="Bold" FontSize="18" Foreground="{StaticResource HeaderTextColor}" VerticalAlignment="Center" />
                     <Button x:Name="BtnAddTaskTop" HorizontalAlignment="Right" Width="28" Height="28" Margin="8,0,0,0" Click="BtnAddTaskTop_Click" Background="Transparent" BorderBrush="Transparent" AutomationProperties.Name="Add task" ToolTip="Add tasks">
                         <Image Source="/Assets/Background/add_button.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Width="24"/>
                     </Button>
@@ -202,28 +202,37 @@
                     <ItemsControl ItemsSource="{Binding Tasks.Tasks}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,6">
-                                    <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,0,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click" AutomationProperties.Name="{Binding Name}" ToolTip="Complete this task"/>
-                                    <StackPanel>
-                                        <Border Background="{Binding TypeChipColor}" CornerRadius="8" Padding="6,2" HorizontalAlignment="Left" Margin="0,0,0,3">
-                                            <TextBlock Text="{Binding TypeLabel}" FontSize="10" FontWeight="Bold" Foreground="#5B3F39"/>
-                                        </Border>
-                                        <!-- Strikethrough for completed tasks from dev branch -->
-                                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold">
-                                            <TextBlock.Style>
-                                                <Style TargetType="TextBlock">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsCompleted}" Value="True">
-                                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBlock.Style>
-                                        </TextBlock>
-                                        <!-- DisplayDeadline formatting from dev branch -->
-                                        <TextBlock Text="{Binding DisplayDeadline}" FontSize="12" Background="#FFF1D8" Padding="6,3"/>
-                                    </StackPanel>
-                                </StackPanel>
+                                <Border Background="#FFFFFC" CornerRadius="8" Padding="10,8" Margin="0,5" BorderBrush="#F3DDD8" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <CheckBox Grid.Column="0" IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,4,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click" AutomationProperties.Name="{Binding Name}" ToolTip="Complete this task"/>
+                                        <StackPanel Grid.Column="1">
+                                            <Border Background="{Binding TypeChipColor}" CornerRadius="8" Padding="7,3" HorizontalAlignment="Left" Margin="0,0,0,4">
+                                                <TextBlock Text="{Binding TypeLabel}" FontSize="11" FontWeight="Bold" Foreground="#5B3F39"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding Name}" FontFamily="{StaticResource PixelifyFont}" FontSize="15" FontWeight="SemiBold" Foreground="#3A1F1A" TextWrapping="Wrap">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="FontFamily" Value="{StaticResource PixelifyFont}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCompleted}" Value="True">
+                                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                                <Setter Property="Foreground" Value="#8A7B78"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <Border Background="#FFF1D8" CornerRadius="6" Padding="6,3" Margin="0,5,0,0" HorizontalAlignment="Stretch">
+                                                <TextBlock Text="{Binding DisplayDeadline}" FontFamily="{StaticResource PixelifyFont}" FontSize="12" FontWeight="SemiBold" Foreground="#6E4E4A" TextWrapping="Wrap"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

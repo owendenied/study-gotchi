@@ -23,7 +23,6 @@ namespace StudyGotchi.Views.UserControls
             }
 
             BtnReminderToggle.IsChecked = StudyGotchi.Services.ServiceRegistry.ReminderService.IsEnabled;
-            TxtSaveStatus.Text = StudyGotchi.Services.ServiceRegistry.LastStatusMessage;
 
             this.Loaded += (s, e) =>
             {
@@ -67,7 +66,6 @@ namespace StudyGotchi.Views.UserControls
         {
             StudyGotchi.Services.ServiceRegistry.SessionController.HungerDecayRate = (int)SldDecayRate.Value;
             StudyGotchi.Services.ServiceRegistry.SaveState();
-            TxtSaveStatus.Text = StudyGotchi.Services.ServiceRegistry.LastStatusMessage;
         }
 
         private void BtnMuteToggle_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -96,7 +94,6 @@ namespace StudyGotchi.Views.UserControls
         {
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
             wnd?.ToggleFullScreen();
-            TxtSaveStatus.Text = StudyGotchi.Services.ServiceRegistry.LastStatusMessage;
         }
 
         private void BtnResetSave_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -114,7 +111,6 @@ namespace StudyGotchi.Views.UserControls
             SldDecayRate.Value = StudyGotchi.Services.ServiceRegistry.SessionController.HungerDecayRate;
             BtnMuteToggle.IsChecked = StudyGotchi.Services.ServiceRegistry.AudioService.IsMuted;
             BtnReminderToggle.IsChecked = StudyGotchi.Services.ServiceRegistry.ReminderService.IsEnabled;
-            TxtSaveStatus.Text = StudyGotchi.Services.ServiceRegistry.LastStatusMessage;
 
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
             wnd?.NavigateToPetSelection();

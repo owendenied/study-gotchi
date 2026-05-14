@@ -17,32 +17,31 @@
                     <TextBlock Text="Make it yours before we begin" FontSize="12" Foreground="{StaticResource GotchiTextDark}" HorizontalAlignment="Center"/>
                 </StackPanel>
 
-                <TextBlock Text="Pet Name" FontWeight="SemiBold" Margin="4,4"/>
+                <TextBlock Text="Pet Name" FontSize="13" FontWeight="SemiBold" Margin="4,4"/>
                 <Border Background="#FFF6F4" CornerRadius="10" Padding="8" Margin="0,3,0,8">
-                    <TextBox x:Name="TxtPetName" Text="Buddy" Background="Transparent" BorderThickness="0" FontSize="14"/>
+                    <TextBox x:Name="TxtPetName" Text="Buddy" Background="Transparent" BorderThickness="0" FontSize="15"/>
                 </Border>
 
-                <TextBlock Text="Hunger Decay Rate" FontWeight="SemiBold" Margin="4,4"/>
+                <TextBlock Text="Hunger Decay Rate" FontSize="13" FontWeight="SemiBold" Margin="4,4"/>
                 <Slider x:Name="SldDecayRate" Minimum="1" Maximum="3" Value="2" TickPlacement="BottomRight" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,4,0,2" ValueChanged="SldDecayRate_ValueChanged"/>
-                <TextBlock x:Name="TxtDecayRateValue" Text="Currently: Medium" FontSize="12" Foreground="#9A8A86" Margin="0,0,0,8" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="TxtDecayRateValue" Text="Currently: Medium" FontSize="13" Foreground="#8A6F6B" Margin="0,0,0,8" HorizontalAlignment="Center"/>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,4,0,12">
-                    <TextBlock Text="Enable Reminders" VerticalAlignment="Center" Width="300"/>
+                    <TextBlock Text="Enable Reminders" FontSize="14" VerticalAlignment="Center" Width="300"/>
                     <ToggleButton x:Name="BtnReminderToggle" Style="{StaticResource ToggleSwitchStyle}" IsChecked="True" Click="BtnReminderToggle_Click" AutomationProperties.Name="Enable reminders" ToolTip="Turn deadline reminders on or off"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-                    <TextBlock Text="Mute Audio" VerticalAlignment="Center" Width="300"/>
+                    <TextBlock Text="Mute Audio" FontSize="14" VerticalAlignment="Center" Width="300"/>
                     <ToggleButton x:Name="BtnMuteToggle" Style="{StaticResource ToggleSwitchStyle}" Click="BtnMuteToggle_Click" AutomationProperties.Name="Mute audio" ToolTip="Mute music and sound effects"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-                    <TextBlock Text="Full Screen" VerticalAlignment="Center" Width="300"/>
+                    <TextBlock Text="Full Screen" FontSize="14" VerticalAlignment="Center" Width="300"/>
                     <ToggleButton x:Name="BtnFullScreen" Style="{StaticResource ToggleSwitchStyle}" Click="BtnFullScreen_Click" AutomationProperties.Name="Full screen" ToolTip="Toggle full screen"/>
                 </StackPanel>
 
-                <Button x:Name="BtnResetSave" Content="Start Fresh" Click="BtnResetSave_Click" HorizontalAlignment="Center" Padding="16,7" Margin="0,0,0,8" Background="Transparent" BorderBrush="#FF7F66" Foreground="#FF7F66" ToolTip="Erase local progress and return to pet selection"/>
-                <TextBlock x:Name="TxtSaveStatus" Text="" FontSize="12" Foreground="#8A6F6B" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                <Button x:Name="BtnResetSave" Content="Start Fresh" Click="BtnResetSave_Click" HorizontalAlignment="Center" Padding="4,2" Margin="0,0,0,8" Background="Transparent" BorderThickness="0" Foreground="#FF7F66" ToolTip="Erase local progress and return to pet selection"/>
 
                 <Button x:Name="BtnLetsGo" Content="Let&apos;s Go!" Click="BtnLetsGo_Click" Style="{StaticResource AccentPillButtonStyle}" HorizontalAlignment="Center" Padding="36,10"/>
 
