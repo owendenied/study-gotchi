@@ -20,6 +20,12 @@ namespace StudyGotchi.Views
             var reminderService = StudyGotchi.Services.ServiceRegistry.ReminderService;
             if (reminderService != null)
                 reminderService.ReminderTriggered += OnReminderTriggered;
+
+            Closed += (s, e) =>
+            {
+                if (reminderService != null)
+                    reminderService.ReminderTriggered -= OnReminderTriggered;
+            };
         }
 
         private void OnReminderTriggered(string taskName, int minutesLeft)
@@ -51,7 +57,7 @@ namespace StudyGotchi.Views
 
         public void UpdatePetDisplay()
         {
-            // placeholder to refresh visual state from controllers
+            StudyGotchi.Services.ServiceRegistry.DashboardViewModel.Refresh();
         }
 
         public void ReturnToDashboard()

@@ -5,8 +5,8 @@
              xmlns:conv="clr-namespace:StudyGotchi.Converters">
 
     <UserControl.Background>
-        <ImageBrush ImageSource="pack://application:,,,/Assets/Background/pixel_bg.png" 
-                    Stretch="UniformToFill" 
+        <ImageBrush ImageSource="pack://application:,,,/Assets/Background/pixel_bg.png"
+                    Stretch="UniformToFill"
                     RenderOptions.BitmapScalingMode="NearestNeighbor"/>
     </UserControl.Background>
 
@@ -15,47 +15,62 @@
     </UserControl.Resources>
 
     <Grid>
-        <!-- 2. The existing inner summary card (the content), smaller and centered -->
-        <!-- Reduced width from 620 to 500 to create the framed "peek" effect -->
-        <Border Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28" Background="#FFFDFB" CornerRadius="18" Effect="{StaticResource DropShadowEffect}">
+        <Border Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28" Background="#FFFDFB" CornerRadius="18" Effect="{StaticResource DropShadowEffect}">
             <StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12">
-                    <TextBlock Text="Session Summary" FontSize="28" FontWeight="Bold" Foreground="#3A1F1A"/>
-                </StackPanel>
+                <TextBlock Text="Session Summary" FontSize="28" FontWeight="Bold" Foreground="#3A1F1A" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding Session.FeedbackText}" HorizontalAlignment="Center" TextAlignment="Center" Foreground="#8A6F6B" Margin="0,8,0,16" TextWrapping="Wrap"/>
 
-                <TextBlock Text="Great work today!" HorizontalAlignment="Center" Foreground="#8A6F6B" Margin="0,0,0,12"/>
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Border Width="120" Height="100" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="0,0,18,0">
+                <UniformGrid Columns="3" Margin="0,0,0,14">
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.TasksDone}" FontSize="22" FontWeight="Bold" Foreground="#FF7F66" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Tasks Done" FontSize="12" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.TasksDone}" FontSize="21" FontWeight="Bold" Foreground="#FF7F66" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Tasks" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-
-                    <Border Width="120" Height="100" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="0,0,18,0">
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.XpEarned}" FontSize="22" FontWeight="Bold" Foreground="#15593F" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.XpEarned}" FontSize="21" FontWeight="Bold" Foreground="#15593F" HorizontalAlignment="Center"/>
                             <TextBlock Text="XP Earned" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-
-                    <Border Width="120" Height="100" CornerRadius="12" Background="#FFF8F6" Padding="10">
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
                         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                            <TextBlock Text="{Binding Session.CurrentStage}" FontSize="18" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Evolution" FontSize="12" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Session.Duration}" FontSize="18" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Duration" FontSize="12" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                </StackPanel>
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Session.HungerChange}" FontSize="21" FontWeight="Bold" Foreground="#B47B2B" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Hunger" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Session.LevelChange}" FontSize="21" FontWeight="Bold" Foreground="#1C4E96" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Levels" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Height="82" CornerRadius="12" Background="#FFF8F6" Padding="10" Margin="4">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding Session.CurrentStage}" FontSize="18" FontWeight="Bold" Foreground="#7E4AB8" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Stage" FontSize="12" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
 
-                <TextBlock HorizontalAlignment="Center" Margin="0,18">
-                    <TextBlock.Text>
-                        <Binding Path="PetName" StringFormat="I'm so proud of us, {0}! ✨" />
-                    </TextBlock.Text>
-                </TextBlock>
+                <TextBlock Text="{Binding Session.TotalSessions, StringFormat=Total sessions: {0}}" HorizontalAlignment="Center" Foreground="#8A6F6B" Margin="0,0,0,10"/>
+
                 <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Converter={StaticResource StringToImage}, Mode=OneWay}"
                        gif:ImageBehavior.RepeatBehavior="Forever"
-                       Width="160" Height="160"/>
+                       Width="140" Height="140"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+
+                <TextBlock HorizontalAlignment="Center" Margin="0,8,0,18">
+                    <TextBlock.Text>
+                        <Binding Path="PetName" StringFormat="Rest up with {0}."/>
+                    </TextBlock.Text>
+                </TextBlock>
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="BtnStartAnother" Content="Start another?" Style="{StaticResource AccentPillButtonStyle}" Padding="30,12" Margin="0,0,12,0" Click="BtnStartAnother_Click"/>

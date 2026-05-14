@@ -19,20 +19,34 @@ namespace StudyGotchi.Views
             Services.ServiceRegistry.Initialize();
             DataContext = new ViewModels.MainWindowViewModel();
 
+            Loaded += (s, e) =>
+            {
+                if (Services.ServiceRegistry.IsFullScreenPreferred && !_isFullScreen)
+                {
+                    ToggleFullScreen();
+                }
+            };
+
             // Subscribe to reminders for the main window toast
             Services.ServiceRegistry.ReminderService.ReminderTriggered += OnReminderTriggered;
+            Services.ServiceRegistry.PetController.PetLeveledUp += () =>
+            {
+                Application.Current?.Dispatcher?.Invoke(() => ShowToast("Your pet evolved a little.", "LEVEL UP", "+"));
+            };
         }
 
         private void OnReminderTriggered(string taskName, int minutesLeft)
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                ShowToast($"{taskName} ({minutesLeft} min left!)");
+                ShowToast($"{taskName} ({minutesLeft} min left!)", "REMINDER", "!");
             });
         }
 
-        public void ShowToast(string message)
+        public void ShowToast(string message, string title = "NOTICE", string icon = "!")
         {
+            TxtToastTitle.Text = title;
+            TxtToastIcon.Text = icon;
             TxtToastMessage.Text = message;
             ToastBorder.Visibility = Visibility.Visible;
 
@@ -112,13 +126,17 @@ namespace StudyGotchi.Views
                 WindowStyle = WindowStyle.SingleBorderWindow;
                 WindowState = WindowState.Normal;
                 _isFullScreen = false;
+                Services.ServiceRegistry.IsFullScreenPreferred = false;
             }
             else
             {
                 WindowStyle = WindowStyle.None;
                 WindowState = WindowState.Maximized;
                 _isFullScreen = true;
+                Services.ServiceRegistry.IsFullScreenPreferred = true;
             }
+
+            Services.ServiceRegistry.SaveState();
         }
 
         private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)

@@ -11,13 +11,13 @@
         Topmost="True" 
         ResizeMode="NoResize"
         WindowStartupLocation="Manual"
-        Icon="/Assets/Background/logo.png">
+        Icon="/Assets/Background/golden_egg.png">
 
     <Window.Resources>
         <conv:StringToImageSourceConverter x:Key="StringToImage" />
     </Window.Resources>
 
-    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="#01000000">
+    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="#01000000" AutomationProperties.Name="StudyGotchi floating widget" ToolTip="Drag to move. Double-click to return to dashboard.">
         <!-- Tamagotchi Device Background -->
         <Image Source="/Assets/Background/tamagotchi.png" 
                Stretch="Uniform"

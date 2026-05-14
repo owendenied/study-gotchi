@@ -8,30 +8,48 @@ namespace StudyGotchi.ViewModels
 {
     public class PetOption : BaseViewModel
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string SpritePath { get; set; }
-        public string TintColor { get; set; } // New property for the egg's glow/tint
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string SpritePath { get; set; } = string.Empty;
+        public string TintColor { get; set; } = string.Empty;
+        public string SelectedSpritePath { get; set; } = "pack://application:,,,/Assets/Background/cracked_egg.png";
+        public string DisplaySpritePath => IsCracked ? SelectedSpritePath : SpritePath;
 
         private bool _isSelected;
         public bool IsSelected
         {
             get => _isSelected;
-            set { _isSelected = value; RaisePropertyChanged(); }
+            set
+            {
+                _isSelected = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        private bool _isCracked;
+        public bool IsCracked
+        {
+            get => _isCracked;
+            set
+            {
+                _isCracked = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(DisplaySpritePath));
+            }
         }
     }
 
     public class PetSelectionViewModel : BaseViewModel
     {
-        private ObservableCollection<PetOption> _availablePets;
+        private ObservableCollection<PetOption> _availablePets = new();
         public ObservableCollection<PetOption> AvailablePets
         {
             get => _availablePets;
             set { _availablePets = value; RaisePropertyChanged(); }
         }
 
-        private PetOption _selectedPet;
-        public PetOption SelectedPet
+        private PetOption? _selectedPet;
+        public PetOption? SelectedPet
         {
             get => _selectedPet;
             set
@@ -68,12 +86,22 @@ namespace StudyGotchi.ViewModels
                 }
             };
 
-            SelectPetCommand = new RelayCommand(p => SelectedPet = p as PetOption);
+            SelectPetCommand = new RelayCommand(p =>
+            {
+                if (p is PetOption petOption) SelectedPet = petOption;
+            });
 
             ChoosePetCommand = new RelayCommand(_ =>
             {
                 if (SelectedPet != null)
                 {
+                    foreach (var pet in AvailablePets)
+                    {
+                        pet.IsCracked = false;
+                    }
+
+                    SelectedPet.IsCracked = true;
+
                     int index = AvailablePets.IndexOf(SelectedPet);
                     var activePet = ServiceRegistry.PetController.GetActivePet();
                     
@@ -92,6 +120,7 @@ namespace StudyGotchi.ViewModels
                     }
 
                     ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
+                    ServiceRegistry.SaveState();
 
                     // Navigate to Settings via the MainWindow
                     var mainWindow = System.Windows.Application.Current.MainWindow as Views.MainWindow;

@@ -7,7 +7,7 @@ namespace StudyGotchi.Views.UserControls
         public DashboardView()
         {
             InitializeComponent();
-            this.DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
+            DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
         }
 
         private void BtnStartSession_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -49,45 +49,31 @@ namespace StudyGotchi.Views.UserControls
             wnd?.LaunchWidgetMode();
         }
 
-
-
         private void TaskCheckBox_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var cb = sender as System.Windows.Controls.CheckBox;
+            var cb = sender as CheckBox;
             if (cb == null) return;
 
-            // Immediately lock the whole row so the user can't click again while it fades
-            var row = cb.Parent as System.Windows.Controls.StackPanel;
+            var row = cb.Parent as StackPanel;
             if (row != null) row.IsHitTestVisible = false;
 
             if (!StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsSessionActive)
             {
                 cb.IsChecked = false;
-                if (row != null) row.IsHitTestVisible = true; // re-enable, session not active
-                System.Windows.MessageBox.Show("Please start a session before completing tasks!", "Session Not Active", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+                if (row != null) row.IsHitTestVisible = true;
+                var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+                wnd?.ShowToast("Start a session before completing tasks.");
                 return;
             }
 
             if (cb.Tag is int taskId)
             {
-                var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
-                tc.CompleteTask(taskId);
+                StudyGotchi.Services.ServiceRegistry.TaskController.CompleteTask(taskId);
             }
-        }
-
-        public void OnTaskChecked()
-        {
-            // UML contract — reserved for future implementation
-        }
-
-        public void UpdateDisplay()
-        {
-            // UML contract — reserved for future implementation
         }
 
         private void ProgressBar_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
         {
-
         }
     }
 }

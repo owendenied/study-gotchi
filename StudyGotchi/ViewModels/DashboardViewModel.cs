@@ -1,12 +1,10 @@
-using System;
-using StudyGotchi.Services;
 using StudyGotchi.Controllers;
 
 namespace StudyGotchi.ViewModels
 {
     public class DashboardViewModel : BaseViewModel
     {
-        private PetController _petController;
+        private readonly PetController _petController;
 
         public string PetName => _petController.GetPetName();
         public string PetStage => _petController.GetEvolutionStageName();
@@ -14,7 +12,20 @@ namespace StudyGotchi.ViewModels
         public int HungerLevel => _petController.GetHungerLevel();
         public int XpLevel => _petController.GetXp();
         public int Level => _petController.GetLevel();
-        public string LevelText => $"Level {Level} · {XpLevel} / 100 XP";
+        public string LevelText => $"Level {Level} - {XpLevel} / 100 XP";
+        public string PetMoodText
+        {
+            get
+            {
+                return HungerLevel switch
+                {
+                    >= 80 => "Feeling great!",
+                    >= 40 => "Hanging in there.",
+                    > 20 => "Getting hungry.",
+                    _ => "Needs a break soon."
+                };
+            }
+        }
 
         public TasksViewModel Tasks { get; }
         public SessionViewModel Session { get; }
@@ -35,6 +46,7 @@ namespace StudyGotchi.ViewModels
             RaisePropertyChanged(nameof(XpLevel));
             RaisePropertyChanged(nameof(Level));
             RaisePropertyChanged(nameof(LevelText));
+            RaisePropertyChanged(nameof(PetMoodText));
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using StudyGotchi.Models;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -25,6 +26,7 @@ namespace StudyGotchi.Views.UserControls
             CmbAmPm.SelectionChanged += (s, e) => UpdatePreview();
             ChkTomorrow.Checked += (s, e) => UpdatePreview();
             ChkTomorrow.Unchecked += (s, e) => UpdatePreview();
+            CmbTaskType.SelectionChanged += (s, e) => ClearValidation();
         }
 
         private void SetDefaultTime()
@@ -34,7 +36,7 @@ namespace StudyGotchi.Views.UserControls
             int displayHour = dt.Hour % 12;
             if (displayHour == 0) displayHour = 12;
             CmbHour.SelectedIndex = displayHour - 1;
-            CmbMinute.SelectedIndex = 0;
+            CmbMinute.SelectedIndex = dt.Minute;
             ChkTomorrow.IsChecked = false;
         }
 
@@ -81,24 +83,59 @@ namespace StudyGotchi.Views.UserControls
 
         public void OnAddTask()
         {
-            // placeholder
+            TryAddTask();
         }
 
         private void BtnAddTask_Click(object sender, RoutedEventArgs e)
         {
+            TryAddTask();
+        }
+
+        private void TryAddTask()
+        {
             var name = TxtTaskName.Text?.Trim();
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
-                var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
-                tc.AddTask(name, BuildDeadline());
+                ShowValidation("Give the task a name first.");
+                return;
             }
 
-            // Clear inputs for the next task
+            var deadline = BuildDeadline();
+            if (deadline <= DateTime.Now)
+            {
+                ShowValidation("Pick a due time in the future.");
+                return;
+            }
+
+            var tc = StudyGotchi.Services.ServiceRegistry.TaskController;
+            tc.AddTask(name, deadline, GetSelectedTaskType());
+
             TxtTaskName.Clear();
             SetDefaultTime();
+            CmbTaskType.SelectedIndex = 1;
+            TxtValidationMessage.Foreground = System.Windows.Media.Brushes.ForestGreen;
+            TxtValidationMessage.Text = "Task added. Add another or press Done.";
+        }
 
-            var wnd = Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToDashboard();
+        private StudyTaskType GetSelectedTaskType()
+        {
+            return CmbTaskType.SelectedIndex switch
+            {
+                0 => StudyTaskType.WrittenWork,
+                2 => StudyTaskType.Project,
+                _ => StudyTaskType.Activity
+            };
+        }
+
+        private void ShowValidation(string message)
+        {
+            TxtValidationMessage.Foreground = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(200, 76, 76));
+            TxtValidationMessage.Text = message;
+        }
+
+        private void ClearValidation()
+        {
+            TxtValidationMessage.Text = string.Empty;
         }
     }
 }

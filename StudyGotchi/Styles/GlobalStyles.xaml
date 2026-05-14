@@ -80,7 +80,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
                     <!-- Use a Grid to stack the arrow and the egg vertically -->
-                    <Grid Margin="10">
+                    <Grid Margin="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <!-- Row for the Arrow -->
@@ -96,7 +96,7 @@
                           VerticalAlignment="Bottom"
                           Height="12" Width="15"
                           Stretch="Fill"
-                          Margin="0,0,0,5"
+                          Margin="0,0,0,2"
                           Visibility="Collapsed"/>
 
                         <!-- The Egg Container -->
@@ -105,7 +105,7 @@
                             BorderThickness="4" 
                             BorderBrush="Transparent" 
                             CornerRadius="25" 
-                            Padding="8"
+                            Padding="4"
                             Background="Transparent">
                             <ContentPresenter x:Name="EggContent" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>

@@ -24,9 +24,9 @@
     <Grid>
         <Grid Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="240"/>
-                <ColumnDefinition Width="1*" MinWidth="300"/>
-                <ColumnDefinition Width="Auto" MinWidth="280"/>
+                <ColumnDefinition Width="1.05*" MinWidth="190" MaxWidth="340"/>
+                <ColumnDefinition Width="2.4*" MinWidth="260"/>
+                <ColumnDefinition Width="1.15*" MinWidth="220" MaxWidth="380"/>
             </Grid.ColumnDefinitions>
 
         <!-- Left side panel -->
@@ -46,28 +46,28 @@
                 <StackPanel Grid.Row="0" Margin="0,0,0,8">
                     <StackPanel HorizontalAlignment="Center">
                         <!-- Floating Logo -->
-                        <Image Source="/Assets/Background/logo.png" Width="234" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-10,0,10" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality">
+                        <Image Source="/Assets/Background/logo.png" MaxWidth="234" Height="Auto" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-10,0,10" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality">
                             <Image.Effect>
                                 <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
                             </Image.Effect>
                         </Image>
 
                         <!-- Blue Pill Buttons -->
-                        <StackPanel Orientation="Vertical" Width="200" HorizontalAlignment="Center">
-                            <Button x:Name="BtnNavSelectPet" Click="BtnNavSelectPet_Click" Margin="0,0,0,12" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                        <StackPanel Orientation="Vertical" MaxWidth="200" HorizontalAlignment="Stretch">
+                            <Button x:Name="BtnNavSelectPet" Click="BtnNavSelectPet_Click" Margin="0,0,0,12" Background="Transparent" BorderThickness="0" Cursor="Hand" AutomationProperties.Name="Select pet" ToolTip="Choose a different pet">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="#1C4E96" CornerRadius="22" BorderThickness="0">
+                                        <Border Background="#1C4E96" CornerRadius="22" BorderThickness="0" SnapsToDevicePixels="True" ClipToBounds="False">
                                             <TextBlock Text="Select Pet" Foreground="White" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,12"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
 
-                            <Button x:Name="BtnNavSettings" Click="BtnNavSettings_Click" Margin="0,0,0,10" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                            <Button x:Name="BtnNavSettings" Click="BtnNavSettings_Click" Margin="0,0,0,10" Background="Transparent" BorderThickness="0" Cursor="Hand" AutomationProperties.Name="Settings" ToolTip="Open settings">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
-                                        <Border Background="#1C4E96" CornerRadius="22" BorderThickness="0">
+                                        <Border Background="#1C4E96" CornerRadius="22" BorderThickness="0" SnapsToDevicePixels="True" ClipToBounds="False">
                                             <TextBlock Text="Settings" Foreground="White" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,12"/>
                                         </Border>
                                     </ControlTemplate>
@@ -95,7 +95,7 @@
                             </ControlTemplate>
                         </ProgressBar.Template>
                     </ProgressBar>
-                    <TextBlock Text="Feeling great!" FontSize="12" Foreground="#666666" Margin="0,6,0,18"/>
+                    <TextBlock Text="{Binding PetMoodText, Mode=OneWay}" FontSize="12" Foreground="#666666" Margin="0,6,0,18"/>
 
                     <!-- Experience Stats -->
                     <TextBlock Text="Experience" FontWeight="Bold" Foreground="#333333" Margin="0,0,0,6"/>
@@ -124,50 +124,60 @@
         <Border Grid.Column="1" Style="{StaticResource CenterCardStyle}" Margin="0,0,12,0">
             <Grid>
                 <!-- Session Clock -->
-                <Border Background="#EBD9CF" CornerRadius="12" Padding="8,6" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0">
+                <Border Background="#EBD9CF" CornerRadius="12" Padding="8,6" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" Panel.ZIndex="2">
                     <TextBlock Text="{Binding Session.ClockText}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#5B3F39"/>
                 </Border>
 
                 <!-- Main Content Container -->
-                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,20,10,20">
-                    <!-- Pet Name -->
-                    <TextBlock Text="{Binding PetName, Mode=OneWay}" FontSize="26" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <Grid Margin="10,44,10,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="64"/>
+                    </Grid.RowDefinitions>
 
-                    <!-- Layered Pet Area -->
-                    <Grid Width="200" Height="200" Margin="0,0,0,12">
-                        <!-- Background Image -->
-                        <Image Source="/Assets/Background/pet_bg.png"
-                               Stretch="UniformToFill"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Text="{Binding PetName, Mode=OneWay}" FontSize="28" FontWeight="Bold" Foreground="{StaticResource HeaderTextColor}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
 
-                        <!-- Animated Pet Sprite from dev branch -->
-                        <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
-                               gif:ImageBehavior.RepeatBehavior="Forever"
-                               Width="160" Height="160"
-                               Stretch="Uniform"
-                               HorizontalAlignment="Center" VerticalAlignment="Center" 
-                               RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                    </Grid>
+                    <Viewbox Grid.Row="1" Stretch="Uniform" StretchDirection="Both" MinHeight="220" MaxHeight="520" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Grid Width="320" Height="320">
+                            <Image Source="/Assets/Background/pet_bg.png"
+                                   Stretch="UniformToFill"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
 
-                    <!-- Pet Stage Badge -->
-                    <Border Background="#CFF6E0" CornerRadius="12" Padding="6,4" HorizontalAlignment="Center" Margin="0,0,0,15">
-                        <TextBlock Text="{Binding PetStage, Mode=OneWay}" FontSize="12" Foreground="#15593F"/>
+                            <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
+                                   gif:ImageBehavior.RepeatBehavior="Forever"
+                                   Width="250" Height="250"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </Grid>
+                    </Viewbox>
+
+                    <Border Grid.Row="2" Background="#CFF6E0" CornerRadius="12" Padding="8,5" HorizontalAlignment="Center" Margin="0,10,0,10">
+                        <TextBlock Text="{Binding PetStage, Mode=OneWay}" FontSize="13" Foreground="#15593F"/>
                     </Border>
 
-                    <!-- Start Session Area -->
-                    <StackPanel x:Name="StartSessionPlaceholder" DataContext="{Binding Session}" Visibility="{Binding IsSessionActive, Converter={StaticResource InvBoolToVis}}">
-                        <Button Content="Start Session" Style="{StaticResource StartSessionButtonStyle}" Margin="0,0,0,12" Padding="30,10" Click="BtnStartSession_Click" HorizontalAlignment="Center"/>
-                    </StackPanel>
+                    <Grid Grid.Row="3" DataContext="{Binding Session}" VerticalAlignment="Center">
+                        <Button Content="Start Session"
+                                Style="{StaticResource StartSessionButtonStyle}"
+                                Padding="34,10"
+                                Click="BtnStartSession_Click"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding IsSessionActive, Converter={StaticResource InvBoolToVis}}"
+                                ToolTip="Start a focus session"/>
 
-                    <!-- Session Controls Panel -->
-                    <Grid x:Name="SessionControlsPanel" DataContext="{Binding Session}" Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}" Margin="0,5,0,0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Content="{Binding PauseButtonText}" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,8,0" MinWidth="90"/>
-                            <Button Content="End" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click" MinWidth="90"/>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding IsSessionActive, Converter={StaticResource BoolToVis}}">
+                            <Button Content="{Binding PauseButtonText}" Style="{StaticResource PillButtonStyle}" Click="BtnPause_Click" Margin="0,0,8,0" MinWidth="90" ToolTip="Pause or resume the session"/>
+                            <Button Content="End" Style="{StaticResource PillButtonStyle}" Click="BtnEndSession_Click" MinWidth="90" ToolTip="End the session and show summary"/>
                         </StackPanel>
                     </Grid>
-                </StackPanel>
+                </Grid>
             </Grid>
         </Border>
 
@@ -183,7 +193,7 @@
                 <!-- Header with title and add button -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,6">
                     <TextBlock Text="Today's Tasks" FontWeight="Bold" FontSize="16" Foreground="{StaticResource HeaderTextColor}" VerticalAlignment="Center" />
-                    <Button x:Name="BtnAddTaskTop" HorizontalAlignment="Right" Width="28" Height="28" Margin="8,0,0,0" Click="BtnAddTaskTop_Click" Background="Transparent" BorderBrush="Transparent">
+                    <Button x:Name="BtnAddTaskTop" HorizontalAlignment="Right" Width="28" Height="28" Margin="8,0,0,0" Click="BtnAddTaskTop_Click" Background="Transparent" BorderBrush="Transparent" AutomationProperties.Name="Add task" ToolTip="Add tasks">
                         <Image Source="/Assets/Background/add_button.png" RenderOptions.BitmapScalingMode="NearestNeighbor" Width="24"/>
                     </Button>
                 </StackPanel>
@@ -193,8 +203,11 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="0,6">
-                                    <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,0,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click"/>
+                                    <CheckBox IsChecked="{Binding IsCompleted, Mode=OneWay}" Margin="0,0,8,0" Tag="{Binding Id}" Click="TaskCheckBox_Click" AutomationProperties.Name="{Binding Name}" ToolTip="Complete this task"/>
                                     <StackPanel>
+                                        <Border Background="{Binding TypeChipColor}" CornerRadius="8" Padding="6,2" HorizontalAlignment="Left" Margin="0,0,0,3">
+                                            <TextBlock Text="{Binding TypeLabel}" FontSize="10" FontWeight="Bold" Foreground="#5B3F39"/>
+                                        </Border>
                                         <!-- Strikethrough for completed tasks from dev branch -->
                                         <TextBlock Text="{Binding Name}" FontWeight="SemiBold">
                                             <TextBlock.Style>
@@ -217,7 +230,7 @@
                 </ScrollViewer>
 
                 <StackPanel Grid.Row="2" VerticalAlignment="Bottom" Margin="0,12,0,0">
-                    <Button Content="Open Widget →" Style="{StaticResource WidgetOpenButtonStyle}" HorizontalAlignment="Left" Click="BtnWidgetMode_Click"/>
+                    <Button Content="Open Widget" Style="{StaticResource WidgetOpenButtonStyle}" HorizontalAlignment="Left" Click="BtnWidgetMode_Click" ToolTip="Open floating pet widget"/>
                 </StackPanel>
             </Grid>
         </Border>

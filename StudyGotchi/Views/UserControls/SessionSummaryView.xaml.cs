@@ -14,7 +14,7 @@ namespace StudyGotchi.Views.UserControls
         {
             StudyGotchi.Services.ServiceRegistry.ResetApp();
             var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
-            wnd?.NavigateToPetSelection();
+            wnd?.NavigateToTaskSetup();
         }
 
         private void BtnClose_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -22,9 +22,5 @@ namespace StudyGotchi.Views.UserControls
             System.Windows.Application.Current.Shutdown();
         }
 
-        public void DisplaySummary()
-        {
-            // placeholder
-        }
     }
 }

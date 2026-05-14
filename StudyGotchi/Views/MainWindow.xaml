@@ -12,7 +12,7 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         KeyDown="Window_KeyDown"
-        Icon="/Assets/Background/logo.png">
+        Icon="/Assets/Background/golden_egg.png">
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:PetSelectionViewModel}">
@@ -22,8 +22,7 @@
         <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
             <uc:DashboardView />
         </DataTemplate>
-
-        </Window.Resources>
+    </Window.Resources>
 
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}" />
@@ -33,28 +32,47 @@
                 Background="#EEFFFFFF"
                 BorderBrush="#FF7F66"
                 BorderThickness="2"
-                CornerRadius="12"
-                Padding="20,12"
+                CornerRadius="14"
+                Padding="18,12"
                 VerticalAlignment="Top"
                 HorizontalAlignment="Center"
                 Margin="0,40,0,0"
                 Visibility="Collapsed"
                 IsHitTestVisible="False"
-                MaxWidth="400">
+                MinWidth="280"
+                MaxWidth="420">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" Opacity="0.2" ShadowDepth="3"/>
             </Border.Effect>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="⏰" FontSize="20" Margin="0,0,12,0" VerticalAlignment="Center"/>
-                <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="REMINDER" FontSize="10" FontWeight="Bold" Foreground="#FF7F66"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="TxtToastIcon"
+                           Grid.Column="0"
+                           Text="!"
+                           FontSize="18"
+                           FontWeight="Bold"
+                           Foreground="#FF7F66"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+                    <TextBlock x:Name="TxtToastTitle"
+                               Text="NOTICE"
+                               FontSize="10"
+                               FontWeight="Bold"
+                               Foreground="#FF7F66"/>
                     <TextBlock x:Name="TxtToastMessage"
                                FontSize="14"
                                FontWeight="SemiBold"
                                Foreground="#3A1F1A"
+                               MaxWidth="340"
                                TextWrapping="Wrap"/>
                 </StackPanel>
-            </StackPanel>
+            </Grid>
         </Border>
     </Grid>
 </Window>

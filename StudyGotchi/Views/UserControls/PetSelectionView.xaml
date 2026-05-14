@@ -19,28 +19,29 @@
         <Image Source="/Assets/Background/bg.png" 
                Stretch="UniformToFill" />
 
-        <Grid Margin="20">
+        <Grid Margin="16">
             <Grid.RowDefinitions>
-                <!-- Changed from 180 to Auto so it doesn't clip the text -->
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="150"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="100"/>
+                <RowDefinition Height="76"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" VerticalAlignment="Top">
+            <StackPanel Grid.Row="0" VerticalAlignment="Center">
 
                 <!-- GotchiTextDark keeps the text on-theme -->
-                <Image Source="/Assets/Background/logo.png" 
-                       Height="144"
-                       RenderOptions.BitmapScalingMode="NearestNeighbor" Width="416"/>
+                <Image Source="/Assets/Background/logo.png"
+                       MaxHeight="112"
+                       MaxWidth="420"
+                       Stretch="Uniform"
+                       RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 
                 <!-- GotchiTextDark keeps the text on-theme -->
                 <TextBlock Text="choose your partner!"
                            FontFamily="{StaticResource PixelifyFont}"
-                           FontSize="24"
+                           FontSize="22"
                            Foreground="{StaticResource GotchiTextDark}"
                            HorizontalAlignment="Center"
-                           Margin="0,5,0,0"/>
+                           Margin="0,2,0,0"/>
             </StackPanel>
 
             <ListBox Grid.Row="1"
@@ -53,28 +54,30 @@
                      VerticalAlignment="Center"
                      HorizontalAlignment="Center"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     Padding="8"
+                     ClipToBounds="False">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="3" IsItemsHost="True" Width="650"/>
+                        <UniformGrid Columns="3" IsItemsHost="True" MaxWidth="760"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="180" Width="150">
-                            <Ellipse Width="80" Height="40" 
+                        <Grid Width="150" Height="168" Margin="8" ClipToBounds="False">
+                            <Ellipse Width="86" Height="42" 
                                      Fill="{Binding TintColor}" 
                                      Opacity="0.5" 
                                      VerticalAlignment="Bottom" 
-                                     Margin="0,0,0,10">
+                                     Margin="0,0,0,8">
                                 <Ellipse.Effect>
                                     <BlurEffect Radius="20"/>
                                 </Ellipse.Effect>
                             </Ellipse>
 
-                            <Image Source="{Binding SpritePath}" 
-                                   Width="120" Height="120"
+                            <Image Source="{Binding DisplaySpritePath}" 
+                                   Width="128" Height="128"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Center"
                                    Stretch="Uniform"
@@ -90,8 +93,8 @@
                     Command="{Binding ChoosePetCommand}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Width="200"
-                    Height="60" Click="Button_Click"/>
+                    Width="180"
+                    Height="54" Click="Button_Click"/>
         </Grid>
     </Grid>
 </UserControl>
