@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using StudyGotchi.Controllers;
 using StudyGotchi.Models;
 using StudyGotchi.ViewModels;
@@ -60,6 +61,7 @@ namespace StudyGotchi.Services
             {
                 if (paused) AudioService.PauseBgm();
                 else AudioService.ResumeBgm();
+                SaveState();
             };
 
             SessionController.SessionEnded += () =>
@@ -148,10 +150,23 @@ namespace StudyGotchi.Services
                 {
                     TotalSessionsCompleted = TotalSessionsCompleted,
                     CurrentSessionStreak = CurrentSessionStreak
+                },
+                Session = new SessionState
+                {
+                    IsSessionActive = SessionController.IsSessionActive(),
+                    IsPaused = SessionController.IsPaused,
+                    ElapsedSeconds = SessionController.CurrentElapsedTime.TotalSeconds,
+                    TasksCompletedThisSession = SessionController.TasksCompletedThisSession,
+                    XpEarnedThisSession = SessionController.XpEarnedThisSession,
+                    StartHunger = SessionController.StartHunger,
+                    StartLevel = SessionController.StartLevel,
+                    EndHunger = SessionController.EndHunger,
+                    EndLevel = SessionController.EndLevel,
+                    LastSessionDurationSeconds = SessionController.LastSessionDuration.TotalSeconds
                 }
             };
 
-            foreach (var task in TaskController.GetAllTasks())
+            foreach (var task in TaskController.GetAllTasks().Where(t => !t.IsCompleted))
             {
                 state.Tasks.Add(new TaskState
                 {
@@ -198,6 +213,18 @@ namespace StudyGotchi.Services
             IsFullScreenPreferred = state.Settings.IsFullScreen;
             TotalSessionsCompleted = state.Stats.TotalSessionsCompleted;
             CurrentSessionStreak = state.Stats.CurrentSessionStreak;
+
+            SessionController.RestoreSession(
+                state.Session.IsSessionActive,
+                state.Session.IsPaused,
+                TimeSpan.FromSeconds(state.Session.ElapsedSeconds),
+                state.Session.TasksCompletedThisSession,
+                state.Session.XpEarnedThisSession,
+                state.Session.StartHunger,
+                state.Session.StartLevel,
+                state.Session.EndHunger,
+                state.Session.EndLevel,
+                TimeSpan.FromSeconds(state.Session.LastSessionDurationSeconds));
         }
     }
 }

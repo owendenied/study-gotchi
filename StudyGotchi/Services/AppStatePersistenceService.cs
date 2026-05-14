@@ -11,6 +11,7 @@ namespace StudyGotchi.Services
         public List<TaskState> Tasks { get; set; } = new();
         public SettingsState Settings { get; set; } = new();
         public StatsState Stats { get; set; } = new();
+        public SessionState Session { get; set; } = new();
     }
 
     public class PetState
@@ -44,6 +45,20 @@ namespace StudyGotchi.Services
     {
         public int TotalSessionsCompleted { get; set; }
         public int CurrentSessionStreak { get; set; }
+    }
+
+    public class SessionState
+    {
+        public bool IsSessionActive { get; set; }
+        public bool IsPaused { get; set; }
+        public double ElapsedSeconds { get; set; }
+        public int TasksCompletedThisSession { get; set; }
+        public int XpEarnedThisSession { get; set; }
+        public int StartHunger { get; set; }
+        public int StartLevel { get; set; }
+        public int EndHunger { get; set; }
+        public int EndLevel { get; set; }
+        public double LastSessionDurationSeconds { get; set; }
     }
 
     public class AppStatePersistenceService

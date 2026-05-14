@@ -32,6 +32,18 @@ namespace StudyGotchi.Controllers
         public int XpEarnedThisSession => _xpEarnedThisSession;
         public bool IsPaused => _isPaused;
         public TimeSpan LastSessionDuration => _lastSessionDuration;
+        public TimeSpan CurrentElapsedTime
+        {
+            get
+            {
+                if (!_sessionActive) return _lastSessionDuration;
+                return _isPaused ? _elapsedTime : _pausedOffset + (DateTime.Now - _startTime);
+            }
+        }
+        public int StartHunger => _startHunger;
+        public int StartLevel => _startLevel;
+        public int EndHunger => _endHunger;
+        public int EndLevel => _endLevel;
         public int HungerChange => _endHunger - _startHunger;
         public int LevelChange => _endLevel - _startLevel;
         public string LastSessionDurationText => _lastSessionDuration.ToString(@"hh\:mm\:ss");
@@ -87,6 +99,7 @@ namespace StudyGotchi.Controllers
         public void PauseSession()
         {
             if (!_sessionActive || _isPaused) return;
+            _elapsedTime = _pausedOffset + (DateTime.Now - _startTime);
             _isPaused = true;
             _pausedOffset = _elapsedTime;  // save current elapsed so we resume from here
             _sessionTimer.Stop();
@@ -127,6 +140,36 @@ namespace StudyGotchi.Controllers
             _pausedOffset = TimeSpan.Zero;
             _tasksCompletedThisSession = 0;
             _xpEarnedThisSession = 0;
+        }
+
+        public void RestoreSession(bool isSessionActive, bool isPaused, TimeSpan elapsedTime, int tasksCompleted, int xpEarned, int startHunger, int startLevel, int endHunger, int endLevel, TimeSpan lastSessionDuration)
+        {
+            _sessionActive = isSessionActive;
+            _isPaused = isPaused;
+            _elapsedTime = elapsedTime;
+            _pausedOffset = elapsedTime;
+            _tasksCompletedThisSession = tasksCompleted;
+            _xpEarnedThisSession = xpEarned;
+            _startHunger = startHunger;
+            _startLevel = startLevel;
+            _endHunger = endHunger;
+            _endLevel = endLevel;
+            _lastSessionDuration = lastSessionDuration;
+
+            _sessionTimer.Stop();
+
+            if (_sessionActive && !_isPaused)
+            {
+                _startTime = DateTime.Now;
+                _sessionTimer.Start();
+                TimeUpdated?.Invoke(_elapsedTime.ToString(@"hh\:mm\:ss"));
+                SessionStarted?.Invoke();
+            }
+            else if (_sessionActive && _isPaused)
+            {
+                TimeUpdated?.Invoke(_elapsedTime.ToString(@"hh\:mm\:ss"));
+                PauseStateChanged?.Invoke(true);
+            }
         }
 
         public bool IsSessionActive() { return _sessionActive; }

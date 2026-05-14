@@ -46,6 +46,8 @@ namespace StudyGotchi.Models
                 foreach (var o in _observers)
                     o.OnTaskCompleted(t);
 
+                _tasks.Remove(t);
+                _overduePenaltyTaskIds.Remove(t.Id);
                 return true;
             }
 
@@ -61,7 +63,7 @@ namespace StudyGotchi.Models
 
         public void ReplaceTasks(IEnumerable<StudyTask> tasks)
         {
-            _tasks = tasks.OrderBy(t => t.Id).ToList();
+            _tasks = tasks.Where(t => !t.IsCompleted).OrderBy(t => t.Id).ToList();
             _overduePenaltyTaskIds.Clear();
             _nextId = _tasks.Count == 0 ? 1 : _tasks.Max(t => t.Id) + 1;
         }

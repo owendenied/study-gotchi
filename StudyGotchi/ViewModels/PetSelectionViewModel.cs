@@ -58,7 +58,10 @@ namespace StudyGotchi.ViewModels
                 _selectedPet = value;
                 if (_selectedPet != null) _selectedPet.IsSelected = true;
                 RaisePropertyChanged();
-                ((RelayCommand)ChoosePetCommand).RaiseCanExecuteChanged();
+                if (ChoosePetCommand is RelayCommand chooseCommand)
+                {
+                    chooseCommand.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -85,6 +88,28 @@ namespace StudyGotchi.ViewModels
                     TintColor = "#A0B0FF" // Soft Blue/Purple
                 }
             };
+
+            var activePet = ServiceRegistry.PetController.GetActivePet();
+            if (activePet != null)
+            {
+                for (var i = 0; i < AvailablePets.Count; i++)
+                {
+                    var pet = AvailablePets[i];
+                    pet.IsCracked = false;
+
+                    if ((i == 0 && activePet is PetA) ||
+                        (i == 1 && activePet is PetB) ||
+                        (i == 2 && activePet is PetC))
+                    {
+                        SelectedPet = pet;
+                        pet.IsCracked = true;
+                    }
+                }
+            }
+            else
+            {
+                SelectedPet = AvailablePets[0];
+            }
 
             SelectPetCommand = new RelayCommand(p =>
             {
@@ -117,9 +142,9 @@ namespace StudyGotchi.ViewModels
                     {
                         ServiceRegistry.SessionController.ResetSession();
                         ServiceRegistry.TaskController.ClearTasks();
+                        ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
                     }
 
-                    ServiceRegistry.PetController.SetActivePet(index, SelectedPet.Name);
                     ServiceRegistry.SaveState();
 
                     // Navigate to Settings via the MainWindow
@@ -127,9 +152,6 @@ namespace StudyGotchi.ViewModels
                     mainWindow?.NavigateToSettings();
                 }
             }, _ => SelectedPet != null);
-
-
-            SelectedPet = AvailablePets[0];
         }
     }
 }

@@ -66,6 +66,15 @@ namespace StudyGotchi.Views.UserControls
                 return;
             }
 
+            if (StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsPaused)
+            {
+                cb.IsChecked = false;
+                if (row != null) row.IsHitTestVisible = true;
+                var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
+                wnd?.ShowToast("Resume the session before completing tasks.");
+                return;
+            }
+
             if (cb.Tag is int taskId)
             {
                 StudyGotchi.Services.ServiceRegistry.TaskController.CompleteTask(taskId);

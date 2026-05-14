@@ -49,6 +49,11 @@ namespace StudyGotchi.ViewModels
         public SessionViewModel(SessionController sessionController)
         {
             _sessionController = sessionController;
+            IsSessionActive = _sessionController.IsSessionActive();
+            IsPaused = _sessionController.IsPaused;
+            ClockText = _sessionController.IsSessionActive()
+                ? _sessionController.CurrentElapsedTime.ToString(@"hh\:mm\:ss")
+                : "No session active";
             _sessionController.TimeUpdated += (t) => ClockText = t;
             _sessionController.SessionStarted += () => 
             {

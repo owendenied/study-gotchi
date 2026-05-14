@@ -100,7 +100,7 @@ namespace StudyGotchi.Services
                 if (!_bgmLoaded)
                 {
                     _bgmPlayer.Open(new Uri(path, UriKind.Absolute));
-                    _bgmPlayer.Volume = 0.4; // Subtle background level
+                    _bgmPlayer.Volume = 1.0; // Subtle background level
                     _bgmLoaded = true;
                 }
                 _bgmPlayer.Position = TimeSpan.Zero;
@@ -125,6 +125,13 @@ namespace StudyGotchi.Services
         public void ResumeBgm()
         {
             if (_isMuted) return;
+
+            if (!_bgmLoaded)
+            {
+                PlayBgm();
+                return;
+            }
+
             try { _bgmPlayer.Play(); } catch { }
         }
     }

@@ -27,6 +27,11 @@ namespace StudyGotchi.Views
                 }
             };
 
+            Closing += (s, e) =>
+            {
+                Services.ServiceRegistry.SaveState();
+            };
+
             // Subscribe to reminders for the main window toast
             Services.ServiceRegistry.ReminderService.ReminderTriggered += OnReminderTriggered;
             Services.ServiceRegistry.PetController.PetLeveledUp += () =>
