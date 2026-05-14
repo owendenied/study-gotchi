@@ -41,6 +41,17 @@ public class CoreGameLogicTests
     }
 
     [Fact]
+    public void CompletingTaskRemovesItFromActiveTasks()
+    {
+        var taskController = new TaskController();
+
+        var task = taskController.AddTask("Remove after reward", DateTime.Now.AddHours(1));
+        taskController.CompleteTask(task.Id);
+
+        Assert.Empty(taskController.GetAllTasks());
+    }
+
+    [Fact]
     public void OverdueTaskPenaltyFiresOncePerTask()
     {
         var manager = new TaskManager();
@@ -66,6 +77,22 @@ public class CoreGameLogicTests
         var added = manager.AddTask("Next task", DateTime.Now.AddHours(2));
 
         Assert.Equal(4, added.Id);
+    }
+
+    [Fact]
+    public void ReplacingTasksDropsCompletedSavedTasks()
+    {
+        var manager = new TaskManager();
+        manager.ReplaceTasks(new[]
+        {
+            new StudyTask(1, "Done task", DateTime.Now.AddHours(1), StudyTaskType.Activity, true, true),
+            new StudyTask(2, "Active task", DateTime.Now.AddHours(1), StudyTaskType.Project, false, false)
+        });
+
+        var active = manager.GetAllTasks();
+
+        Assert.Single(active);
+        Assert.Equal("Active task", active[0].Name);
     }
 
     [Fact]
