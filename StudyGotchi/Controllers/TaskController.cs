@@ -8,7 +8,7 @@ namespace StudyGotchi.Controllers
     public class TaskController
     {
         public const int MaxTaskNameLength = 120;
-        private TaskManager _taskManager;
+        private readonly TaskManager _taskManager;
 
         public event Action<StudyTask>? TaskAdded;
         public event Action<StudyTask>? TaskCompleted;

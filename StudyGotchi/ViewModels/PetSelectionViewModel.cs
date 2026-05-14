@@ -9,7 +9,6 @@ namespace StudyGotchi.ViewModels
     public class PetOption : BaseViewModel
     {
         public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
         public string SpritePath { get; set; } = string.Empty;
         public string TintColor { get; set; } = string.Empty;
         public string SelectedSpritePath { get; set; } = "pack://application:,,,/Assets/Background/cracked_egg.png";

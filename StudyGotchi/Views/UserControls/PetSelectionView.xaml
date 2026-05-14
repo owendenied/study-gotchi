@@ -94,7 +94,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Width="180"
-                    Height="54" Click="Button_Click"/>
+                    Height="54"/>
         </Grid>
     </Grid>
 </UserControl>

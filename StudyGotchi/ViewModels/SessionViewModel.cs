@@ -8,7 +8,7 @@ namespace StudyGotchi.ViewModels
 {
     public class SessionViewModel : BaseViewModel
     {
-        private SessionController _sessionController;
+        private readonly SessionController _sessionController;
         private bool _isSessionActive;
         private bool _isPaused;
         private string _clockText = "No session active";

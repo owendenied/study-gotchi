@@ -98,11 +98,6 @@ namespace StudyGotchi.Views
                 ViewModel.CurrentViewModel = _summaryView ??= new Views.UserControls.SessionSummaryView();
         }
 
-        public void ShowStarvationAlert()
-        {
-            MessageBox.Show("Pet is starving! XP gain reduced.", "Warning");
-        }
-
         public void LaunchWidgetMode()
         {
             if (_widgetWindow != null && _widgetWindow.IsVisible)

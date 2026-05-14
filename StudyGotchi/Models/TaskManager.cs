@@ -8,7 +8,7 @@ namespace StudyGotchi.Models
     public class TaskManager
     {
         private List<StudyTask> _tasks;
-        private List<ITaskObserver> _observers = new List<ITaskObserver>();
+        private readonly List<ITaskObserver> _observers = new();
         private readonly HashSet<int> _overduePenaltyTaskIds = new();
         private int _nextId = 1;
 

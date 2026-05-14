@@ -7,6 +7,13 @@ namespace StudyGotchi.Controllers
     public class PetController
     {
         public const int MaxPetNameLength = 24;
+        private static readonly Dictionary<Type, string> SpriteFolders = new()
+        {
+            [typeof(PetA)] = nameof(PetA),
+            [typeof(PetB)] = nameof(PetB),
+            [typeof(PetC)] = nameof(PetC)
+        };
+
         private TamagotchiPet? _activePet;
 
         public void SetActivePet(int petIndex, string name) 
@@ -49,7 +56,7 @@ namespace StudyGotchi.Controllers
 
         public string GetEvolutionStageName() { return _activePet?.GetEvolutionStageName() ?? "Baby Stage"; }
         
-        private string SpriteAbsPath(string relative)
+        private static string SpriteAbsPath(string relative)
         {
             return System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, relative);
         }
@@ -58,21 +65,11 @@ namespace StudyGotchi.Controllers
         {
             string stage = _activePet?.GetEvolutionStageName() ?? "Baby";
             string mood = _activePet?.GetMoodName() ?? "Idle";
-
-            if (_activePet is PetA)
-            {
-                return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
-            }
-            if (_activePet is PetB)
-            {
-                return SpriteAbsPath($"Assets/Sprites/PetB/PetB_{stage}_{mood}.gif");
-            }
-            if (_activePet is PetC)
-            {
-                return SpriteAbsPath($"Assets/Sprites/PetC/PetC_{stage}_{mood}.gif");
-            }
+            string petFolder = _activePet != null && SpriteFolders.TryGetValue(_activePet.GetType(), out var folder)
+                ? folder
+                : nameof(PetA);
             
-            return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
+            return SpriteAbsPath($"Assets/Sprites/{petFolder}/{petFolder}_{stage}_{mood}.gif");
         }
 
         public Image GetCurrentSprite()

@@ -386,6 +386,20 @@ public class CoreGameLogicTests
         Assert.Equal(0, loaded.Session.LastSessionDurationSeconds);
     }
 
+    [Theory]
+    [InlineData(0, "PetA")]
+    [InlineData(1, "PetB")]
+    [InlineData(2, "PetC")]
+    public void PetSpritePathFollowsSelectedPetType(int petIndex, string expectedFolder)
+    {
+        var petController = new PetController();
+
+        petController.SetActivePet(petIndex, "Tester");
+
+        var normalizedPath = petController.GetSpritePath().Replace('\\', '/');
+        Assert.Contains($"/Assets/Sprites/{expectedFolder}/{expectedFolder}_Baby_Happy.gif", normalizedPath);
+    }
+
     private sealed class CountingTaskObserver : ITaskObserver
     {
         public int OverdueCount { get; private set; }

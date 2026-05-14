@@ -8,7 +8,7 @@ namespace StudyGotchi.ViewModels
 {
     public class TasksViewModel : BaseViewModel
     {
-        private TaskController _taskController;
+        private readonly TaskController _taskController;
         public ObservableCollection<StudyTask> Tasks { get; } = new ObservableCollection<StudyTask>();
 
         public ICommand AddTaskCommand { get; }
@@ -25,7 +25,7 @@ namespace StudyGotchi.ViewModels
             // subscribe to additions
             _taskController.TaskAdded += t =>
             {
-                System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Add(t));
+                RunOnUiThread(() => Tasks.Add(t));
             };
 
             // When a task is completed: wait for the fade animation (0.6s) then remove it
@@ -35,7 +35,7 @@ namespace StudyGotchi.ViewModels
                 timer.Tick += (s, e) =>
                 {
                     timer.Stop();
-                    System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Remove(t));
+                    RunOnUiThread(() => Tasks.Remove(t));
                 };
                 timer.Start();
             };
@@ -43,13 +43,25 @@ namespace StudyGotchi.ViewModels
             // When tasks are cleared, clear the UI collection
             _taskController.TasksCleared += () =>
             {
-                System.Windows.Application.Current?.Dispatcher?.Invoke(() => Tasks.Clear());
+                RunOnUiThread(Tasks.Clear);
             };
         }
 
         public void AddTask(string name)
         {
             _taskController.AddTask(name);
+        }
+
+        private static void RunOnUiThread(Action action)
+        {
+            var dispatcher = System.Windows.Application.Current?.Dispatcher;
+            if (dispatcher == null || dispatcher.CheckAccess())
+            {
+                action();
+                return;
+            }
+
+            dispatcher.Invoke(action);
         }
     }
 }

@@ -6,8 +6,8 @@ namespace StudyGotchi.Controllers
 {
     public class SessionController
     {
-        private PetController _petController;
-        private TaskController _taskController;
+        private readonly PetController _petController;
+        private readonly TaskController _taskController;
         private bool _sessionActive;
         private bool _isPaused;
         private DispatcherTimer _sessionTimer;

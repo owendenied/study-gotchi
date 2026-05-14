@@ -10,11 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Include PNG sprites and copy to output so Image Source can load them at runtime -->
     <Content Include="Assets\Sprites\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <!-- Include Audio files and copy to output so AudioService can find them -->
     <Content Include="Assets\Audio\**\*.*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -25,59 +23,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Background\add_button.png" />
-    <None Remove="Assets\Background\bg.png" />
-    <None Remove="Assets\Background\cracked_egg.png" />
-    <None Remove="Assets\Background\egg.png" />
-    <None Remove="Assets\Background\golden_egg.png" />
-    <None Remove="Assets\Background\pet_bg.png" />
-    <None Remove="Assets\Background\pixel_bg.png" />
-    <None Remove="Assets\Background\pixel_bg_gray.png" />
-    <None Remove="Assets\Background\tamagotchi.png" />
-    <None Remove="Assets\Fonts\PixelifySans-Bold.ttf" />
-    <None Remove="Assets\Fonts\PixelifySans-Medium.ttf" />
-    <None Remove="Assets\Fonts\PixelifySans-Regular.ttf" />
-    <None Remove="Assets\Fonts\PixelifySans-SemiBold.ttf" />
+    <None Remove="Assets\Background\**\*.*" />
+    <None Remove="Assets\Fonts\**\*.*" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\Background\add_button.png">
+    <Resource Include="Assets\Background\**\*.*">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Assets\Background\logo.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Background\bg.png" />
-    <Resource Include="Assets\Background\cracked_egg.png" />
-    <Resource Include="Assets\Background\egg.png" />
-    <Resource Include="Assets\Background\golden_egg.png" />
-    <Resource Include="Assets\Background\pet_bg.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Background\pixel_bg.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Background\pixel_bg_gray.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Background\tamagotchi.png">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Fonts\PixelifySans-Bold.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Fonts\PixelifySans-Medium.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Fonts\PixelifySans-Regular.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Fonts\PixelifySans-SemiBold.ttf">
+    <Resource Include="Assets\Fonts\**\*.*">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
-
-
-
-
 </Project>

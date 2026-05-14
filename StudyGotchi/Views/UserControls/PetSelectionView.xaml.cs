@@ -16,10 +16,5 @@ namespace StudyGotchi.Views.UserControls
                 StudyGotchi.Services.ServiceRegistry.AudioService?.PlaySfx("sfx_hover");
             }
         }
-
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            // Optional: button click handler from eume's branch if there is a specific button
-        }
     }
 }
