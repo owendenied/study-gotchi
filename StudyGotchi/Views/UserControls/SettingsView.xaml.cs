@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using StudyGotchi.Controllers;
 
 namespace StudyGotchi.Views.UserControls
 {
@@ -42,18 +43,30 @@ namespace StudyGotchi.Views.UserControls
 
         private void BtnLetsGo_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
             var name = TxtPetName.Text?.Trim();
+            if (string.IsNullOrEmpty(name))
+            {
+                wnd?.ShowToast("Give your pet a name first.");
+                return;
+            }
+
+            if (name.Length > PetController.MaxPetNameLength)
+            {
+                wnd?.ShowToast($"Keep pet names under {PetController.MaxPetNameLength} characters.");
+                return;
+            }
+
             if (!string.IsNullOrEmpty(name))
             {
                 var pc = StudyGotchi.Services.ServiceRegistry.PetController;
                 var activePet = pc.GetActivePet();
-                activePet?.SetName(name);
+                activePet?.SetName(PetController.NormalizePetName(name));
             }
 
             SaveSettings();
 
             // Navigate to Task Setup
-            var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
             wnd?.NavigateToTaskSetup();
         }
 

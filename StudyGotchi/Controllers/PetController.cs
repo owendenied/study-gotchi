@@ -6,6 +6,7 @@ namespace StudyGotchi.Controllers
 {
     public class PetController
     {
+        public const int MaxPetNameLength = 24;
         private TamagotchiPet? _activePet;
 
         public void SetActivePet(int petIndex, string name) 
@@ -18,7 +19,7 @@ namespace StudyGotchi.Controllers
                 case 2: _activePet = new PetC(); break;
                 default: _activePet = new PetA(); break;
             }
-            _activePet.SetName(name);
+            _activePet.SetName(NormalizePetName(name));
         }
 
         public void RestoreActivePet(string petType, string name, int hungerLevel, int experience, int level)
@@ -30,7 +31,7 @@ namespace StudyGotchi.Controllers
                 _ => new PetA()
             };
 
-            _activePet.SetName(string.IsNullOrWhiteSpace(name) ? "Buddy" : name);
+            _activePet.SetName(NormalizePetName(name));
             _activePet.HungerLevel = hungerLevel;
             _activePet.Experience = experience;
             _activePet.Level = level;
@@ -100,6 +101,14 @@ namespace StudyGotchi.Controllers
                 PetLeveledUp?.Invoke();
             }
             return awardedXp;
+        }
+
+        public static string NormalizePetName(string? name)
+        {
+            var normalized = string.IsNullOrWhiteSpace(name) ? "Buddy" : name.Trim();
+            return normalized.Length <= MaxPetNameLength
+                ? normalized
+                : normalized[..MaxPetNameLength];
         }
     }
 }

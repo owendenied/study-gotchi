@@ -144,6 +144,135 @@ public class CoreGameLogicTests
     }
 
     [Fact]
+    public void ResetSessionDoesNotRaiseCompletedSessionEvent()
+    {
+        var petController = new PetController();
+        var taskController = new TaskController();
+        var sessionController = new SessionController(petController, taskController);
+        var completedSessions = 0;
+        var resetSessions = 0;
+        sessionController.SessionEnded += () => completedSessions++;
+        sessionController.SessionReset += () => resetSessions++;
+
+        sessionController.StartSession();
+        sessionController.ResetSession();
+
+        Assert.Equal(0, completedSessions);
+        Assert.Equal(1, resetSessions);
+        Assert.False(sessionController.IsSessionActive());
+        Assert.Equal(TimeSpan.Zero, sessionController.LastSessionDuration);
+    }
+
+    [Fact]
+    public void PausedRestoredSessionRemainsActiveAndPaused()
+    {
+        var petController = new PetController();
+        var taskController = new TaskController();
+        var sessionController = new SessionController(petController, taskController);
+        var pauseEvents = 0;
+        sessionController.PauseStateChanged += paused =>
+        {
+            if (paused) pauseEvents++;
+        };
+
+        sessionController.RestoreSession(
+            isSessionActive: true,
+            isPaused: true,
+            elapsedTime: TimeSpan.FromMinutes(12),
+            tasksCompleted: 2,
+            xpEarned: 300,
+            startHunger: 90,
+            startLevel: 1,
+            endHunger: 90,
+            endLevel: 1,
+            lastSessionDuration: TimeSpan.Zero);
+
+        Assert.True(sessionController.IsSessionActive());
+        Assert.True(sessionController.IsPaused);
+        Assert.Equal(TimeSpan.FromMinutes(12), sessionController.CurrentElapsedTime);
+        Assert.Equal(2, sessionController.TasksCompletedThisSession);
+        Assert.Equal(300, sessionController.XpEarnedThisSession);
+        Assert.Equal(1, pauseEvents);
+    }
+
+    [Fact]
+    public void ReminderThresholdsFireOnceUntilNewSessionStarts()
+    {
+        var taskController = new TaskController();
+        var reminderService = new ReminderService(taskController);
+        var now = DateTime.Now;
+        taskController.AddTask("Due soon", now.AddMinutes(10));
+        var fired = 0;
+        reminderService.ReminderTriggered += (_, minutesLeft) =>
+        {
+            fired++;
+            Assert.Equal(10, minutesLeft);
+        };
+
+        reminderService.Start();
+        reminderService.CheckNow(now);
+        reminderService.Pause();
+        reminderService.Resume();
+        reminderService.CheckNow(now);
+
+        Assert.Equal(1, fired);
+
+        reminderService.Stop();
+        reminderService.Start();
+        reminderService.CheckNow(now);
+
+        Assert.Equal(2, fired);
+    }
+
+    [Fact]
+    public void ReminderServiceKeepsRecentReminderForLateWidgetSubscribers()
+    {
+        var taskController = new TaskController();
+        var reminderService = new ReminderService(taskController);
+        var now = DateTime.Now;
+        taskController.AddTask("Widget reminder", now.AddMinutes(5));
+
+        reminderService.Start();
+        reminderService.CheckNow(now);
+
+        Assert.True(reminderService.TryGetRecentReminder(out var taskName, out var minutesLeft, now.AddSeconds(7)));
+        Assert.Equal("Widget reminder", taskName);
+        Assert.Equal(5, minutesLeft);
+
+        Assert.False(reminderService.TryGetRecentReminder(out _, out _, now.AddSeconds(9)));
+    }
+
+    [Fact]
+    public void StoppingReminderServiceClearsRecentReminder()
+    {
+        var taskController = new TaskController();
+        var reminderService = new ReminderService(taskController);
+        var now = DateTime.Now;
+        taskController.AddTask("Clear me", now.AddMinutes(1));
+
+        reminderService.Start();
+        reminderService.CheckNow(now);
+        reminderService.Stop();
+
+        Assert.False(reminderService.TryGetRecentReminder(out _, out _, now.AddSeconds(1)));
+    }
+
+    [Fact]
+    public void TaskControllerNormalizesUnsafeTaskNames()
+    {
+        var taskController = new TaskController();
+        var longName = new string('A', TaskController.MaxTaskNameLength + 10);
+
+        var blank = taskController.AddTask("   ");
+        var trimmed = taskController.AddTask("  Read chapter  ");
+        var capped = taskController.AddTask(longName);
+
+        Assert.Equal("Untitled Task", blank.Name);
+        Assert.Equal("Read chapter", trimmed.Name);
+        Assert.Equal(TaskController.MaxTaskNameLength, capped.Name.Length);
+    }
+
+    [Fact]
     public void PersistenceRoundTripKeepsTaskTypeAndStats()
     {
         var savePath = Path.Combine(Path.GetTempPath(), $"studygotchi-{Guid.NewGuid()}.json");
@@ -189,6 +318,72 @@ public class CoreGameLogicTests
         Assert.Empty(loaded.Tasks);
         Assert.False(File.Exists(savePath));
         Assert.Single(Directory.GetFiles(directory, "state.json.*.bak"));
+    }
+
+    [Fact]
+    public void PersistenceNormalizesInvalidLoadedState()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"studygotchi-{Guid.NewGuid()}");
+        var savePath = Path.Combine(directory, "state.json");
+        Directory.CreateDirectory(directory);
+        File.WriteAllText(savePath, """
+        {
+          "Pet": {
+            "PetType": "PetA",
+            "Name": "This pet name is much too long for the UI",
+            "HungerLevel": 500,
+            "Experience": -20,
+            "Level": 99
+          },
+          "Tasks": [
+            {
+              "Id": 1,
+              "Name": "",
+              "Deadline": "2030-01-01T12:00:00",
+              "IsCompleted": false,
+              "IsCompletedEarly": false,
+              "TaskType": "Activity"
+            }
+          ],
+          "Settings": {
+            "HungerDecayRate": 99,
+            "IsMuted": false,
+            "RemindersEnabled": true,
+            "IsFullScreen": false
+          },
+          "Stats": {
+            "TotalSessionsCompleted": -4,
+            "CurrentSessionStreak": -2
+          },
+          "Session": {
+            "IsSessionActive": true,
+            "IsPaused": true,
+            "ElapsedSeconds": -10,
+            "TasksCompletedThisSession": -1,
+            "XpEarnedThisSession": -50,
+            "StartHunger": 100,
+            "StartLevel": 1,
+            "EndHunger": 100,
+            "EndLevel": 1,
+            "LastSessionDurationSeconds": -3
+          }
+        }
+        """);
+
+        var loaded = new AppStatePersistenceService(savePath).Load();
+
+        Assert.Equal(PetController.MaxPetNameLength, loaded.Pet!.Name.Length);
+        Assert.Equal(100, loaded.Pet.HungerLevel);
+        Assert.Equal(0, loaded.Pet.Experience);
+        Assert.Equal(30, loaded.Pet.Level);
+        Assert.Equal("Untitled Task", loaded.Tasks[0].Name);
+        Assert.Equal(3, loaded.Settings.HungerDecayRate);
+        Assert.Equal(0, loaded.Stats.TotalSessionsCompleted);
+        Assert.Equal(0, loaded.Stats.CurrentSessionStreak);
+        Assert.Equal(0, loaded.Session.ElapsedSeconds);
+        Assert.Equal(0, loaded.Session.TasksCompletedThisSession);
+        Assert.Equal(0, loaded.Session.XpEarnedThisSession);
+        Assert.Equal(0, loaded.Session.LastSessionDurationSeconds);
     }
 
     private sealed class CountingTaskObserver : ITaskObserver

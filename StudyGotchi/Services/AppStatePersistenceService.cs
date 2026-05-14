@@ -92,7 +92,7 @@ namespace StudyGotchi.Services
             try
             {
                 var json = File.ReadAllText(SavePath);
-                return JsonSerializer.Deserialize<AppState>(json, JsonOptions) ?? new AppState();
+                return NormalizeState(JsonSerializer.Deserialize<AppState>(json, JsonOptions) ?? new AppState());
             }
             catch
             {
@@ -104,7 +104,20 @@ namespace StudyGotchi.Services
         public void Save(AppState state)
         {
             var json = JsonSerializer.Serialize(state, JsonOptions);
-            File.WriteAllText(SavePath, json);
+            var directory = Path.GetDirectoryName(SavePath);
+            if (!string.IsNullOrEmpty(directory)) Directory.CreateDirectory(directory);
+
+            var tempPath = $"{SavePath}.{Guid.NewGuid():N}.tmp";
+            File.WriteAllText(tempPath, json);
+
+            if (File.Exists(SavePath))
+            {
+                File.Replace(tempPath, SavePath, null);
+            }
+            else
+            {
+                File.Move(tempPath, SavePath);
+            }
         }
 
         public void Reset()
@@ -118,6 +131,39 @@ namespace StudyGotchi.Services
 
             var backupPath = $"{SavePath}.{DateTime.Now:yyyyMMddHHmmss}.bak";
             File.Move(SavePath, backupPath, overwrite: true);
+        }
+
+        private static AppState NormalizeState(AppState state)
+        {
+            state.Settings.HungerDecayRate = Math.Clamp(state.Settings.HungerDecayRate, 1, 3);
+            state.Stats.TotalSessionsCompleted = Math.Max(0, state.Stats.TotalSessionsCompleted);
+            state.Stats.CurrentSessionStreak = Math.Max(0, state.Stats.CurrentSessionStreak);
+            state.Session.ElapsedSeconds = Math.Max(0, state.Session.ElapsedSeconds);
+            state.Session.TasksCompletedThisSession = Math.Max(0, state.Session.TasksCompletedThisSession);
+            state.Session.XpEarnedThisSession = Math.Max(0, state.Session.XpEarnedThisSession);
+            state.Session.LastSessionDurationSeconds = Math.Max(0, state.Session.LastSessionDurationSeconds);
+
+            if (state.Pet != null)
+            {
+                state.Pet.Name = Controllers.PetController.NormalizePetName(state.Pet.Name);
+                state.Pet.HungerLevel = Math.Clamp(state.Pet.HungerLevel, 0, 100);
+                state.Pet.Experience = Math.Max(0, state.Pet.Experience);
+                state.Pet.Level = Math.Clamp(state.Pet.Level, 1, 30);
+            }
+
+            foreach (var task in state.Tasks)
+            {
+                if (string.IsNullOrWhiteSpace(task.Name))
+                {
+                    task.Name = "Untitled Task";
+                }
+                else if (task.Name.Length > Controllers.TaskController.MaxTaskNameLength)
+                {
+                    task.Name = task.Name[..Controllers.TaskController.MaxTaskNameLength];
+                }
+            }
+
+            return state;
         }
     }
 }

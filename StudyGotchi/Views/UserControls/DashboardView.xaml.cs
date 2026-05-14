@@ -54,13 +54,12 @@ namespace StudyGotchi.Views.UserControls
             var cb = sender as CheckBox;
             if (cb == null) return;
 
-            var row = cb.Parent as StackPanel;
-            if (row != null) row.IsHitTestVisible = false;
+            cb.IsEnabled = false;
 
             if (!StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsSessionActive)
             {
                 cb.IsChecked = false;
-                if (row != null) row.IsHitTestVisible = true;
+                cb.IsEnabled = true;
                 var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
                 wnd?.ShowToast("Start a session before completing tasks.");
                 return;
@@ -69,7 +68,7 @@ namespace StudyGotchi.Views.UserControls
             if (StudyGotchi.Services.ServiceRegistry.SessionViewModel.IsPaused)
             {
                 cb.IsChecked = false;
-                if (row != null) row.IsHitTestVisible = true;
+                cb.IsEnabled = true;
                 var wnd = System.Windows.Window.GetWindow(this) as Views.MainWindow;
                 wnd?.ShowToast("Resume the session before completing tasks.");
                 return;
@@ -78,6 +77,11 @@ namespace StudyGotchi.Views.UserControls
             if (cb.Tag is int taskId)
             {
                 StudyGotchi.Services.ServiceRegistry.TaskController.CompleteTask(taskId);
+            }
+            else
+            {
+                cb.IsChecked = false;
+                cb.IsEnabled = true;
             }
         }
 

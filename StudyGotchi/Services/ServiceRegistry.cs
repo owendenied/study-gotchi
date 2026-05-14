@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using StudyGotchi.Controllers;
+using StudyGotchi.Interfaces;
 using StudyGotchi.Models;
 using StudyGotchi.ViewModels;
 
@@ -38,6 +39,7 @@ namespace StudyGotchi.Services
             SessionViewModel = new SessionViewModel(SessionController);
             PetSelectionViewModel = new PetSelectionViewModel();
             DashboardViewModel = new DashboardViewModel(PetController, TasksViewModel, SessionViewModel);
+            TaskController.GetTaskManager().RegisterObserver(new OverduePenaltyObserver());
 
             TaskController.TaskAdded += _ => SaveState();
             TaskController.TasksCleared += SaveState;
@@ -51,6 +53,7 @@ namespace StudyGotchi.Services
 
             SessionController.SessionStarted += () =>
             {
+                TaskController.CheckAndNotifyOverdue();
                 ReminderService.Start();
                 AudioService.PlayBgm();
                 AudioService.PlaySfx("sfx_start");
@@ -59,8 +62,17 @@ namespace StudyGotchi.Services
 
             SessionController.PauseStateChanged += paused =>
             {
-                if (paused) AudioService.PauseBgm();
-                else AudioService.ResumeBgm();
+                if (paused)
+                {
+                    ReminderService.Pause();
+                    AudioService.PauseBgm();
+                }
+                else
+                {
+                    TaskController.CheckAndNotifyOverdue();
+                    ReminderService.Resume();
+                    AudioService.ResumeBgm();
+                }
                 SaveState();
             };
 
@@ -71,6 +83,13 @@ namespace StudyGotchi.Services
                 ReminderService.Stop();
                 AudioService.StopBgm();
                 AudioService.PlaySfx("sfx_end");
+                SaveState();
+            };
+
+            SessionController.SessionReset += () =>
+            {
+                ReminderService.Stop();
+                AudioService.StopBgm();
                 SaveState();
             };
 
@@ -88,9 +107,12 @@ namespace StudyGotchi.Services
 
             SessionController.StatsUpdated += () =>
             {
+                TaskController.CheckAndNotifyOverdue();
                 DashboardViewModel.Refresh();
                 SaveState();
             };
+
+            SyncSessionServicesAfterRestore();
         }
 
         public static void ResetApp()
@@ -207,24 +229,59 @@ namespace StudyGotchi.Services
                     t.IsCompleted,
                     t.IsCompletedEarly)));
 
-            SessionController.HungerDecayRate = state.Settings.HungerDecayRate;
+            SessionController.HungerDecayRate = Math.Clamp(state.Settings.HungerDecayRate, 1, 3);
             ReminderService.IsEnabled = state.Settings.RemindersEnabled;
             AudioService.IsMuted = state.Settings.IsMuted;
             IsFullScreenPreferred = state.Settings.IsFullScreen;
-            TotalSessionsCompleted = state.Stats.TotalSessionsCompleted;
-            CurrentSessionStreak = state.Stats.CurrentSessionStreak;
+            TotalSessionsCompleted = Math.Max(0, state.Stats.TotalSessionsCompleted);
+            CurrentSessionStreak = Math.Max(0, state.Stats.CurrentSessionStreak);
 
             SessionController.RestoreSession(
                 state.Session.IsSessionActive,
                 state.Session.IsPaused,
-                TimeSpan.FromSeconds(state.Session.ElapsedSeconds),
-                state.Session.TasksCompletedThisSession,
-                state.Session.XpEarnedThisSession,
+                TimeSpan.FromSeconds(Math.Max(0, state.Session.ElapsedSeconds)),
+                Math.Max(0, state.Session.TasksCompletedThisSession),
+                Math.Max(0, state.Session.XpEarnedThisSession),
                 state.Session.StartHunger,
                 state.Session.StartLevel,
                 state.Session.EndHunger,
                 state.Session.EndLevel,
-                TimeSpan.FromSeconds(state.Session.LastSessionDurationSeconds));
+                TimeSpan.FromSeconds(Math.Max(0, state.Session.LastSessionDurationSeconds)));
+        }
+
+        private static void SyncSessionServicesAfterRestore()
+        {
+            if (!SessionController.IsSessionActive())
+            {
+                ReminderService.Stop();
+                AudioService.StopBgm();
+                return;
+            }
+
+            if (SessionController.IsPaused)
+            {
+                ReminderService.Pause();
+                AudioService.PauseBgm();
+                return;
+            }
+
+            TaskController.CheckAndNotifyOverdue();
+            ReminderService.Start();
+            AudioService.PlayBgm();
+        }
+
+        private sealed class OverduePenaltyObserver : ITaskObserver
+        {
+            public void OnTaskCompleted(StudyTask task)
+            {
+            }
+
+            public void OnTaskOverdue(StudyTask task)
+            {
+                PetController.ApplyOverduePenalty();
+                DashboardViewModel.Refresh();
+                SaveState();
+            }
         }
     }
 }

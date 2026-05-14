@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using StudyGotchi.Controllers;
 using StudyGotchi.Models;
 
 namespace StudyGotchi.Views.UserControls
@@ -97,6 +98,12 @@ namespace StudyGotchi.Views.UserControls
             if (string.IsNullOrEmpty(name))
             {
                 ShowValidation("Give the task a name first.");
+                return;
+            }
+
+            if (name.Length > TaskController.MaxTaskNameLength)
+            {
+                ShowValidation($"Keep task names under {TaskController.MaxTaskNameLength} characters.");
                 return;
             }
 

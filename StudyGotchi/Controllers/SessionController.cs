@@ -27,6 +27,7 @@ namespace StudyGotchi.Controllers
         public event Action<bool>? PauseStateChanged;  // true = paused
         public event Action? SessionStarted;
         public event Action? SessionEnded;
+        public event Action? SessionReset;
 
         public int TasksCompletedThisSession => _tasksCompletedThisSession;
         public int XpEarnedThisSession => _xpEarnedThisSession;
@@ -115,7 +116,12 @@ namespace StudyGotchi.Controllers
             PauseStateChanged?.Invoke(false);
         }
 
-        public void EndSession() 
+        public void EndSession()
+        {
+            EndSession(recordCompletion: true);
+        }
+
+        public void EndSession(bool recordCompletion) 
         { 
             if (!_sessionActive) return;
 
@@ -130,16 +136,24 @@ namespace StudyGotchi.Controllers
             _sessionActive = false;
             _isPaused = false;
             _sessionTimer.Stop();
-            SessionEnded?.Invoke();
+            if (recordCompletion)
+            {
+                SessionEnded?.Invoke();
+            }
+            else
+            {
+                SessionReset?.Invoke();
+            }
         }
 
         public void ResetSession()
         {
-            EndSession();
+            EndSession(recordCompletion: false);
             _elapsedTime = TimeSpan.Zero;
             _pausedOffset = TimeSpan.Zero;
             _tasksCompletedThisSession = 0;
             _xpEarnedThisSession = 0;
+            _lastSessionDuration = TimeSpan.Zero;
         }
 
         public void RestoreSession(bool isSessionActive, bool isPaused, TimeSpan elapsedTime, int tasksCompleted, int xpEarned, int startHunger, int startLevel, int endHunger, int endLevel, TimeSpan lastSessionDuration)

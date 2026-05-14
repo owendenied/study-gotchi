@@ -18,7 +18,7 @@
 
                 <TextBlock Text="What do I need to do?" FontSize="13" FontWeight="SemiBold" Margin="0,2"/>
                 <Border Background="#FFF6F4" CornerRadius="10" Padding="10" Margin="0,4,0,10">
-                    <TextBox x:Name="TxtTaskName" Text="" Background="Transparent" BorderThickness="0" AcceptsReturn="True" Height="68" TextWrapping="Wrap" FontSize="15"/>
+                    <TextBox x:Name="TxtTaskName" Text="" Background="Transparent" BorderThickness="0" AcceptsReturn="True" Height="68" TextWrapping="Wrap" FontSize="15" MaxLength="120"/>
                 </Border>
 
                 <TextBlock Text="Task type" FontSize="13" FontWeight="SemiBold" Margin="0,0"/>

@@ -21,7 +21,7 @@ cd study-gotchi/StudyGotchi
 ```
 
 ### 3. Open & Build
-- **Option A (Recommended):** Open `StudyGotchi.sln` in Visual Studio. Wait for dependencies to restore, then press `F5` to run.
+- **Option A (Recommended):** Open `StudyGotchi.slnx` in Visual Studio. Wait for dependencies to restore, then press `F5` to run.
 - **Option B (CLI):** Run the following command in the project root:
   ```bash
   dotnet run

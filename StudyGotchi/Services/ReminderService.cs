@@ -11,6 +11,7 @@ namespace StudyGotchi.Services
     /// </summary>
     public class ReminderService
     {
+        private static readonly TimeSpan RecentReminderWindow = TimeSpan.FromSeconds(8);
         private readonly TaskController _taskController;
         private readonly DispatcherTimer _timer;
         private bool _isEnabled = true;
@@ -27,6 +28,10 @@ namespace StudyGotchi.Services
         /// </summary>
         public event Action<string, int>? ReminderTriggered;
 
+        public string? LastReminderTaskName { get; private set; }
+        public int LastReminderMinutesLeft { get; private set; }
+        public DateTime LastReminderTime { get; private set; } = DateTime.MinValue;
+
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -36,6 +41,8 @@ namespace StudyGotchi.Services
                 if (!_isEnabled) Stop();
             }
         }
+
+        public bool IsRunning => _timer.IsEnabled;
 
         public ReminderService(TaskController taskController)
         {
@@ -60,12 +67,44 @@ namespace StudyGotchi.Services
         {
             _timer.Stop();
             _firedReminders.Clear();
+            ClearLastReminder();
+        }
+
+        public void Pause()
+        {
+            _timer.Stop();
+        }
+
+        public void Resume()
+        {
+            if (!IsEnabled) return;
+            _timer.Start();
+        }
+
+        public void CheckNow(DateTime? now = null)
+        {
+            CheckReminders(now ?? DateTime.Now);
+        }
+
+        public bool TryGetRecentReminder(out string taskName, out int minutesLeft, DateTime? now = null)
+        {
+            taskName = LastReminderTaskName ?? string.Empty;
+            minutesLeft = LastReminderMinutesLeft;
+
+            if (LastReminderTaskName == null) return false;
+
+            var referenceTime = now ?? DateTime.Now;
+            return referenceTime - LastReminderTime <= RecentReminderWindow;
         }
 
         private void OnTimerTick(object? sender, EventArgs e)
         {
+            CheckReminders(DateTime.Now);
+        }
+
+        private void CheckReminders(DateTime now)
+        {
             var tasks = _taskController.GetAllTasks();
-            var now = DateTime.Now;
 
             foreach (var task in tasks)
             {
@@ -83,11 +122,26 @@ namespace StudyGotchi.Services
                         if (!_firedReminders.Contains(key))
                         {
                             _firedReminders.Add(key);
-                            ReminderTriggered?.Invoke(task.Name, minutesLeft);
+                            TriggerReminder(task.Name, minutesLeft, now);
                         }
                     }
                 }
             }
+        }
+
+        private void TriggerReminder(string taskName, int minutesLeft, DateTime firedAt)
+        {
+            LastReminderTaskName = taskName;
+            LastReminderMinutesLeft = minutesLeft;
+            LastReminderTime = firedAt;
+            ReminderTriggered?.Invoke(taskName, minutesLeft);
+        }
+
+        private void ClearLastReminder()
+        {
+            LastReminderTaskName = null;
+            LastReminderMinutesLeft = 0;
+            LastReminderTime = DateTime.MinValue;
         }
     }
 }

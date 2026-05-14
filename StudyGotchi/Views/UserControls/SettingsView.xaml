@@ -19,7 +19,7 @@
 
                 <TextBlock Text="Pet Name" FontSize="13" FontWeight="SemiBold" Margin="4,4"/>
                 <Border Background="#FFF6F4" CornerRadius="10" Padding="8" Margin="0,3,0,8">
-                    <TextBox x:Name="TxtPetName" Text="Buddy" Background="Transparent" BorderThickness="0" FontSize="15"/>
+                    <TextBox x:Name="TxtPetName" Text="Buddy" Background="Transparent" BorderThickness="0" FontSize="15" MaxLength="24"/>
                 </Border>
 
                 <TextBlock Text="Hunger Decay Rate" FontSize="13" FontWeight="SemiBold" Margin="4,4"/>
