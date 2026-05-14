@@ -3,7 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using System.Windows.Input;
-using StudyGotchi.Controllers;
+using StudyGotchi.Services;
 
 namespace StudyGotchi.Views
 {
@@ -19,7 +19,10 @@ namespace StudyGotchi.Views
             // Subscribe to reminder events so the widget can show toast notifications
             var reminderService = StudyGotchi.Services.ServiceRegistry.ReminderService;
             if (reminderService != null)
+            {
                 reminderService.ReminderTriggered += OnReminderTriggered;
+                Dispatcher.BeginInvoke(new Action(() => SyncReminderToast(reminderService)));
+            }
 
             Closed += (s, e) =>
             {
@@ -34,15 +37,24 @@ namespace StudyGotchi.Views
             // but guard just in case
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                ShowToast($"{taskName}\n{minutesLeft} min left!");
-                StudyGotchi.Services.ServiceRegistry.AudioService?.PlaySfx("sfx_reminder");
+                ShowToast(taskName, minutesLeft, playSound: false);
             });
         }
 
-        public void ShowToast(string message)
+        public void ShowToast(string taskName, int minutesLeft, bool playSound = true)
+        {
+            ShowToast($"{taskName}\n{minutesLeft} min left", playSound);
+        }
+
+        public void ShowToast(string message, bool playSound = true)
         {
             TxtToastMessage.Text = message;
             ToastBorder.Visibility = Visibility.Visible;
+
+            if (playSound)
+            {
+                StudyGotchi.Services.ServiceRegistry.AudioService?.PlaySfx("sfx_reminder");
+            }
 
             // Reset any running auto-hide timer
             _toastTimer?.Stop();
@@ -53,6 +65,20 @@ namespace StudyGotchi.Views
                 ToastBorder.Visibility = Visibility.Collapsed;
             };
             _toastTimer.Start();
+        }
+
+        private void SyncReminderToast(ReminderService reminderService)
+        {
+            if (reminderService.TryGetRecentReminder(out var taskName, out var minutesLeft))
+            {
+                ShowToast(taskName, minutesLeft);
+                return;
+            }
+
+            if (reminderService.IsRunning)
+            {
+                reminderService.CheckNow();
+            }
         }
 
         public void UpdatePetDisplay()

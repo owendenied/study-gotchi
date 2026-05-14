@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:conv="clr-namespace:StudyGotchi.Converters"
-        Title="Widget" 
+        Title="Widget"
         Height="200" Width="200"
-        WindowStyle="None" 
-        AllowsTransparency="True" 
-        Background="Transparent" 
-        Topmost="True" 
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Topmost="True"
         ResizeMode="NoResize"
         WindowStartupLocation="Manual"
         Icon="/Assets/Background/golden_egg.png">
@@ -17,44 +17,78 @@
         <conv:StringToImageSourceConverter x:Key="StringToImage" />
     </Window.Resources>
 
-    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown" Background="#01000000" AutomationProperties.Name="StudyGotchi floating widget" ToolTip="Drag to move. Double-click to return to dashboard.">
-        <!-- Tamagotchi Device Background -->
-        <Image Source="/Assets/Background/tamagotchi.png" 
+    <Grid MouseLeftButtonDown="Window_MouseLeftButtonDown"
+          Background="#01000000"
+          AutomationProperties.Name="StudyGotchi floating widget"
+          ToolTip="Drag to move. Double-click to return to dashboard.">
+        <Image Source="/Assets/Background/tamagotchi.png"
                Stretch="Uniform"
                VerticalAlignment="Center"
                HorizontalAlignment="Center"/>
 
-        <!-- Screen Area -->
-        <Viewbox Margin="56,68,59,49">
-            <Grid>
-                <!-- Animated pet sprite -->
+        <Viewbox Margin="53,64,55,46">
+            <Grid Width="118" Height="118" ClipToBounds="False">
                 <Image gif:ImageBehavior.AnimatedSource="{Binding PetSpritePath, Mode=OneWay, Converter={StaticResource StringToImage}}"
                        gif:ImageBehavior.RepeatBehavior="Forever"
-                       Stretch="Uniform" Width="100" Height="100" 
+                       Stretch="Uniform"
+                       Width="96"
+                       Height="96"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
                        RenderOptions.BitmapScalingMode="NearestNeighbor"/>
 
-                <!-- Reminder toast overlay -->
-                <Border x:Name="ToastBorder"
-                        Background="#CC2D2D2D"
-                        CornerRadius="8"
-                        Padding="8,6"
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Center"
-                        Margin="0,4,0,0"
-                        Visibility="Collapsed"
-                        IsHitTestVisible="False">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="⏰ " FontSize="12" VerticalAlignment="Center"/>
-                        <TextBlock x:Name="TxtToastMessage"
-                                   FontSize="11"
-                                   FontWeight="SemiBold"
-                                   Foreground="White"
-                                   VerticalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   MaxWidth="90"/>
-                    </StackPanel>
-                </Border>
             </Grid>
         </Viewbox>
+
+        <Border x:Name="ToastBorder"
+                Background="#FAFFF6F4"
+                BorderBrush="#FFFF7F66"
+                BorderThickness="2"
+                CornerRadius="12"
+                Padding="10,8"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                Width="178"
+                MinHeight="58"
+                Margin="0,18,0,0"
+                Visibility="Collapsed"
+                IsHitTestVisible="False"
+                Panel.ZIndex="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.28" Color="#8E5D67"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="26"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Width="20"
+                        Height="20"
+                        Background="#FFFFD1E1"
+                        CornerRadius="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top">
+                    <TextBlock Text="!"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="#FFFF4F79"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                    <TextBlock Text="REMINDER"
+                               FontSize="10"
+                               FontWeight="Bold"
+                               Foreground="#FFFF7F66"/>
+                    <TextBlock x:Name="TxtToastMessage"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="#3A1F1A"
+                               TextWrapping="Wrap"
+                               LineHeight="14"
+                               MaxHeight="44"/>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
