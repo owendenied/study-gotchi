@@ -45,13 +45,16 @@ namespace StudyGotchi.Models
 
         public virtual void CompleteTask(bool finishedEarly)
         {
+            CompleteTask(finishedEarly, StudyTaskType.Activity.GetBaseXpReward());
+        }
+
+        public virtual int CompleteTask(bool finishedEarly, int baseXpReward)
+        {
             // Starving penalty: halve XP gain if hunger is critically low
-            double xpMultiplier = (_hungerLevel <= 20) ? 0.5 : 1.0;
+            int xpReward = CalculateTaskXp(finishedEarly, baseXpReward);
 
             if (finishedEarly)
             {
-                // Bonus for finishing before deadline
-                xpMultiplier *= 2.0;
                 HungerLevel += 25;
             }
             else
@@ -59,8 +62,7 @@ namespace StudyGotchi.Models
                 HungerLevel += 15;
             }
 
-            // Base XP: 150 on-time, 300 early (before starvation multiplier)
-            Experience += (int)(150 * xpMultiplier);
+            Experience += xpReward;
 
             // Level up for every 100 XP accumulated
             while (Experience >= 100)
@@ -68,6 +70,15 @@ namespace StudyGotchi.Models
                 Experience -= 100;
                 LevelUp();
             }
+
+            return xpReward;
+        }
+
+        public int CalculateTaskXp(bool finishedEarly, int baseXpReward)
+        {
+            double xpMultiplier = (_hungerLevel <= 20) ? 0.5 : 1.0;
+            if (finishedEarly) xpMultiplier *= 2.0;
+            return (int)(baseXpReward * xpMultiplier);
         }
 
         public virtual void DecayHunger(int amount) 
@@ -109,7 +120,7 @@ namespace StudyGotchi.Models
 
         public void OnTaskCompleted(StudyTask task) 
         { 
-            CompleteTask(task.IsCompletedEarly);
+            CompleteTask(task.IsCompletedEarly, task.BaseXpReward);
         }
 
         public void OnTaskOverdue(StudyTask task) 

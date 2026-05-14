@@ -1,6 +1,8 @@
 // App.xaml.cs
 
 using System.Windows;
+using System;
+using System.IO;
 
 namespace StudyGotchi
 {
@@ -13,7 +15,11 @@ namespace StudyGotchi
 
             System.AppDomain.CurrentDomain.UnhandledException += (s, ex) =>
             {
-                System.IO.File.WriteAllText("crash_log.txt", ex.ExceptionObject.ToString());
+                var logDirectory = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "StudyGotchi");
+                Directory.CreateDirectory(logDirectory);
+                File.WriteAllText(Path.Combine(logDirectory, "crash_log.txt"), ex.ExceptionObject.ToString());
             };
 
             EventManager.RegisterClassHandler(typeof(System.Windows.Controls.Primitives.ButtonBase), 

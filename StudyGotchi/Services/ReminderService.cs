@@ -13,6 +13,7 @@ namespace StudyGotchi.Services
     {
         private readonly TaskController _taskController;
         private readonly DispatcherTimer _timer;
+        private bool _isEnabled = true;
 
         // Tracks which (taskId, thresholdMinutes) combos have already fired
         private readonly HashSet<(int taskId, int threshold)> _firedReminders = new();
@@ -25,6 +26,16 @@ namespace StudyGotchi.Services
         /// Args: task name, minutes remaining.
         /// </summary>
         public event Action<string, int>? ReminderTriggered;
+
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                if (!_isEnabled) Stop();
+            }
+        }
 
         public ReminderService(TaskController taskController)
         {
@@ -39,6 +50,8 @@ namespace StudyGotchi.Services
 
         public void Start()
         {
+            if (!IsEnabled) return;
+
             _firedReminders.Clear();
             _timer.Start();
         }

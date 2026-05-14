@@ -1,11 +1,12 @@
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using StudyGotchi.Models;
 
 namespace StudyGotchi.Controllers
 {
     public class PetController
     {
-        private TamagotchiPet _activePet;
+        private TamagotchiPet? _activePet;
 
         public void SetActivePet(int petIndex, string name) 
         {
@@ -20,7 +21,24 @@ namespace StudyGotchi.Controllers
             _activePet.SetName(name);
         }
 
-        public TamagotchiPet GetActivePet() { return _activePet; }
+        public void RestoreActivePet(string petType, string name, int hungerLevel, int experience, int level)
+        {
+            _activePet = petType switch
+            {
+                nameof(PetB) => new PetB(),
+                nameof(PetC) => new PetC(),
+                _ => new PetA()
+            };
+
+            _activePet.SetName(string.IsNullOrWhiteSpace(name) ? "Buddy" : name);
+            _activePet.HungerLevel = hungerLevel;
+            _activePet.Experience = experience;
+            _activePet.Level = level;
+        }
+
+        public TamagotchiPet? GetActivePet() { return _activePet; }
+        public void ClearActivePet() { _activePet = null; }
+        public string GetActivePetType() { return _activePet?.GetType().Name ?? nameof(PetA); }
         public bool HasActivePet() { return _activePet != null; }
         public string GetPetName() { return _activePet?.Name ?? "Buddy"; }
         public int GetHungerLevel() { return _activePet?.HungerLevel ?? 100; }
@@ -56,7 +74,14 @@ namespace StudyGotchi.Controllers
             return SpriteAbsPath($"Assets/Sprites/PetA/PetA_{stage}_{mood}.gif");
         }
 
-        public Image GetCurrentSprite() { throw new System.NotImplementedException(); }
+        public Image GetCurrentSprite()
+        {
+            return new Image
+            {
+                Source = new BitmapImage(new Uri(GetSpritePath(), UriKind.Absolute)),
+                Stretch = System.Windows.Media.Stretch.Uniform
+            };
+        }
         public void ApplyHungerDecay() 
         { 
             _activePet?.DecayHunger(2); // Moderate decay rate
@@ -66,15 +91,15 @@ namespace StudyGotchi.Controllers
             _activePet?.DecayHunger(5); // Penalty for overdue
         }
         
-        public void CompleteTask(int taskId)
+        public int CompleteTask(int taskId, bool finishedEarly = false, int baseXpReward = 150)
         {
             int oldLevel = _activePet?.Level ?? 1;
-            _activePet?.CompleteTask();
+            int awardedXp = _activePet?.CompleteTask(finishedEarly, baseXpReward) ?? 0;
             if (_activePet?.Level > oldLevel)
             {
                 PetLeveledUp?.Invoke();
             }
+            return awardedXp;
         }
-        public void RegisterAsObserver(TaskController taskController) { }
     }
 }

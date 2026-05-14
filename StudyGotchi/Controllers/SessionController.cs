@@ -16,6 +16,11 @@ namespace StudyGotchi.Controllers
         private TimeSpan _pausedOffset;   // accumulates time already elapsed before a pause
         private int _tasksCompletedThisSession;
         private int _xpEarnedThisSession;
+        private int _startHunger;
+        private int _startLevel;
+        private int _endHunger;
+        private int _endLevel;
+        private TimeSpan _lastSessionDuration;
 
         public event Action<string>? TimeUpdated;
         public event Action? StatsUpdated;
@@ -26,6 +31,21 @@ namespace StudyGotchi.Controllers
         public int TasksCompletedThisSession => _tasksCompletedThisSession;
         public int XpEarnedThisSession => _xpEarnedThisSession;
         public bool IsPaused => _isPaused;
+        public TimeSpan LastSessionDuration => _lastSessionDuration;
+        public int HungerChange => _endHunger - _startHunger;
+        public int LevelChange => _endLevel - _startLevel;
+        public string LastSessionDurationText => _lastSessionDuration.ToString(@"hh\:mm\:ss");
+        public string HungerChangeText => HungerChange >= 0 ? $"+{HungerChange}" : HungerChange.ToString();
+        public string LevelChangeText => LevelChange >= 0 ? $"+{LevelChange}" : LevelChange.ToString();
+        public string FeedbackText
+        {
+            get
+            {
+                if (_tasksCompletedThisSession >= 3) return "Big focus run. Your pet felt that.";
+                if (_tasksCompletedThisSession > 0) return "Nice session. Small steps still feed the streak.";
+                return "Session logged. Add a task next time for rewards.";
+            }
+        }
 
         public SessionController(PetController petController, TaskController taskController)
         {
@@ -40,8 +60,7 @@ namespace StudyGotchi.Controllers
                 if (_sessionActive)
                 {
                     _tasksCompletedThisSession++;
-                    // Match TamagotchiPet.CompleteTask rewards: 150 on-time, 300 early
-                    _xpEarnedThisSession += t.IsCompletedEarly ? 300 : 150;
+                    _xpEarnedThisSession += EstimateTaskXp(t);
                 }
             };
         }
@@ -55,6 +74,11 @@ namespace StudyGotchi.Controllers
             _pausedOffset = TimeSpan.Zero;
             _tasksCompletedThisSession = 0;
             _xpEarnedThisSession = 0;
+            _startHunger = _petController.GetHungerLevel();
+            _startLevel = _petController.GetLevel();
+            _endHunger = _startHunger;
+            _endLevel = _startLevel;
+            _lastSessionDuration = TimeSpan.Zero;
             _sessionTimer.Start();
             TimeUpdated?.Invoke("00:00:00");
             SessionStarted?.Invoke();
@@ -80,7 +104,18 @@ namespace StudyGotchi.Controllers
 
         public void EndSession() 
         { 
+            if (!_sessionActive) return;
+
+            if (!_isPaused)
+            {
+                _elapsedTime = _pausedOffset + (DateTime.Now - _startTime);
+            }
+
+            _lastSessionDuration = _elapsedTime;
+            _endHunger = _petController.GetHungerLevel();
+            _endLevel = _petController.GetLevel();
             _sessionActive = false;
+            _isPaused = false;
             _sessionTimer.Stop();
             SessionEnded?.Invoke();
         }
@@ -119,6 +154,12 @@ namespace StudyGotchi.Controllers
         public string GetSessionSummary()
         {
             return _sessionActive ? "Session is currently running..." : $"Session ended. Tasks completed: {_tasksCompletedThisSession}, XP earned: {_xpEarnedThisSession}";
+        }
+
+        public int EstimateTaskXp(StudyTask task)
+        {
+            return _petController.GetActivePet()?.CalculateTaskXp(task.IsCompletedEarly, task.BaseXpReward)
+                ?? task.BaseXpReward;
         }
     }
 }

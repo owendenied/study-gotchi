@@ -36,6 +36,11 @@ namespace StudyGotchi.ViewModels
         public string TasksDone => _sessionController.TasksCompletedThisSession.ToString();
         public string XpEarned => _sessionController.XpEarnedThisSession.ToString();
         public string CurrentStage => StudyGotchi.Services.ServiceRegistry.PetController.GetEvolutionStageName();
+        public string Duration => _sessionController.LastSessionDurationText;
+        public string HungerChange => _sessionController.HungerChangeText;
+        public string LevelChange => _sessionController.LevelChangeText;
+        public string FeedbackText => _sessionController.FeedbackText;
+        public string TotalSessions => StudyGotchi.Services.ServiceRegistry.TotalSessionsCompleted.ToString();
 
         public ICommand StartCommand { get; }
         public ICommand PauseCommand { get; }
@@ -54,6 +59,7 @@ namespace StudyGotchi.ViewModels
             {
                 IsSessionActive = false;
                 ClockText = "No session active";
+                RaiseSummaryProperties();
             };
 
             StartCommand = new RelayCommand(_ => StartSession());
@@ -65,6 +71,18 @@ namespace StudyGotchi.ViewModels
 
         private void StartSession()
         {
+            if (!StudyGotchi.Services.ServiceRegistry.PetController.HasActivePet())
+            {
+                ClockText = "Choose a pet first";
+                return;
+            }
+
+            if (!StudyGotchi.Services.ServiceRegistry.TaskController.HasTasks())
+            {
+                ClockText = "Add a task to earn XP";
+                return;
+            }
+
             IsSessionActive = true;
             IsPaused = false;
             _sessionController.StartSession();
@@ -84,13 +102,27 @@ namespace StudyGotchi.ViewModels
             _sessionController.EndSession();
             ClockText = "No session active";
             
-            // Refresh summary stats for the view
-            RaisePropertyChanged(nameof(TasksDone));
-            RaisePropertyChanged(nameof(XpEarned));
-            RaisePropertyChanged(nameof(CurrentStage));
+            RaiseSummaryProperties();
 
             var wnd = Application.Current?.Windows.OfType<StudyGotchi.Views.MainWindow>().FirstOrDefault();
             wnd?.NavigateToSummary();
+        }
+
+        public void RefreshSummary()
+        {
+            RaiseSummaryProperties();
+        }
+
+        private void RaiseSummaryProperties()
+        {
+            RaisePropertyChanged(nameof(TasksDone));
+            RaisePropertyChanged(nameof(XpEarned));
+            RaisePropertyChanged(nameof(CurrentStage));
+            RaisePropertyChanged(nameof(Duration));
+            RaisePropertyChanged(nameof(HungerChange));
+            RaisePropertyChanged(nameof(LevelChange));
+            RaisePropertyChanged(nameof(FeedbackText));
+            RaisePropertyChanged(nameof(TotalSessions));
         }
     }
 }

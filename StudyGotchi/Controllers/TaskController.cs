@@ -27,7 +27,12 @@ namespace StudyGotchi.Controllers
 
         public StudyTask AddTask(string name, DateTime deadline)
         {
-            var t = _taskManager.AddTask(name, deadline);
+            return AddTask(name, deadline, StudyTaskType.Activity);
+        }
+
+        public StudyTask AddTask(string name, DateTime deadline, StudyTaskType taskType)
+        {
+            var t = _taskManager.AddTask(name, deadline, taskType);
             TaskAdded?.Invoke(t);
             return t;
         }
@@ -35,8 +40,10 @@ namespace StudyGotchi.Controllers
         public void CompleteTask(int id)
         {
             var task = _taskManager.GetTaskById(id);
-            _taskManager.CompleteTask(id);
-            if (task != null) TaskCompleted?.Invoke(task);
+            if (task != null && _taskManager.CompleteTask(id))
+            {
+                TaskCompleted?.Invoke(task);
+            }
         }
 
         public void ClearTasks()
@@ -66,5 +73,16 @@ namespace StudyGotchi.Controllers
         }
 
         public TaskManager GetTaskManager() { return _taskManager; }
+
+        public void ReplaceTasks(IEnumerable<StudyTask> tasks)
+        {
+            _taskManager.ReplaceTasks(tasks);
+            TasksCleared?.Invoke();
+
+            foreach (var task in _taskManager.GetAllTasks())
+            {
+                if (!task.IsCompleted) TaskAdded?.Invoke(task);
+            }
+        }
     }
 }

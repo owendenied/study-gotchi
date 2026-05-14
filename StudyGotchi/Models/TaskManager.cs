@@ -9,6 +9,7 @@ namespace StudyGotchi.Models
     {
         private List<StudyTask> _tasks;
         private List<ITaskObserver> _observers = new List<ITaskObserver>();
+        private readonly HashSet<int> _overduePenaltyTaskIds = new();
         private int _nextId = 1;
 
         public List<StudyTask> Tasks => _tasks;
@@ -20,31 +21,49 @@ namespace StudyGotchi.Models
 
         public StudyTask AddTask(string name)
         {
-            return AddTask(name, DateTime.Now.AddDays(1));
+            return AddTask(name, DateTime.Now.AddDays(1), StudyTaskType.Activity);
         }
 
         public StudyTask AddTask(string name, DateTime deadline)
         {
-            var task = new StudyTask(_nextId++, name, deadline);
+            return AddTask(name, deadline, StudyTaskType.Activity);
+        }
+
+        public StudyTask AddTask(string name, DateTime deadline, StudyTaskType taskType)
+        {
+            var task = new StudyTask(_nextId++, name, deadline, taskType);
             _tasks.Add(task);
             return task;
         }
 
-        public void CompleteTask(int id)
+        public bool CompleteTask(int id)
         {
             var t = _tasks.Find(x => x.Id == id);
             if (t != null && !t.IsCompleted)
             {
-                t.Complete();
+                if (!t.Complete()) return false;
+
                 foreach (var o in _observers)
                     o.OnTaskCompleted(t);
+
+                return true;
             }
+
+            return false;
         }
 
         public void ClearTasks()
         {
             _tasks.Clear();
+            _overduePenaltyTaskIds.Clear();
             _nextId = 1;
+        }
+
+        public void ReplaceTasks(IEnumerable<StudyTask> tasks)
+        {
+            _tasks = tasks.OrderBy(t => t.Id).ToList();
+            _overduePenaltyTaskIds.Clear();
+            _nextId = _tasks.Count == 0 ? 1 : _tasks.Max(t => t.Id) + 1;
         }
 
         public List<StudyTask> GetOverdueTasks()
@@ -68,6 +87,8 @@ namespace StudyGotchi.Models
             var overdue = GetOverdueTasks();
             foreach (var t in overdue)
             {
+                if (!_overduePenaltyTaskIds.Add(t.Id)) continue;
+
                 foreach (var o in _observers)
                     o.OnTaskOverdue(t);
             }
