@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    <a href="#installation"><img alt="Platform: Windows" src="https://img.shields.io/badge/platform-Windows-EAF9FF?style=for-the-badge&logo=windows&logoColor=1B4965&labelColor=80D8FF" /></a>
+    <a href="#instructions-on-how-to-run-the-application"><img alt="Platform: Windows" src="https://img.shields.io/badge/platform-Windows-EAF9FF?style=for-the-badge&logo=windows&logoColor=1B4965&labelColor=80D8FF" /></a>
     <a href="#quality"><img alt="Build: local verified" src="https://img.shields.io/badge/build-local%20verified-EEFFFC?style=for-the-badge&logo=dotnet&logoColor=24443F&labelColor=7DDCCF" /></a>
     <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-FFF0F6?style=for-the-badge&logo=readthedocs&logoColor=5A315B&labelColor=FF8FB1" /></a>
     <a href="VERSION"><img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-F7F1FF?style=for-the-badge&logo=semver&logoColor=3F315B&labelColor=C7A8FF" /></a>
@@ -18,9 +18,10 @@
 
   <p>
     <a href="#demo">Demo</a> .
-    <a href="#installation">Installation</a> .
-    <a href="#quick-start">Quick Start</a> .
-    <a href="#features">Features</a> .
+    <a href="#instructions-on-how-to-run-the-application">Run</a> .
+    <a href="#features-and-functionalities-of-the-system">Features</a> .
+    <a href="#uml-diagram">UML</a> .
+    <a href="#names-of-the-developers-or-team-members">Team</a> .
     <a href="#quality">Quality</a>
   </p>
 </div>
@@ -45,7 +46,7 @@
 | --- | --- | --- |
 | <img src="docs/screenshots/add-task.png" alt="StudyGotchi add task screen with task type and deadline inputs" width="280" height="180" /> | <img src="docs/screenshots/session-summary.png" alt="StudyGotchi session summary screen with study progress" width="280" height="180" /> | <img src="docs/screenshots/settings.png" alt="StudyGotchi settings screen" width="280" height="180" /> |
 
-## Installation
+## Instructions on How to Run the Application
 
 ### Requirements
 
@@ -89,13 +90,126 @@ Once the app opens:
 4. Start a session.
 5. Complete the task to feed your pet, earn XP, and progress toward evolution.
 
-## What StudyGotchi Does
+## Project Description and Purpose
 
 StudyGotchi turns a study session into a small care ritual. Your task list becomes a set of quests, your deadlines become gentle reminders, and your progress keeps a virtual pet healthy and growing. Completing work rewards the pet with XP and hunger recovery; missing deadlines or studying too long without care makes the pet need attention.
 
 The app is designed for students who want task tracking to feel warm, visual, and motivating without becoming noisy. It keeps the experience focused: plan work, start the timer, keep your pet nearby, finish tasks, and review the session summary.
 
-## Features
+## UML Diagram
+
+The diagram below reflects the current app wiring, including the shared service registry, controllers, view models, and the model layer that keeps the pet and tasks in sync.
+
+```mermaid
+classDiagram
+    class MainWindow {
+        +NavigateToPetSelection()
+        +NavigateToTaskSetup()
+        +NavigateToSettings()
+        +NavigateToDashboard()
+        +NavigateToSummary()
+        +LaunchWidgetMode()
+        +ToggleFullScreen()
+    }
+
+    class MainWindowViewModel {
+        +CurrentViewModel
+    }
+
+    class ServiceRegistry {
+        +Initialize()
+        +SaveState()
+        +ResetApp()
+        +ResetSaveData()
+    }
+
+    class DashboardViewModel {
+        +Refresh()
+    }
+
+    class SessionViewModel {
+        +StartCommand
+        +PauseCommand
+        +EndCommand
+    }
+
+    class TasksViewModel {
+        +AddTask()
+    }
+
+    class PetSelectionViewModel {
+        +ChoosePetCommand
+        +SelectPetCommand
+    }
+
+    class SessionController {
+        +StartSession()
+        +PauseSession()
+        +ResumeSession()
+        +EndSession()
+        +ResetSession()
+    }
+
+    class TaskController {
+        +AddTask()
+        +CompleteTask()
+        +ClearTasks()
+        +ReplaceTasks()
+        +CheckAndNotifyOverdue()
+    }
+
+    class PetController {
+        +SetActivePet()
+        +RestoreActivePet()
+        +CompleteTask()
+        +ApplyOverduePenalty()
+        +GetSpritePath()
+    }
+
+    class ReminderService
+    class AudioService
+    class AppStatePersistenceService
+    class TaskManager
+    class StudyTask
+    class TamagotchiPet <<abstract>>
+    class PetA
+    class PetB
+    class PetC
+
+    MainWindow --> MainWindowViewModel
+    MainWindowViewModel --> ServiceRegistry
+    ServiceRegistry --> DashboardViewModel
+    ServiceRegistry --> SessionViewModel
+    ServiceRegistry --> TasksViewModel
+    ServiceRegistry --> PetSelectionViewModel
+    ServiceRegistry --> SessionController
+    ServiceRegistry --> TaskController
+    ServiceRegistry --> PetController
+    ServiceRegistry --> ReminderService
+    ServiceRegistry --> AudioService
+    ServiceRegistry --> AppStatePersistenceService
+
+    DashboardViewModel --> PetController
+    DashboardViewModel --> TasksViewModel
+    DashboardViewModel --> SessionViewModel
+
+    SessionViewModel --> SessionController
+    TasksViewModel --> TaskController
+    PetSelectionViewModel --> PetController
+    PetSelectionViewModel --> SessionController
+    PetSelectionViewModel --> TaskController
+
+    SessionController --> PetController
+    SessionController --> TaskController
+    TaskController --> TaskManager
+    TaskManager --> StudyTask
+    PetController --> TamagotchiPet
+    PetA --|> TamagotchiPet
+    PetB --|> TamagotchiPet
+    PetC --|> TamagotchiPet
+```
+
+## Features and Functionalities of the System
 
 | Area | What It Does |
 | --- | --- |
@@ -111,7 +225,13 @@ The app is designed for students who want task tracking to feel warm, visual, an
 | Persistence | Saves pet, tasks, settings, stats, and active session state locally. |
 | Recovery | Backs up corrupted save files and starts cleanly instead of crashing. |
 
-## App Flow
+## Explanation of How the Program Works
+
+StudyGotchi begins with pet selection. Once a pet is chosen, the app stores that choice, loads the current save state, and moves into the dashboard. From there, the player adds study tasks, starts a focus session, and keeps working while the pet's hunger, XP, and evolution state update in the background.
+
+The session controller tracks elapsed time, task completions, pause and resume state, and the summary data that appears at the end of a run. The task controller manages study tasks and overdue checks, while the pet controller handles hunger, XP, evolution, and sprite selection. Reminder, audio, and persistence services keep the experience responsive, cozy, and safely saved locally.
+
+The floating widget gives the pet a smaller home on the screen, and the session summary gives a tidy recap once the study block is done. It is meant to feel like a gentle loop: choose a pet, plan the work, focus, finish, and watch the pet grow with you.
 
 ```mermaid
 flowchart LR
@@ -215,6 +335,12 @@ dotnet test StudyGotchi.Tests/StudyGotchi.Tests.csproj --no-restore
 ```
 
 The tests cover task rewards, early-completion bonuses, hunger penalties, session state, reminders, corrupted-save recovery, persisted stats, input normalization, and pet sprite selection.
+
+## Names of the Developers or Team Members
+
+- Eume C. Derez - GUI Designer and Artist
+- Coleen B. Dichoso - Logic Developer
+- Goldwyn Daine Kierzene D. Mendoza - Project Manager
 
 ## Contributing
 
