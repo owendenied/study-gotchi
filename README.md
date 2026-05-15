@@ -21,7 +21,7 @@
     <a href="#instructions-on-how-to-run-the-application">Run</a> .
     <a href="#features-and-functionalities-of-the-system">Features</a> .
     <a href="#uml-diagram">UML</a> .
-    <a href="#names-of-the-developers-or-team-members">Team</a> .
+    <a href="#developers">Developers</a> .
     <a href="#quality">Quality</a>
   </p>
 </div>
@@ -98,11 +98,14 @@ The app is designed for students who want task tracking to feel warm, visual, an
 
 ## UML Diagram
 
-The diagram below reflects the current app wiring, including the shared service registry, controllers, view models, and the model layer that keeps the pet and tasks in sync.
+The diagram below reflects the current app wiring, including the shared service registry, view models, controllers, services, and model layer that keep the study loop and pet care system in sync.
 
 ```mermaid
 classDiagram
+    direction TB
+
     class MainWindow {
+        <<Window>>
         +NavigateToPetSelection()
         +NavigateToTaskSetup()
         +NavigateToSettings()
@@ -112,37 +115,56 @@ classDiagram
         +ToggleFullScreen()
     }
 
-    class MainWindowViewModel {
-        +CurrentViewModel
+    class StudyWidgetWindow {
+        <<Window>>
+        +UpdatePetDisplay()
+        +ReturnToDashboard()
     }
 
-    class ServiceRegistry {
-        +Initialize()
-        +SaveState()
-        +ResetApp()
-        +ResetSaveData()
+    class MainWindowViewModel {
+        <<ViewModel>>
+        +CurrentViewModel: object
     }
 
     class DashboardViewModel {
+        <<ViewModel>>
+        +PetName: string
+        +PetStage: string
+        +LevelText: string
         +Refresh()
     }
 
     class SessionViewModel {
+        <<ViewModel>>
+        +ClockText: string
         +StartCommand
         +PauseCommand
         +EndCommand
     }
 
     class TasksViewModel {
+        <<ViewModel>>
+        +Tasks: ObservableCollection
         +AddTask()
     }
 
     class PetSelectionViewModel {
+        <<ViewModel>>
+        +AvailablePets: ObservableCollection
         +ChoosePetCommand
         +SelectPetCommand
     }
 
+    class ServiceRegistry {
+        <<Service Hub>>
+        +Initialize()
+        +SaveState()
+        +ResetApp()
+        +ResetSaveData()
+    }
+
     class SessionController {
+        <<Controller>>
         +StartSession()
         +PauseSession()
         +ResumeSession()
@@ -151,6 +173,7 @@ classDiagram
     }
 
     class TaskController {
+        <<Controller>>
         +AddTask()
         +CompleteTask()
         +ClearTasks()
@@ -159,6 +182,7 @@ classDiagram
     }
 
     class PetController {
+        <<Controller>>
         +SetActivePet()
         +RestoreActivePet()
         +CompleteTask()
@@ -166,47 +190,113 @@ classDiagram
         +GetSpritePath()
     }
 
-    class ReminderService
-    class AudioService
-    class AppStatePersistenceService
-    class TaskManager
-    class StudyTask
-    class TamagotchiPet <<abstract>>
-    class PetA
-    class PetB
-    class PetC
+    class ReminderService {
+        <<Service>>
+        +Start()
+        +Pause()
+        +Resume()
+        +Stop()
+    }
 
-    MainWindow --> MainWindowViewModel
-    MainWindowViewModel --> ServiceRegistry
-    ServiceRegistry --> DashboardViewModel
-    ServiceRegistry --> SessionViewModel
-    ServiceRegistry --> TasksViewModel
-    ServiceRegistry --> PetSelectionViewModel
-    ServiceRegistry --> SessionController
-    ServiceRegistry --> TaskController
-    ServiceRegistry --> PetController
-    ServiceRegistry --> ReminderService
-    ServiceRegistry --> AudioService
-    ServiceRegistry --> AppStatePersistenceService
+    class AudioService {
+        <<Service>>
+        +PlayBgm()
+        +PlaySfx()
+        +StopBgm()
+    }
 
-    DashboardViewModel --> PetController
-    DashboardViewModel --> TasksViewModel
-    DashboardViewModel --> SessionViewModel
+    class AppStatePersistenceService {
+        <<Service>>
+        +Load()
+        +Save()
+        +Reset()
+    }
 
-    SessionViewModel --> SessionController
-    TasksViewModel --> TaskController
-    PetSelectionViewModel --> PetController
-    PetSelectionViewModel --> SessionController
-    PetSelectionViewModel --> TaskController
+    class TaskManager {
+        <<Model>>
+        +AddTask()
+        +CompleteTask()
+        +CheckForOverdueTasks()
+    }
 
-    SessionController --> PetController
-    SessionController --> TaskController
-    TaskController --> TaskManager
-    TaskManager --> StudyTask
-    PetController --> TamagotchiPet
+    class StudyTask {
+        <<Model>>
+        +Name: string
+        +Deadline: DateTime
+        +Complete()
+        +IsOverdue()
+    }
+
+    class TamagotchiPet {
+        <<Abstract Model>>
+        +Name: string
+        +HungerLevel: int
+        +Experience: int
+        +Level: int
+        +CompleteTask()
+        +DecayHunger()
+        +LevelUp()
+    }
+
+    class PetA {
+        <<Pet Family>>
+    }
+
+    class PetB {
+        <<Pet Family>>
+    }
+
+    class PetC {
+        <<Pet Family>>
+    }
+
+    MainWindow --> MainWindowViewModel : binds
+    MainWindow --> ServiceRegistry : initializes
+    MainWindow --> StudyWidgetWindow : opens
+
+    ServiceRegistry --> DashboardViewModel : creates
+    ServiceRegistry --> SessionViewModel : creates
+    ServiceRegistry --> TasksViewModel : creates
+    ServiceRegistry --> PetSelectionViewModel : creates
+    ServiceRegistry --> SessionController : owns
+    ServiceRegistry --> TaskController : owns
+    ServiceRegistry --> PetController : owns
+    ServiceRegistry --> ReminderService : owns
+    ServiceRegistry --> AudioService : owns
+    ServiceRegistry --> AppStatePersistenceService : saves state
+
+    DashboardViewModel --> PetController : pet display
+    DashboardViewModel --> TasksViewModel : task list
+    DashboardViewModel --> SessionViewModel : timer state
+    SessionViewModel --> SessionController : session actions
+    TasksViewModel --> TaskController : task actions
+    PetSelectionViewModel --> PetController : selected pet
+
+    SessionController --> PetController : hunger and level snapshot
+    SessionController --> TaskController : session rewards
+    ReminderService --> TaskController : deadline checks
+    TaskController --> TaskManager : delegates
+    TaskManager "1" o-- "*" StudyTask : stores
+    PetController --> TamagotchiPet : active pet
     PetA --|> TamagotchiPet
     PetB --|> TamagotchiPet
     PetC --|> TamagotchiPet
+    AppStatePersistenceService ..> StudyTask : restores tasks
+    AppStatePersistenceService ..> TamagotchiPet : restores pet state
+
+    classDef window fill:#FFF0F6,stroke:#FF8FB1,color:#5A315B,stroke-width:2px
+    classDef viewModel fill:#EAF9FF,stroke:#80D8FF,color:#1B4965,stroke-width:2px
+    classDef controller fill:#EEFFFC,stroke:#7DDCCF,color:#24443F,stroke-width:2px
+    classDef service fill:#F7F1FF,stroke:#C7A8FF,color:#3F315B,stroke-width:2px
+    classDef model fill:#FFF7D6,stroke:#F8C85A,color:#5B4818,stroke-width:2px
+    classDef pet fill:#F1FFE8,stroke:#94D780,color:#2E5731,stroke-width:2px
+
+    class MainWindow,StudyWidgetWindow window
+    class MainWindowViewModel,DashboardViewModel,SessionViewModel,TasksViewModel,PetSelectionViewModel viewModel
+    class SessionController,TaskController,PetController controller
+    class ServiceRegistry,ReminderService,AudioService,AppStatePersistenceService service
+    class TaskManager,StudyTask,TamagotchiPet model
+    class PetA,PetB,PetC pet
 ```
 
 ## Features and Functionalities of the System
@@ -336,7 +426,7 @@ dotnet test StudyGotchi.Tests/StudyGotchi.Tests.csproj --no-restore
 
 The tests cover task rewards, early-completion bonuses, hunger penalties, session state, reminders, corrupted-save recovery, persisted stats, input normalization, and pet sprite selection.
 
-## Names of the Developers or Team Members
+## Developers
 
 - Eume C. Derez - GUI Designer and Artist
 - Coleen B. Dichoso - Logic Developer
