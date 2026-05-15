@@ -11,7 +11,7 @@
 
   <p>
     <a href="#installation"><img alt="Platform: Windows" src="https://img.shields.io/badge/platform-Windows-EAF9FF?style=for-the-badge&logo=windows&logoColor=1B4965&labelColor=80D8FF" /></a>
-    <a href="https://github.com/owendenied/study-gotchi/actions/workflows/dotnet.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/owendenied/study-gotchi/dotnet.yml?branch=main&style=for-the-badge&label=build&labelColor=7DDCCF&color=EEFFFC" /></a>
+    <a href="#quality"><img alt="Build: local verified" src="https://img.shields.io/badge/build-local%20verified-EEFFFC?style=for-the-badge&logo=dotnet&logoColor=24443F&labelColor=7DDCCF" /></a>
     <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-FFF0F6?style=for-the-badge&logo=readthedocs&logoColor=5A315B&labelColor=FF8FB1" /></a>
     <a href="VERSION"><img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-F7F1FF?style=for-the-badge&logo=semver&logoColor=3F315B&labelColor=C7A8FF" /></a>
   </p>
@@ -234,7 +234,7 @@ The README and repository branding use these checked-in media assets:
 | --- | --- | --- |
 | License | `LICENSE` | MIT license for professional reuse, modification, and distribution. |
 | Version source | `VERSION` | Current project version used by the README badge. |
-| Build workflow | `.github/workflows/dotnet.yml` | GitHub Actions workflow for restoring, building, and testing the app on Windows. |
+| Build verification | `dotnet build` and `dotnet test` | The README uses a local verification badge; no CI workflow is included in the repository. |
 
 ## Visual Identity
 
