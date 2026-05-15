@@ -21,11 +21,15 @@
     <a href="#installation">Installation</a> .
     <a href="#quick-start">Quick Start</a> .
     <a href="#features">Features</a> .
-    <a href="#repository-media">Repository Media</a>
+    <a href="#quality">Quality</a>
   </p>
 </div>
 
 ---
+
+<div align="center">
+  <img src="docs/brand/social-preview.png" alt="StudyGotchi social preview banner" width="900" />
+</div>
 
 ## Demo
 
@@ -35,11 +39,11 @@
 
 | Dashboard | Pet Selection | Floating Widget |
 | --- | --- | --- |
-| <img src="docs/screenshots/dashboard.png" alt="StudyGotchi dashboard with pet status, study timer, and task list" /> | <img src="docs/screenshots/pet-selection.png" alt="StudyGotchi pet selection screen" /> | <img src="docs/screenshots/study-widget.png" alt="StudyGotchi floating study widget" /> |
+| <img src="docs/screenshots/dashboard.png" alt="StudyGotchi dashboard with pet status, study timer, and task list" width="280" height="180" /> | <img src="docs/screenshots/pet-selection.png" alt="StudyGotchi pet selection screen" width="280" height="180" /> | <img src="docs/screenshots/study-widget.png" alt="StudyGotchi floating study widget" width="280" height="180" /> |
 
 | Add Task | Session Summary | Settings |
 | --- | --- | --- |
-| <img src="docs/screenshots/add-task.png" alt="StudyGotchi add task screen with task type and deadline inputs" /> | <img src="docs/screenshots/session-summary.png" alt="StudyGotchi session summary screen with study progress" /> | <img src="docs/screenshots/settings.png" alt="StudyGotchi settings screen" /> |
+| <img src="docs/screenshots/add-task.png" alt="StudyGotchi add task screen with task type and deadline inputs" width="280" height="180" /> | <img src="docs/screenshots/session-summary.png" alt="StudyGotchi session summary screen with study progress" width="280" height="180" /> | <img src="docs/screenshots/settings.png" alt="StudyGotchi settings screen" width="280" height="180" /> |
 
 ## Installation
 
@@ -211,46 +215,6 @@ dotnet test StudyGotchi.Tests/StudyGotchi.Tests.csproj --no-restore
 ```
 
 The tests cover task rewards, early-completion bonuses, hunger penalties, session state, reminders, corrupted-save recovery, persisted stats, input normalization, and pet sprite selection.
-
-## Repository Media
-
-The README and repository branding use these checked-in media assets:
-
-| Asset | Location | Purpose |
-| --- | --- | --- |
-| Demo GIF | `docs/demo/studygotchi-demo.gif` | Shows the main app flow at a glance. |
-| Dashboard screenshot | `docs/screenshots/dashboard.png` | Shows the core study session experience. |
-| Pet selection screenshot | `docs/screenshots/pet-selection.png` | Shows the available companions and visual style. |
-| Floating widget screenshot | `docs/screenshots/study-widget.png` | Shows the always-on-top study companion mode. |
-| Add task screenshot | `docs/screenshots/add-task.png` | Shows task creation, deadline input, and task categories. |
-| Session summary screenshot | `docs/screenshots/session-summary.png` | Shows progress feedback after a session. |
-| Settings screenshot | `docs/screenshots/settings.png` | Shows customization and preferences. |
-| App icon | `docs/brand/app-icon.png` | Used for release, app, and repository branding. |
-| Social preview image | `docs/brand/social-preview.png` | Used as the GitHub social preview image. |
-
-## Release Metadata
-
-| Item | Location | Purpose |
-| --- | --- | --- |
-| License | `LICENSE` | MIT license for professional reuse, modification, and distribution. |
-| Version source | `VERSION` | Current project version used by the README badge. |
-| Build verification | `dotnet build` and `dotnet test` | The README uses a local verification badge; no CI workflow is included in the repository. |
-
-## Visual Identity
-
-StudyGotchi should feel soft, cute, and polished: pastel pinks, light sky blues, soft teal accents, pixel-art pets, rounded panels, and warm copy. Keep screenshots bright and readable, with the pet visible as the emotional anchor.
-
-<div align="center">
-  <img src="docs/brand/social-preview.png" alt="StudyGotchi social preview banner" width="720" />
-</div>
-
-| Swatch | Hex | Use |
-| --- | --- | --- |
-| <img src="https://placehold.co/20x20/FF8FB1/FF8FB1.png" alt="#FF8FB1" /> | `#FF8FB1` | Pink accents, reward moments |
-| <img src="https://placehold.co/20x20/80D8FF/80D8FF.png" alt="#80D8FF" /> | `#80D8FF` | Sky-blue panels and links |
-| <img src="https://placehold.co/20x20/7DDCCF/7DDCCF.png" alt="#7DDCCF" /> | `#7DDCCF` | Teal status and balance accents |
-| <img src="https://placehold.co/20x20/FFF0F6/FFF0F6.png" alt="#FFF0F6" /> | `#FFF0F6` | Light pink backgrounds |
-| <img src="https://placehold.co/20x20/EAF9FF/EAF9FF.png" alt="#EAF9FF" /> | `#EAF9FF` | Light sky-blue backgrounds |
 
 ## Contributing
 
