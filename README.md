@@ -98,7 +98,7 @@ The app is designed for students who want task tracking to feel warm, visual, an
 
 ## UML Diagram
 
-The diagram below reflects the current app wiring, including the shared service registry, view models, controllers, services, and model layer that keep the study loop and pet care system in sync.
+The diagram below focuses on the core parts of StudyGotchi: the main screen, shared service hub, controllers, persistence/reminder services, tasks, and pet progression model.
 
 ```mermaid
 classDiagram
@@ -106,117 +106,49 @@ classDiagram
 
     class MainWindow {
         <<Window>>
-        +NavigateToPetSelection()
-        +NavigateToTaskSetup()
-        +NavigateToSettings()
         +NavigateToDashboard()
-        +NavigateToSummary()
         +LaunchWidgetMode()
-        +ToggleFullScreen()
-    }
-
-    class StudyWidgetWindow {
-        <<Window>>
-        +UpdatePetDisplay()
-        +ReturnToDashboard()
-    }
-
-    class MainWindowViewModel {
-        <<ViewModel>>
-        +CurrentViewModel: object
     }
 
     class DashboardViewModel {
         <<ViewModel>>
         +PetName: string
-        +PetStage: string
         +LevelText: string
         +Refresh()
     }
 
-    class SessionViewModel {
-        <<ViewModel>>
-        +ClockText: string
-        +StartCommand
-        +PauseCommand
-        +EndCommand
-    }
-
-    class TasksViewModel {
-        <<ViewModel>>
-        +Tasks: ObservableCollection
-        +AddTask()
-    }
-
-    class PetSelectionViewModel {
-        <<ViewModel>>
-        +AvailablePets: ObservableCollection
-        +ChoosePetCommand
-        +SelectPetCommand
-    }
-
     class ServiceRegistry {
-        <<Service Hub>>
+        <<ServiceHub>>
         +Initialize()
         +SaveState()
-        +ResetApp()
-        +ResetSaveData()
     }
 
     class SessionController {
         <<Controller>>
         +StartSession()
         +PauseSession()
-        +ResumeSession()
         +EndSession()
-        +ResetSession()
     }
 
     class TaskController {
         <<Controller>>
         +AddTask()
         +CompleteTask()
-        +ClearTasks()
-        +ReplaceTasks()
         +CheckAndNotifyOverdue()
     }
 
     class PetController {
         <<Controller>>
         +SetActivePet()
-        +RestoreActivePet()
         +CompleteTask()
-        +ApplyOverduePenalty()
         +GetSpritePath()
-    }
-
-    class ReminderService {
-        <<Service>>
-        +Start()
-        +Pause()
-        +Resume()
-        +Stop()
-    }
-
-    class AudioService {
-        <<Service>>
-        +PlayBgm()
-        +PlaySfx()
-        +StopBgm()
-    }
-
-    class AppStatePersistenceService {
-        <<Service>>
-        +Load()
-        +Save()
-        +Reset()
     }
 
     class TaskManager {
         <<Model>>
         +AddTask()
         +CompleteTask()
-        +CheckForOverdueTasks()
+        +GetOverdueTasks()
     }
 
     class StudyTask {
@@ -224,65 +156,75 @@ classDiagram
         +Name: string
         +Deadline: DateTime
         +Complete()
-        +IsOverdue()
+    }
+
+    class ReminderService {
+        <<Service>>
+        +Start()
+        +Stop()
+    }
+
+    class AppStatePersistenceService {
+        <<Service>>
+        +Load()
+        +Save()
+    }
+
+    class AudioService {
+        <<Service>>
+        +PlayBgm()
+        +PlaySfx()
     }
 
     class TamagotchiPet {
-        <<Abstract Model>>
+        <<AbstractModel>>
         +Name: string
         +HungerLevel: int
-        +Experience: int
         +Level: int
         +CompleteTask()
         +DecayHunger()
-        +LevelUp()
     }
 
     class PetA {
-        <<Pet Family>>
+        <<PetFamily>>
     }
 
     class PetB {
-        <<Pet Family>>
+        <<PetFamily>>
     }
 
     class PetC {
-        <<Pet Family>>
+        <<PetFamily>>
     }
 
-    MainWindow --> MainWindowViewModel : binds
-    MainWindow --> ServiceRegistry : initializes
-    MainWindow --> StudyWidgetWindow : opens
+    MainWindow "1" --> "1" DashboardViewModel
+    MainWindow ..> ServiceRegistry
 
-    ServiceRegistry --> DashboardViewModel : creates
-    ServiceRegistry --> SessionViewModel : creates
-    ServiceRegistry --> TasksViewModel : creates
-    ServiceRegistry --> PetSelectionViewModel : creates
-    ServiceRegistry --> SessionController : owns
-    ServiceRegistry --> TaskController : owns
-    ServiceRegistry --> PetController : owns
-    ServiceRegistry --> ReminderService : owns
-    ServiceRegistry --> AudioService : owns
-    ServiceRegistry --> AppStatePersistenceService : saves state
+    ServiceRegistry "1" *-- "1" SessionController
+    ServiceRegistry "1" *-- "1" TaskController
+    ServiceRegistry "1" *-- "1" PetController
+    ServiceRegistry "1" *-- "1" ReminderService
+    ServiceRegistry "1" *-- "1" AppStatePersistenceService
+    ServiceRegistry "1" *-- "1" AudioService
 
-    DashboardViewModel --> PetController : pet display
-    DashboardViewModel --> TasksViewModel : task list
-    DashboardViewModel --> SessionViewModel : timer state
-    SessionViewModel --> SessionController : session actions
-    TasksViewModel --> TaskController : task actions
-    PetSelectionViewModel --> PetController : selected pet
+    DashboardViewModel ..> SessionController
+    DashboardViewModel ..> TaskController
+    DashboardViewModel ..> PetController
 
-    SessionController --> PetController : hunger and level snapshot
-    SessionController --> TaskController : session rewards
-    ReminderService --> TaskController : deadline checks
-    TaskController --> TaskManager : delegates
-    TaskManager "1" o-- "*" StudyTask : stores
-    PetController --> TamagotchiPet : active pet
-    PetA --|> TamagotchiPet
-    PetB --|> TamagotchiPet
-    PetC --|> TamagotchiPet
-    AppStatePersistenceService ..> StudyTask : restores tasks
-    AppStatePersistenceService ..> TamagotchiPet : restores pet state
+    SessionController "1" --> "1" TaskController
+    SessionController "1" --> "1" PetController
+    ReminderService "1" --> "1" TaskController
+
+    TaskController "1" *-- "1" TaskManager
+    TaskManager "1" o-- "0..*" StudyTask
+
+    PetController "1" o-- "0..1" TamagotchiPet
+    TamagotchiPet <|-- PetA
+    TamagotchiPet <|-- PetB
+    TamagotchiPet <|-- PetC
+
+    AppStatePersistenceService ..> StudyTask
+    AppStatePersistenceService ..> TamagotchiPet
 
     classDef window fill:#FFF0F6,stroke:#FF8FB1,color:#5A315B,stroke-width:2px
     classDef viewModel fill:#EAF9FF,stroke:#80D8FF,color:#1B4965,stroke-width:2px
@@ -292,12 +234,7 @@ classDiagram
     classDef pet fill:#F1FFE8,stroke:#94D780,color:#2E5731,stroke-width:2px
 
     class MainWindow window
-    class StudyWidgetWindow window
-    class MainWindowViewModel viewModel
     class DashboardViewModel viewModel
-    class SessionViewModel viewModel
-    class TasksViewModel viewModel
-    class PetSelectionViewModel viewModel
     class SessionController controller
     class TaskController controller
     class PetController controller
