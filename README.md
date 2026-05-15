@@ -291,12 +291,26 @@ classDiagram
     classDef model fill:#FFF7D6,stroke:#F8C85A,color:#5B4818,stroke-width:2px
     classDef pet fill:#F1FFE8,stroke:#94D780,color:#2E5731,stroke-width:2px
 
-    class MainWindow,StudyWidgetWindow window
-    class MainWindowViewModel,DashboardViewModel,SessionViewModel,TasksViewModel,PetSelectionViewModel viewModel
-    class SessionController,TaskController,PetController controller
-    class ServiceRegistry,ReminderService,AudioService,AppStatePersistenceService service
-    class TaskManager,StudyTask,TamagotchiPet model
-    class PetA,PetB,PetC pet
+    class MainWindow window
+    class StudyWidgetWindow window
+    class MainWindowViewModel viewModel
+    class DashboardViewModel viewModel
+    class SessionViewModel viewModel
+    class TasksViewModel viewModel
+    class PetSelectionViewModel viewModel
+    class SessionController controller
+    class TaskController controller
+    class PetController controller
+    class ServiceRegistry service
+    class ReminderService service
+    class AudioService service
+    class AppStatePersistenceService service
+    class TaskManager model
+    class StudyTask model
+    class TamagotchiPet model
+    class PetA pet
+    class PetB pet
+    class PetC pet
 ```
 
 ## Features and Functionalities of the System
