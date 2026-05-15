@@ -1,76 +1,273 @@
-# 🐾 Study-Gotchi
-### A Tamagotchi-Style Study Tracker | Team 11 | CS 222 AOOP
+<a id="top"></a>
 
-Study-Gotchi is a desktop application built with **C# and WPF (.NET 10)** that gamifies your productivity. It combines a task manager with a virtual pet whose wellbeing is directly tied to your study habits.
+<div align="center">
+  <img src="StudyGotchi/Assets/Background/logo.png" alt="StudyGotchi logo" width="360" />
+
+  <h1>StudyGotchi</h1>
+
+  <p>
+    <strong>StudyGotchi helps students finish tasks by turning study sessions into care, rewards, reminders, and evolution for a tiny desktop pet.</strong>
+  </p>
+
+  <p>
+    <a href="#installation"><img alt="Platform: Windows" src="https://img.shields.io/badge/platform-Windows-EAF9FF?style=for-the-badge&logo=windows&logoColor=1B4965&labelColor=80D8FF" /></a>
+    <a href="https://github.com/owendenied/study-gotchi/actions/workflows/dotnet.yml"><img alt="Build status" src="https://img.shields.io/github/actions/workflow/status/owendenied/study-gotchi/dotnet.yml?branch=main&style=for-the-badge&label=build&labelColor=7DDCCF&color=EEFFFC" /></a>
+    <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-FFF0F6?style=for-the-badge&logo=readthedocs&logoColor=5A315B&labelColor=FF8FB1" /></a>
+    <a href="VERSION"><img alt="Version 0.1.0" src="https://img.shields.io/badge/version-0.1.0-F7F1FF?style=for-the-badge&logo=semver&logoColor=3F315B&labelColor=C7A8FF" /></a>
+  </p>
+
+  <p>
+    <a href="#demo">Demo</a> .
+    <a href="#installation">Installation</a> .
+    <a href="#quick-start">Quick Start</a> .
+    <a href="#features">Features</a> .
+    <a href="#repository-media">Repository Media</a>
+  </p>
+</div>
 
 ---
 
-## 🚀 Quick Setup Flow
+## Demo
 
-Follow these steps to get the workspace running on your local machine:
+<div align="center">
+  <img src="docs/demo/studygotchi-demo.gif" alt="StudyGotchi demo showing pet selection, task setup, study session flow, and pet progress" width="900" />
+</div>
 
-### 1. Prerequisites
-- **Visual Studio 2022** (v17.8+) with **.NET Desktop Development** workload installed.
-- **.NET 10 SDK** (Ensure you have the latest preview/release).
-- **Git** installed on your system.
+| Dashboard | Pet Selection | Floating Widget |
+| --- | --- | --- |
+| <img src="docs/screenshots/dashboard.png" alt="StudyGotchi dashboard with pet status, study timer, and task list" /> | <img src="docs/screenshots/pet-selection.png" alt="StudyGotchi pet selection screen" /> | <img src="docs/screenshots/study-widget.png" alt="StudyGotchi floating study widget" /> |
 
-### 2. Clone the Repository
+| Add Task | Session Summary | Settings |
+| --- | --- | --- |
+| <img src="docs/screenshots/add-task.png" alt="StudyGotchi add task screen with task type and deadline inputs" /> | <img src="docs/screenshots/session-summary.png" alt="StudyGotchi session summary screen with study progress" /> | <img src="docs/screenshots/settings.png" alt="StudyGotchi settings screen" /> |
+
+## Installation
+
+### Requirements
+
+- Windows 10 or later
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- Git
+- Visual Studio 2022 with the `.NET desktop development` workload, if you prefer running the app from the IDE
+
+### Install From Source
+
 ```bash
 git clone https://github.com/owendenied/study-gotchi.git
-cd study-gotchi/StudyGotchi
+cd study-gotchi
+dotnet restore StudyGotchi/StudyGotchi.slnx
+dotnet build StudyGotchi/StudyGotchi.csproj
 ```
 
-### 3. Open & Build
-- **Option A (Recommended):** Open `StudyGotchi.slnx` in Visual Studio. Wait for dependencies to restore, then press `F5` to run.
-- **Option B (CLI):** Run the following command in the project root:
-  ```bash
-  dotnet run
-  ```
+### Run From Visual Studio
 
----
+1. Open `StudyGotchi/StudyGotchi.slnx`.
+2. Restore NuGet packages when prompted.
+3. Set `StudyGotchi` as the startup project.
+4. Press `F5`.
 
-## 🏗️ Workspace & Architecture Flow
+## Quick Start
 
-The project follows a strict **3-Layer Architecture** (Presentation, Application, and Domain) to ensure clean code and clear separation of responsibilities.
+Copy and run this from a terminal:
 
-### Layer Breakdown
-- **Presentation Layer (`/Views`)**: Handled via XAML and C# code-behind. Manages everything the user sees.
-- **Application Layer (`/Controllers`)**: The "middle-man" (Pet, Task, and Session controllers) that coordinates between the UI and the underlying logic.
-- **Domain Layer (`/Models`, `/Interfaces`)**: The core game logic (hunger decay, XP calculations, evolution stages).
+```bash
+git clone https://github.com/owendenied/study-gotchi.git
+cd study-gotchi
+dotnet restore StudyGotchi/StudyGotchi.slnx
+dotnet run --project StudyGotchi/StudyGotchi.csproj
+```
 
-### Core Navigation Flow
-1. **Pet Selection**: Pick your starting companion.
-2. **Task Setup**: Add your study goals and deadlines.
-3. **Settings**: Name your pet and adjust preferences.
-4. **Dashboard**: The main focus area where your pet lives and you track tasks.
-5. **Study Widget**: An always-on-top floating pet to keep you company while you work in other apps.
-6. **Session Summary**: See your XP gains and evolution progress at the end of a session.
+Once the app opens:
 
----
+1. Choose a pet.
+2. Name your pet and adjust settings.
+3. Add one study task with a deadline.
+4. Start a session.
+5. Complete the task to feed your pet, earn XP, and progress toward evolution.
 
-## 🛠️ Tech Stack
-- **Language:** C#
-- **Framework:** WPF (.NET 10)
-- **Design:** XAML with a custom pastel aesthetic.
-- **Architecture:** 3-Tier MVC-inspired (Controllers/Models/Views).
+## What StudyGotchi Does
 
----
+StudyGotchi turns a study session into a small care ritual. Your task list becomes a set of quests, your deadlines become gentle reminders, and your progress keeps a virtual pet healthy and growing. Completing work rewards the pet with XP and hunger recovery; missing deadlines or studying too long without care makes the pet need attention.
 
-## 👥 Team Contribution Workflow
+The app is designed for students who want task tracking to feel warm, visual, and motivating without becoming noisy. It keeps the experience focused: plan work, start the timer, keep your pet nearby, finish tasks, and review the session summary.
 
-To maintain a clean repository, we follow these golden rules:
+## Features
 
-1. **Branching**: Never push directly to `main`.
-   - Use `dev` for shared integration.
-   - Use `feature/<name>-<task>` for individual work.
-2. **Daily Sync**: Always `git pull origin dev` before you start coding.
-3. **Commits**: Use clear, descriptive commit messages:
-   - `feat:` for new features.
-   - `fix:` for bug fixes.
-   - `style:` for UI/XAML changes.
-4. **Pull Requests**: Open a PR to `dev` once your feature is complete. Review and merge are handled by the Lead Dev.
+| Area | What It Does |
+| --- | --- |
+| Study sessions | Start, pause, resume, reset, and end timed focus sessions. |
+| Task planning | Add study tasks with names, categories, and deadlines. |
+| Task rewards | Completing tasks grants XP and restores hunger; early completion doubles XP. |
+| Pet care | Hunger decays during sessions, overdue tasks reduce hunger, and low hunger reduces XP gain. |
+| Progression | Pets level from 1 to 30 and evolve through Baby, Teen, and Adult stages. |
+| Pet selection | Choose from three pet families with separate sprites and mood states. |
+| Reminders | Deadline reminders fire at 10, 5, and 1 minute before a task is due. |
+| Floating widget | Keep an always-on-top pet companion visible while working in other apps. |
+| Audio feedback | Background music and event sounds support session starts, reminders, completion, and level-ups. |
+| Persistence | Saves pet, tasks, settings, stats, and active session state locally. |
+| Recovery | Backs up corrupted save files and starts cleanly instead of crashing. |
 
----
+## App Flow
 
-*For more detailed technical specifications, check the `Documents/` folder.*
+```mermaid
+flowchart LR
+    A["Choose a pet"] --> B["Add study tasks"]
+    B --> C["Start a session"]
+    C --> D["Complete tasks"]
+    D --> E["Earn XP and restore hunger"]
+    E --> F["Level up and evolve"]
+    C --> G["Deadline reminders"]
+    G --> D
+    C --> H["Open floating widget"]
+    H --> D
 
+    style A fill:#FFF0F6,stroke:#FF8FB1,color:#5A315B
+    style B fill:#EAF9FF,stroke:#80D8FF,color:#1B4965
+    style C fill:#EEFFFC,stroke:#7DDCCF,color:#24443F
+    style D fill:#FFF7D6,stroke:#F8C85A,color:#5B4818
+    style E fill:#FFF0F6,stroke:#FF8FB1,color:#5A315B
+    style F fill:#EAF9FF,stroke:#80D8FF,color:#1B4965
+    style G fill:#F7F1FF,stroke:#C7A8FF,color:#3F315B
+    style H fill:#EEFFFC,stroke:#7DDCCF,color:#24443F
+```
+
+## Tech Stack
+
+| Layer | Technology |
+| --- | --- |
+| App | C# desktop application |
+| Runtime | .NET 10 |
+| UI | WPF |
+| Animation | WpfAnimatedGif |
+| Persistence | Local JSON in `%APPDATA%\StudyGotchi\state.json` |
+| Testing | xUnit |
+| Assets | Pixel sprites, PNG backgrounds, Pixelify Sans fonts, WAV/MP3 audio |
+
+## Architecture
+
+StudyGotchi keeps the codebase split into clear responsibilities: screens render the interface, view models expose bindable state, controllers coordinate user actions, models own the pet/task rules, and services handle persistence, audio, reminders, and shared app wiring.
+
+```mermaid
+flowchart TD
+    Views["Views<br/>screens, controls, widget"]
+    ViewModels["ViewModels<br/>bindable UI state"]
+    Controllers["Controllers<br/>pet, task, session coordination"]
+    Models["Models<br/>pet rules, tasks, rewards"]
+    Services["Services<br/>save data, audio, reminders"]
+    Assets["Assets<br/>sprites, backgrounds, fonts, sounds"]
+    Tests["Tests<br/>xUnit behavior coverage"]
+
+    Views --> ViewModels
+    ViewModels --> Controllers
+    Controllers --> Models
+    Controllers --> Services
+    Views --> Assets
+    Tests --> Controllers
+    Tests --> Models
+    Tests --> Services
+
+    style Views fill:#FFF0F6,stroke:#FF8FB1,color:#5A315B
+    style ViewModels fill:#EAF9FF,stroke:#80D8FF,color:#1B4965
+    style Controllers fill:#EEFFFC,stroke:#7DDCCF,color:#24443F
+    style Models fill:#FFF7D6,stroke:#F8C85A,color:#5B4818
+    style Services fill:#F7F1FF,stroke:#C7A8FF,color:#3F315B
+    style Assets fill:#FFF9FB,stroke:#FFB7CE,color:#5A315B
+    style Tests fill:#F5FCFF,stroke:#B9E6FF,color:#24445C
+```
+
+## Project Structure
+
+```text
+study-gotchi/
+|-- StudyGotchi/                 Desktop app
+|   |-- Assets/                   Pixel backgrounds, pet sprites, fonts, and audio
+|   |-- Controllers/              Session, task, and pet coordination
+|   |-- Converters/               WPF value converters
+|   |-- Interfaces/               Pet and task observer contracts
+|   |-- Models/                   Core task and pet rules
+|   |-- Services/                 Persistence, reminders, audio, and service registry
+|   |-- Styles/                   Global WPF resources and button styles
+|   |-- ViewModels/               Bindable state for screens and controls
+|   `-- Views/                    Windows and user controls
+|-- StudyGotchi.Tests/           xUnit tests
+|-- README.md
+`-- .gitignore
+```
+
+## Quality
+
+Run the test suite:
+
+```bash
+dotnet test StudyGotchi.Tests/StudyGotchi.Tests.csproj
+```
+
+Run a full local verification pass:
+
+```bash
+dotnet restore StudyGotchi/StudyGotchi.slnx
+dotnet build StudyGotchi/StudyGotchi.csproj --no-restore
+dotnet test StudyGotchi.Tests/StudyGotchi.Tests.csproj --no-restore
+```
+
+The tests cover task rewards, early-completion bonuses, hunger penalties, session state, reminders, corrupted-save recovery, persisted stats, input normalization, and pet sprite selection.
+
+## Repository Media
+
+The README and repository branding use these checked-in media assets:
+
+| Asset | Location | Purpose |
+| --- | --- | --- |
+| Demo GIF | `docs/demo/studygotchi-demo.gif` | Shows the main app flow at a glance. |
+| Dashboard screenshot | `docs/screenshots/dashboard.png` | Shows the core study session experience. |
+| Pet selection screenshot | `docs/screenshots/pet-selection.png` | Shows the available companions and visual style. |
+| Floating widget screenshot | `docs/screenshots/study-widget.png` | Shows the always-on-top study companion mode. |
+| Add task screenshot | `docs/screenshots/add-task.png` | Shows task creation, deadline input, and task categories. |
+| Session summary screenshot | `docs/screenshots/session-summary.png` | Shows progress feedback after a session. |
+| Settings screenshot | `docs/screenshots/settings.png` | Shows customization and preferences. |
+| App icon | `docs/brand/app-icon.png` | Used for release, app, and repository branding. |
+| Social preview image | `docs/brand/social-preview.png` | Used as the GitHub social preview image. |
+
+## Release Metadata
+
+| Item | Location | Purpose |
+| --- | --- | --- |
+| License | `LICENSE` | MIT license for professional reuse, modification, and distribution. |
+| Version source | `VERSION` | Current project version used by the README badge. |
+| Build workflow | `.github/workflows/dotnet.yml` | GitHub Actions workflow for restoring, building, and testing the app on Windows. |
+
+## Visual Identity
+
+StudyGotchi should feel soft, cute, and polished: pastel pinks, light sky blues, soft teal accents, pixel-art pets, rounded panels, and warm copy. Keep screenshots bright and readable, with the pet visible as the emotional anchor.
+
+<div align="center">
+  <img src="docs/brand/social-preview.png" alt="StudyGotchi social preview banner" width="720" />
+</div>
+
+| Swatch | Hex | Use |
+| --- | --- | --- |
+| <img src="https://placehold.co/20x20/FF8FB1/FF8FB1.png" alt="#FF8FB1" /> | `#FF8FB1` | Pink accents, reward moments |
+| <img src="https://placehold.co/20x20/80D8FF/80D8FF.png" alt="#80D8FF" /> | `#80D8FF` | Sky-blue panels and links |
+| <img src="https://placehold.co/20x20/7DDCCF/7DDCCF.png" alt="#7DDCCF" /> | `#7DDCCF` | Teal status and balance accents |
+| <img src="https://placehold.co/20x20/FFF0F6/FFF0F6.png" alt="#FFF0F6" /> | `#FFF0F6` | Light pink backgrounds |
+| <img src="https://placehold.co/20x20/EAF9FF/EAF9FF.png" alt="#EAF9FF" /> | `#EAF9FF` | Light sky-blue backgrounds |
+
+## Contributing
+
+Contributions should preserve the cozy study loop and keep behavior easy to verify.
+
+1. Create a focused branch from `main`.
+2. Keep UI changes aligned with the pastel pixel style.
+3. Add or update tests when changing task, session, pet, reminder, or persistence behavior.
+4. Run the build-and-test commands before opening a pull request.
+5. Include screenshots for user-facing UI changes.
+
+## License
+
+StudyGotchi is released under the [MIT License](LICENSE).
+
+<div align="center">
+  <sub>Made for focused study sessions, tiny wins, and one very cared-for desktop pet.</sub>
+  <br />
+  <a href="#top">Back to top</a>
+</div>
