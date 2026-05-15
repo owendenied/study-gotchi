@@ -1,0 +1,114 @@
+using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
+using System.Windows.Input;
+using StudyGotchi.Services;
+
+namespace StudyGotchi.Views
+{
+    public partial class StudyWidgetWindow : Window
+    {
+        private DispatcherTimer? _toastTimer;
+
+        public StudyWidgetWindow()
+        {
+            InitializeComponent();
+            this.DataContext = StudyGotchi.Services.ServiceRegistry.DashboardViewModel;
+
+            // Subscribe to reminder events so the widget can show toast notifications
+            var reminderService = StudyGotchi.Services.ServiceRegistry.ReminderService;
+            if (reminderService != null)
+            {
+                reminderService.ReminderTriggered += OnReminderTriggered;
+                Dispatcher.BeginInvoke(new Action(() => SyncReminderToast(reminderService)));
+            }
+
+            Closed += (s, e) =>
+            {
+                if (reminderService != null)
+                    reminderService.ReminderTriggered -= OnReminderTriggered;
+            };
+        }
+
+        private void OnReminderTriggered(string taskName, int minutesLeft)
+        {
+            // Always dispatch to UI thread since the reminder timer runs on the UI thread
+            // but guard just in case
+            Application.Current?.Dispatcher?.Invoke(() =>
+            {
+                ShowToast(taskName, minutesLeft, playSound: false);
+            });
+        }
+
+        public void ShowToast(string taskName, int minutesLeft, bool playSound = true)
+        {
+            ShowToast($"{taskName}\n{minutesLeft} min left", playSound);
+        }
+
+        public void ShowToast(string message, bool playSound = true)
+        {
+            TxtToastMessage.Text = message;
+            ToastBorder.Visibility = Visibility.Visible;
+
+            if (playSound)
+            {
+                StudyGotchi.Services.ServiceRegistry.AudioService?.PlaySfx("sfx_reminder");
+            }
+
+            // Reset any running auto-hide timer
+            _toastTimer?.Stop();
+            _toastTimer = new DispatcherTimer { Interval = System.TimeSpan.FromSeconds(4) };
+            _toastTimer.Tick += (s, e) =>
+            {
+                _toastTimer?.Stop();
+                ToastBorder.Visibility = Visibility.Collapsed;
+            };
+            _toastTimer.Start();
+        }
+
+        private void SyncReminderToast(ReminderService reminderService)
+        {
+            if (reminderService.TryGetRecentReminder(out var taskName, out var minutesLeft))
+            {
+                ShowToast(taskName, minutesLeft);
+                return;
+            }
+
+            if (reminderService.IsRunning)
+            {
+                reminderService.CheckNow();
+            }
+        }
+
+        public void UpdatePetDisplay()
+        {
+            StudyGotchi.Services.ServiceRegistry.DashboardViewModel.Refresh();
+        }
+
+        public void ReturnToDashboard()
+        {
+            this.Close();
+        }
+
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                // double-click detected: show main window (dashboard) and close widget
+                var main = Application.Current?.Windows.OfType<MainWindow>().FirstOrDefault();
+                if (main != null)
+                {
+                    main.Show();
+                    main.NavigateToDashboard();
+                }
+                this.Close();
+            }
+            else
+            {
+                // start drag move on single click
+                try { this.DragMove(); } catch { }
+            }
+        }
+    }
+}

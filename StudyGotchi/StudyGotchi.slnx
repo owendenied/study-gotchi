@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="StudyGotchi.csproj" />
+  <Project Path="..\StudyGotchi.Tests\StudyGotchi.Tests.csproj" />
+</Solution>

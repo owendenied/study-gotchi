@@ -416,3 +416,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# Local release bundles
+release/
+
+# App crash logs
+crash_log.txt
