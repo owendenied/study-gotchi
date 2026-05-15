@@ -218,13 +218,13 @@ The tests cover task rewards, early-completion bonuses, hunger penalties, sessio
 
 ## Contributing
 
-Contributions should preserve the cozy study loop and keep behavior easy to verify.
+Contributions are welcome! Whether it is a bug fix, a new pet sprite, or a quality-of-life tweak, if it fits the cozy study loop, it belongs here.
 
-1. Create a focused branch from `main`.
-2. Keep UI changes aligned with the pastel pixel style.
-3. Add or update tests when changing task, session, pet, reminder, or persistence behavior.
+1. Branch from `main` and keep changes focused.
+2. Match the pastel pixel style for any UI changes.
+3. Add or update tests for anything touching tasks, sessions, pets, reminders, or persistence.
 4. Run the build-and-test commands before opening a pull request.
-5. Include screenshots for user-facing UI changes.
+5. Include screenshots for visual changes.
 
 ## License
 
